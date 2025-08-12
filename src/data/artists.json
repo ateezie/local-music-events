@@ -1,0 +1,367 @@
+{
+  "artists": [
+    {
+      "id": "the-velvet-echoes",
+      "name": "The Velvet Echoes",
+      "genre": "indie-rock",
+      "subGenres": ["alternative", "indie"],
+      "bio": "Four-piece indie rock band known for their dreamy soundscapes and introspective lyrics. Formed in San Francisco's vibrant music scene, they've quickly gained a following for their ethereal sound and captivating live performances.",
+      "image": "/images/artists/the-velvet-echoes.jpg",
+      "website": "https://velvetechoes.example.com",
+      "socialMedia": {
+        "instagram": "https://instagram.com/velvetechoes",
+        "facebook": "https://facebook.com/velvetechoes",
+        "spotify": "https://open.spotify.com/artist/velvetechoes",
+        "bandcamp": "https://velvetechoes.bandcamp.com"
+      },
+      "mediaLinks": {
+        "spotify": "https://open.spotify.com/artist/velvetechoes",
+        "appleMusic": "https://music.apple.com/artist/velvetechoes",
+        "youtube": "https://youtube.com/velvetechoes",
+        "bandcamp": "https://velvetechoes.bandcamp.com"
+      },
+      "hometown": "San Francisco, CA",
+      "formed": "2020",
+      "members": [
+        {
+          "name": "Alex Rivers",
+          "instrument": "Lead Vocals, Guitar",
+          "joinDate": "2020",
+          "active": true
+        },
+        {
+          "name": "Maya Chen",
+          "instrument": "Bass Guitar",
+          "joinDate": "2020",
+          "active": true
+        },
+        {
+          "name": "Jordan Smith",
+          "instrument": "Drums",
+          "joinDate": "2020",
+          "active": true
+        },
+        {
+          "name": "Sam Torres",
+          "instrument": "Lead Guitar, Synth",
+          "joinDate": "2021",
+          "active": true
+        }
+      ],
+      "tags": ["indie", "alternative", "dreamy", "local", "emerging"],
+      "createdAt": "2025-08-07",
+      "verified": true
+    },
+    {
+      "id": "moonlight-drive",
+      "name": "Moonlight Drive",
+      "genre": "alternative",
+      "subGenres": ["indie", "shoegaze"],
+      "bio": "Supporting act with ethereal vocals and atmospheric instrumentation. This Oakland-based trio creates lush soundscapes that transport listeners to otherworldly realms.",
+      "image": "/images/artists/moonlight-drive.jpg",
+      "website": "https://moonlightdrive.example.com",
+      "socialMedia": {
+        "instagram": "https://instagram.com/moonlightdriveband",
+        "spotify": "https://open.spotify.com/artist/moonlightdrive",
+        "soundcloud": "https://soundcloud.com/moonlightdrive"
+      },
+      "mediaLinks": {
+        "spotify": "https://open.spotify.com/artist/moonlightdrive",
+        "bandcamp": "https://moonlightdrive.bandcamp.com",
+        "soundcloud": "https://soundcloud.com/moonlightdrive"
+      },
+      "hometown": "Oakland, CA",
+      "formed": "2022",
+      "members": [
+        {
+          "name": "Luna Martinez",
+          "instrument": "Vocals, Guitar",
+          "joinDate": "2022",
+          "active": true
+        },
+        {
+          "name": "River Kim",
+          "instrument": "Bass, Synth",
+          "joinDate": "2022",
+          "active": true
+        },
+        {
+          "name": "Sky Johnson",
+          "instrument": "Drums, Percussion",
+          "joinDate": "2022",
+          "active": true
+        }
+      ],
+      "tags": ["atmospheric", "ethereal", "alternative", "shoegaze"],
+      "createdAt": "2025-08-07",
+      "verified": false
+    },
+    {
+      "id": "marcus-johnson-trio",
+      "name": "Marcus Johnson Trio",
+      "genre": "jazz",
+      "subGenres": ["contemporary-jazz", "traditional-jazz"],
+      "bio": "Veteran jazz pianist Marcus Johnson with bass and drums, known for their sophisticated interpretations of jazz standards and original compositions. A fixture in the LA jazz scene for over a decade.",
+      "image": "/images/artists/marcus-johnson-trio.jpg",
+      "website": "https://marcusjohnsontrio.example.com",
+      "socialMedia": {
+        "facebook": "https://facebook.com/marcusjohnsontrio",
+        "instagram": "https://instagram.com/marcusjohnsonjazz",
+        "spotify": "https://open.spotify.com/artist/marcusjohnsontrio"
+      },
+      "mediaLinks": {
+        "spotify": "https://open.spotify.com/artist/marcusjohnsontrio",
+        "appleMusic": "https://music.apple.com/artist/marcusjohnsontrio",
+        "youtube": "https://youtube.com/marcusjohnsonjazz"
+      },
+      "hometown": "Los Angeles, CA",
+      "formed": "2015",
+      "members": [
+        {
+          "name": "Marcus Johnson",
+          "instrument": "Piano, Keyboards",
+          "joinDate": "2015",
+          "active": true
+        },
+        {
+          "name": "David Williams",
+          "instrument": "Upright Bass",
+          "joinDate": "2015",
+          "active": true
+        },
+        {
+          "name": "Carlos Rodriguez",
+          "instrument": "Drums",
+          "joinDate": "2016",
+          "active": true
+        }
+      ],
+      "tags": ["jazz", "piano", "sophisticated", "veteran", "standards"],
+      "createdAt": "2025-08-07",
+      "verified": true
+    },
+    {
+      "id": "chaos-theory-band",
+      "name": "Chaos Theory",
+      "genre": "punk",
+      "subGenres": ["hardcore-punk", "political-punk"],
+      "bio": "High-energy punk rockers with politically charged lyrics and explosive live shows. This Long Beach quartet isn't afraid to speak truth to power through raw, uncompromising music.",
+      "image": "/images/artists/chaos-theory.jpg",
+      "website": "https://chaostheoryband.example.com",
+      "socialMedia": {
+        "instagram": "https://instagram.com/chaostheoryband",
+        "twitter": "https://twitter.com/chaostheoryband",
+        "bandcamp": "https://chaostheory.bandcamp.com"
+      },
+      "mediaLinks": {
+        "bandcamp": "https://chaostheory.bandcamp.com",
+        "spotify": "https://open.spotify.com/artist/chaostheory",
+        "soundcloud": "https://soundcloud.com/chaostheoryband"
+      },
+      "hometown": "Long Beach, CA",
+      "formed": "2021",
+      "members": [
+        {
+          "name": "Riot Garcia",
+          "instrument": "Vocals",
+          "joinDate": "2021",
+          "active": true
+        },
+        {
+          "name": "Max Fury",
+          "instrument": "Guitar",
+          "joinDate": "2021",
+          "active": true
+        },
+        {
+          "name": "Zoe Crash",
+          "instrument": "Bass Guitar",
+          "joinDate": "2021",
+          "active": true
+        },
+        {
+          "name": "Thunder Pete",
+          "instrument": "Drums",
+          "joinDate": "2021",
+          "active": true
+        }
+      ],
+      "tags": ["punk", "political", "energetic", "underground", "hardcore"],
+      "createdAt": "2025-08-07",
+      "verified": false
+    },
+    {
+      "id": "static-noise",
+      "name": "Static Noise",
+      "genre": "punk",
+      "subGenres": ["garage-punk", "lo-fi"],
+      "bio": "Young punk trio making waves in the underground scene. Raw, unpolished sound with attitude to spare - these San Diego natives are the future of punk rock.",
+      "image": "/images/artists/static-noise.jpg",
+      "socialMedia": {
+        "instagram": "https://instagram.com/staticnoiseband",
+        "bandcamp": "https://staticnoise.bandcamp.com"
+      },
+      "mediaLinks": {
+        "bandcamp": "https://staticnoise.bandcamp.com",
+        "soundcloud": "https://soundcloud.com/staticnoise"
+      },
+      "hometown": "San Diego, CA",
+      "formed": "2023",
+      "members": [
+        {
+          "name": "Spike Wilson",
+          "instrument": "Vocals, Guitar",
+          "joinDate": "2023",
+          "active": true
+        },
+        {
+          "name": "Crash Morgan",
+          "instrument": "Bass Guitar",
+          "joinDate": "2023",
+          "active": true
+        },
+        {
+          "name": "Beat Thompson",
+          "instrument": "Drums",
+          "joinDate": "2023",
+          "active": true
+        }
+      ],
+      "tags": ["underground", "young", "raw", "punk", "garage", "emerging"],
+      "createdAt": "2025-08-07",
+      "verified": false
+    },
+    {
+      "id": "dj-synthwave",
+      "name": "DJ Synthwave",
+      "genre": "electronic",
+      "subGenres": ["synthwave", "retrowave", "outrun"],
+      "bio": "Electronic music producer and DJ specializing in synthwave and retro-futuristic sounds. Known for taking audiences on nostalgic journeys through neon-lit sonic landscapes.",
+      "image": "/images/artists/dj-synthwave.jpg",
+      "website": "https://djsynthwave.example.com",
+      "socialMedia": {
+        "instagram": "https://instagram.com/djsynthwave",
+        "twitter": "https://twitter.com/djsynthwave",
+        "soundcloud": "https://soundcloud.com/djsynthwave",
+        "spotify": "https://open.spotify.com/artist/djsynthwave"
+      },
+      "mediaLinks": {
+        "spotify": "https://open.spotify.com/artist/djsynthwave",
+        "soundcloud": "https://soundcloud.com/djsynthwave",
+        "bandcamp": "https://djsynthwave.bandcamp.com"
+      },
+      "hometown": "San Francisco, CA",
+      "formed": "2018",
+      "tags": ["synthwave", "electronic", "retro", "producer", "80s-inspired"],
+      "createdAt": "2025-08-07",
+      "verified": true
+    },
+    {
+      "id": "sarah-melody",
+      "name": "Sarah Melody",
+      "genre": "singer-songwriter",
+      "subGenres": ["indie-folk", "acoustic"],
+      "bio": "Local singer-songwriter with heartfelt lyrics and beautiful acoustic arrangements. Sarah's intimate performances create deep connections with audiences through honest storytelling.",
+      "image": "/images/artists/sarah-melody.jpg",
+      "website": "https://sarahmelody.example.com",
+      "socialMedia": {
+        "instagram": "https://instagram.com/sarahmelodymusic",
+        "facebook": "https://facebook.com/sarahmelodymusic",
+        "spotify": "https://open.spotify.com/artist/sarahmelody"
+      },
+      "mediaLinks": {
+        "spotify": "https://open.spotify.com/artist/sarahmelody",
+        "bandcamp": "https://sarahmelody.bandcamp.com",
+        "youtube": "https://youtube.com/sarahmelodymusic"
+      },
+      "hometown": "Local Area, CA",
+      "formed": "2019",
+      "tags": ["acoustic", "singer-songwriter", "local", "heartfelt", "indie-folk"],
+      "createdAt": "2025-08-07",
+      "verified": false
+    },
+    {
+      "id": "jamie-strings",
+      "name": "Jamie Strings",
+      "genre": "folk",
+      "subGenres": ["americana", "country-folk"],
+      "bio": "Folk guitarist with a passion for storytelling through music. Jamie's fingerpicking style and narrative songwriting draw from traditional American folk while addressing contemporary themes.",
+      "image": "/images/artists/jamie-strings.jpg",
+      "socialMedia": {
+        "instagram": "https://instagram.com/jamiestrings",
+        "bandcamp": "https://jamiestrings.bandcamp.com"
+      },
+      "mediaLinks": {
+        "bandcamp": "https://jamiestrings.bandcamp.com",
+        "spotify": "https://open.spotify.com/artist/jamiestrings"
+      },
+      "hometown": "Local Area, CA",
+      "formed": "2020",
+      "tags": ["folk", "storytelling", "guitar", "acoustic", "americana"],
+      "createdAt": "2025-08-07",
+      "verified": false
+    },
+    {
+      "id": "mc-flow",
+      "name": "MC Flow",
+      "genre": "hip-hop",
+      "subGenres": ["conscious-rap", "community-hip-hop"],
+      "bio": "Local hip-hop artist and community organizer bringing positive vibes to the neighborhood. MC Flow uses music as a tool for social change and community building.",
+      "image": "/images/artists/mc-flow.jpg",
+      "website": "https://mcflow.example.com",
+      "socialMedia": {
+        "instagram": "https://instagram.com/mcflowmusic",
+        "twitter": "https://twitter.com/mcflowmusic",
+        "youtube": "https://youtube.com/mcflowmusic"
+      },
+      "mediaLinks": {
+        "spotify": "https://open.spotify.com/artist/mcflow",
+        "soundcloud": "https://soundcloud.com/mcflow",
+        "youtube": "https://youtube.com/mcflowmusic"
+      },
+      "hometown": "Community, CA",
+      "formed": "2017",
+      "tags": ["hip-hop", "community", "positive", "local", "conscious", "activist"],
+      "createdAt": "2025-08-07",
+      "verified": true
+    },
+    {
+      "id": "neon-dreams",
+      "name": "Neon Dreams",
+      "genre": "electronic",
+      "subGenres": ["house", "progressive-house"],
+      "bio": "Electronic duo creating progressive house music with emotional depth. Their sets blend melodic progressions with driving beats, perfect for both intimate venues and dance floors.",
+      "image": "/images/artists/neon-dreams.jpg",
+      "website": "https://neondreams.example.com",
+      "socialMedia": {
+        "instagram": "https://instagram.com/neondreamsmusic",
+        "soundcloud": "https://soundcloud.com/neondreams",
+        "spotify": "https://open.spotify.com/artist/neondreams"
+      },
+      "mediaLinks": {
+        "spotify": "https://open.spotify.com/artist/neondreams",
+        "soundcloud": "https://soundcloud.com/neondreams",
+        "bandcamp": "https://neondreams.bandcamp.com"
+      },
+      "hometown": "Los Angeles, CA",
+      "formed": "2021",
+      "members": [
+        {
+          "name": "Elena Bright",
+          "instrument": "Synthesizers, Production",
+          "joinDate": "2021",
+          "active": true
+        },
+        {
+          "name": "Marcus Volt",
+          "instrument": "DJ Controller, Mixing",
+          "joinDate": "2021",
+          "active": true
+        }
+      ],
+      "tags": ["electronic", "house", "progressive", "duo", "melodic"],
+      "createdAt": "2025-08-07",
+      "verified": false
+    }
+  ]
+}

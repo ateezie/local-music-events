@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npx prisma init:*)",
+      "Bash(npx prisma migrate dev:*)",
+      "Bash(npm run migrate:json:*)",
+      "Bash(npm run dev:*)",
+      "Bash(mkdir:*)",
+      "Bash(npx create-next-app@latest:*)",
+      "Bash(mv:*)",
+      "Bash(taskkill:*)",
+      "Bash(dir:*)",
+      "Bash(move:*)",
+      "Bash(robocopy:*)",
+      "Bash(xcopy:*)",
+      "Bash(powershell:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": []
+  }
+}

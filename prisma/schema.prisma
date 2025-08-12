@@ -1,0 +1,208 @@
+// Prisma schema for Local Music Events
+// Converted from recipes to events/venues/artists
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Admin user model for authentication
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  events   Event[]
+  venues   Venue[]
+  artists  Artist[]
+
+  @@map("users")
+}
+
+// Venue model
+model Venue {
+  id          String  @id
+  name        String
+  address     String
+  city        String
+  state       String
+  zipCode     String?
+  capacity    Int?
+  website     String?
+  phone       String?
+  email       String?
+  description String?
+  image       String?
+
+  // Social media
+  facebook    String?
+  instagram   String?
+  twitter     String?
+  
+  // Coordinates for mapping
+  latitude    Float?
+  longitude   Float?
+  
+  // Amenities and accessibility (stored as JSON arrays)
+  amenities     String? // JSON array of amenities
+  accessibility String? // JSON array of accessibility features
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  events   Event[]
+  authorId String?
+  author   User?   @relation(fields: [authorId], references: [id])
+
+  @@map("venues")
+}
+
+// Artist model
+model Artist {
+  id       String  @id
+  name     String
+  genre    String  // primary genre
+  bio      String?
+  image    String?
+  website  String?
+  hometown String?
+  formed   String? // year or date formed
+
+  // Social media
+  facebook   String?
+  instagram  String?
+  twitter    String?
+  tiktok     String?
+  youtube    String?
+  spotify    String?
+  bandcamp   String?
+  soundcloud String?
+  
+  // Band members (stored as JSON array)
+  members String? // JSON array of member names
+  
+  // Tags (stored as JSON array)  
+  tags String? // JSON array of tags
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  events   EventArtist[]
+  authorId String?
+  author   User?         @relation(fields: [authorId], references: [id])
+
+  @@map("artists")
+}
+
+// Event model
+model Event {
+  id          String   @id
+  title       String
+  description String
+  date        String   // ISO date string
+  time        String   // HH:MM format
+  endTime     String?  // HH:MM format
+  
+  // Event details
+  genre       String
+  category    String   // concert, festival, open-mic, etc.
+  promoter    String?
+  ticketUrl   String?
+  facebookEvent String?
+  instagramPost String?
+  flyer       String?
+  price       String?
+  ageRestriction String?
+  featured    Boolean  @default(false)
+  status      String   @default("upcoming") // upcoming, cancelled, postponed, sold-out, past
+  
+  // Tags (stored as JSON array)
+  tags        String?  // JSON array of tags
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  venueId     String
+  venue       Venue          @relation(fields: [venueId], references: [id])
+  artists     EventArtist[]
+  
+  // Created by admin user
+  authorId    String?
+  author      User?          @relation(fields: [authorId], references: [id])
+
+  @@map("events")
+}
+
+// Many-to-many relation between events and artists
+model EventArtist {
+  eventId  String
+  artistId String
+
+  // Relations
+  event  Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+
+  @@id([eventId, artistId])
+  @@map("event_artists")
+}
+
+// Event categories for organization
+model EventCategory {
+  id          String   @id
+  name        String
+  description String
+  emoji       String
+  count       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("event_categories")
+}
+
+// Music genres for organization
+model MusicGenre {
+  id          String   @id
+  name        String
+  description String
+  color       String   // hex color for UI
+  count       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("music_genres")
+}
+
+// Event reviews/ratings (optional future feature)
+model EventReview {
+  id        String   @id @default(cuid())
+  eventId   String
+  rating    Int      // 1-5 stars
+  comment   String?
+  author    String   // anonymous or name
+  createdAt DateTime @default(now())
+
+  @@map("event_reviews")
+}
+
+// Tags system for flexible categorization
+model Tag {
+  id        String      @id @default(cuid())
+  name      String      @unique
+  category  String      @default("general") // event, venue, artist, or general
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@map("tags")
+}

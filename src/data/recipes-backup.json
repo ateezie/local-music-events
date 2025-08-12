@@ -1,0 +1,61 @@
+{
+  "recipes": [],
+  "categories": [
+    {
+      "id": "appetizers",
+      "name": "Appetizers",
+      "description": "Start your meal with these delicious appetizers",
+      "emoji": "🥗",
+      "count": 0
+    },
+    {
+      "id": "main-course",
+      "name": "Main Course", 
+      "description": "Hearty and satisfying main dishes",
+      "emoji": "🍖",
+      "count": 0
+    },
+    {
+      "id": "pasta",
+      "name": "Pasta",
+      "description": "Italian pasta dishes and noodles",
+      "emoji": "🍝",
+      "count": 0
+    },
+    {
+      "id": "salads",
+      "name": "Salads",
+      "description": "Fresh and healthy salad options",
+      "emoji": "🥗",
+      "count": 0
+    },
+    {
+      "id": "soups",
+      "name": "Soups",
+      "description": "Warm and comforting soup recipes",
+      "emoji": "🍲",
+      "count": 0
+    },
+    {
+      "id": "desserts",
+      "name": "Desserts",
+      "description": "Sweet treats and baked goods",
+      "emoji": "🍰",
+      "count": 0
+    },
+    {
+      "id": "asian-fusion",
+      "name": "Asian Fusion",
+      "description": "Asian-inspired dishes and fusion cuisine",
+      "emoji": "🥢",
+      "count": 0
+    },
+    {
+      "id": "quick-meals",
+      "name": "Quick Meals",
+      "description": "Fast and easy recipes for busy days",
+      "emoji": "⚡",
+      "count": 0
+    }
+  ]
+}

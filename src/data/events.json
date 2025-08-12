@@ -1,0 +1,503 @@
+{
+  "events": [
+    {
+      "id": "indie-rocks-the-music-hall",
+      "title": "The Velvet Echoes live at The Music Hall",
+      "description": "Join us for an unforgettable night of indie rock with The Velvet Echoes, featuring their latest hits and fan favorites.",
+      "date": "2025-08-15",
+      "time": "20:00",
+      "endTime": "23:00",
+      "venue": {
+        "id": "the-music-hall",
+        "name": "The Music Hall",
+        "address": "123 Main Street",
+        "city": "Downtown",
+        "state": "CA",
+        "zipCode": "90210",
+        "capacity": 500
+      },
+      "artists": [
+        {
+          "id": "the-velvet-echoes",
+          "name": "The Velvet Echoes",
+          "genre": "indie-rock",
+          "bio": "Four-piece indie rock band known for their dreamy soundscapes and introspective lyrics.",
+          "hometown": "San Francisco, CA",
+          "tags": ["indie", "alternative", "dreamy"]
+        },
+        {
+          "id": "moonlight-drive",
+          "name": "Moonlight Drive",
+          "genre": "alternative",
+          "bio": "Supporting act with ethereal vocals and atmospheric instrumentation.",
+          "hometown": "Oakland, CA",
+          "tags": ["atmospheric", "ethereal", "support"]
+        }
+      ],
+      "genre": "indie-rock",
+      "category": "concert",
+      "promoter": "Downtown Music Collective",
+      "ticketUrl": "https://tickets.example.com/velvet-echoes",
+      "facebookEvent": "https://facebook.com/events/123456",
+      "flyer": "/images/flyers/velvet-echoes-aug-15.jpg",
+      "price": "$25-30",
+      "ageRestriction": "21+",
+      "featured": true,
+      "tags": ["indie", "rock", "local", "weekend"],
+      "createdAt": "2025-08-07",
+      "status": "upcoming"
+    },
+    {
+      "id": "jazz-night-blue-note-cafe",
+      "title": "Jazz Night with Marcus Johnson Trio",
+      "description": "Smooth jazz evening featuring the acclaimed Marcus Johnson Trio performing classic and contemporary pieces.",
+      "date": "2025-08-12",
+      "time": "19:30",
+      "endTime": "22:30",
+      "venue": {
+        "id": "blue-note-cafe",
+        "name": "Blue Note Café",
+        "address": "456 Jazz Avenue",
+        "city": "Uptown",
+        "state": "CA",
+        "capacity": 150
+      },
+      "artists": [
+        {
+          "id": "marcus-johnson-trio",
+          "name": "Marcus Johnson Trio",
+          "genre": "jazz",
+          "bio": "Veteran jazz pianist Marcus Johnson with bass and drums, known for their sophisticated interpretations.",
+          "hometown": "Los Angeles, CA",
+          "tags": ["jazz", "piano", "sophisticated"]
+        }
+      ],
+      "genre": "jazz",
+      "category": "concert",
+      "ticketUrl": "https://bluenote.example.com/tickets",
+      "price": "$35-45",
+      "ageRestriction": "18+",
+      "featured": false,
+      "tags": ["jazz", "intimate", "weeknight"],
+      "createdAt": "2025-08-07",
+      "status": "upcoming"
+    },
+    {
+      "id": "punk-rock-warehouse-show",
+      "title": "Punk Rock Warehouse Show: Chaos Theory + Support",
+      "description": "Raw punk energy in an intimate warehouse setting with Chaos Theory headlining.",
+      "date": "2025-08-18",
+      "time": "21:00",
+      "endTime": "01:00",
+      "venue": {
+        "id": "warehouse-collective",
+        "name": "The Warehouse Collective",
+        "address": "789 Industrial Blvd",
+        "city": "Arts District",
+        "state": "CA",
+        "capacity": 200
+      },
+      "artists": [
+        {
+          "id": "chaos-theory-band",
+          "name": "Chaos Theory",
+          "genre": "punk",
+          "bio": "High-energy punk rockers with politically charged lyrics and explosive live shows.",
+          "hometown": "Long Beach, CA",
+          "tags": ["punk", "political", "energetic"]
+        },
+        {
+          "id": "static-noise",
+          "name": "Static Noise",
+          "genre": "punk",
+          "bio": "Young punk trio making waves in the underground scene.",
+          "hometown": "San Diego, CA",
+          "tags": ["underground", "young", "raw"]
+        }
+      ],
+      "genre": "punk",
+      "category": "concert",
+      "promoter": "Underground Music Collective",
+      "price": "$15-20",
+      "ageRestriction": "All Ages",
+      "featured": true,
+      "tags": ["punk", "warehouse", "underground", "weekend"],
+      "createdAt": "2025-08-07",
+      "status": "upcoming"
+    },
+    {
+      "id": "electronic-night-pulse-club",
+      "title": "Electronic Night: DJ Synthwave + Guests",
+      "description": "Dance the night away with electronic beats from DJ Synthwave and special guest DJs.",
+      "date": "2025-08-16",
+      "time": "22:00",
+      "endTime": "03:00",
+      "venue": {
+        "id": "pulse-nightclub",
+        "name": "Pulse Nightclub",
+        "address": "321 Dance Street",
+        "city": "Club District",
+        "state": "CA",
+        "capacity": 800
+      },
+      "artists": [
+        {
+          "id": "dj-synthwave",
+          "name": "DJ Synthwave",
+          "genre": "electronic",
+          "bio": "Electronic music producer and DJ specializing in synthwave and retro-futuristic sounds.",
+          "hometown": "San Francisco, CA",
+          "tags": ["synthwave", "electronic", "retro"]
+        }
+      ],
+      "genre": "electronic",
+      "category": "dj-set",
+      "price": "$30-40",
+      "ageRestriction": "21+",
+      "featured": false,
+      "tags": ["electronic", "dance", "nightclub", "weekend"],
+      "createdAt": "2025-08-07",
+      "status": "upcoming"
+    },
+    {
+      "id": "acoustic-coffee-house",
+      "title": "Acoustic Night: Singer-Songwriter Showcase",
+      "description": "Intimate acoustic performances by local singer-songwriters in a cozy coffee house setting.",
+      "date": "2025-08-14",
+      "time": "19:00",
+      "endTime": "22:00",
+      "venue": {
+        "id": "grind-coffee-house",
+        "name": "The Grind Coffee House",
+        "address": "159 Cozy Lane",
+        "city": "Neighborhood",
+        "state": "CA",
+        "capacity": 60
+      },
+      "artists": [
+        {
+          "id": "sarah-melody",
+          "name": "Sarah Melody",
+          "genre": "singer-songwriter",
+          "bio": "Local singer-songwriter with heartfelt lyrics and beautiful acoustic arrangements.",
+          "hometown": "Local Area, CA",
+          "tags": ["acoustic", "singer-songwriter", "local"]
+        },
+        {
+          "id": "jamie-strings",
+          "name": "Jamie Strings",
+          "genre": "folk",
+          "bio": "Folk guitarist with a passion for storytelling through music.",
+          "hometown": "Local Area, CA",
+          "tags": ["folk", "storytelling", "guitar"]
+        }
+      ],
+      "genre": "acoustic",
+      "category": "acoustic",
+      "price": "$10-15",
+      "ageRestriction": "All Ages",
+      "featured": false,
+      "tags": ["acoustic", "intimate", "coffee", "local"],
+      "createdAt": "2025-08-07",
+      "status": "upcoming"
+    },
+    {
+      "id": "hip-hop-block-party",
+      "title": "Hip-Hop Block Party: MC Flow + Crew",
+      "description": "Outdoor hip-hop celebration featuring MC Flow and friends with beats, rhymes, and community vibes.",
+      "date": "2025-08-17",
+      "time": "15:00",
+      "endTime": "20:00",
+      "venue": {
+        "id": "community-park",
+        "name": "Community Park Amphitheater",
+        "address": "555 Park Avenue",
+        "city": "Community",
+        "state": "CA",
+        "capacity": 1000
+      },
+      "artists": [
+        {
+          "id": "mc-flow",
+          "name": "MC Flow",
+          "genre": "hip-hop",
+          "bio": "Local hip-hop artist and community organizer bringing positive vibes to the neighborhood.",
+          "hometown": "Community, CA",
+          "tags": ["hip-hop", "community", "positive"]
+        }
+      ],
+      "genre": "hip-hop",
+      "category": "festival",
+      "price": "Free",
+      "ageRestriction": "All Ages",
+      "featured": true,
+      "tags": ["hip-hop", "outdoor", "community", "free", "weekend"],
+      "createdAt": "2025-08-07",
+      "status": "upcoming"
+    }
+  ],
+  "venues": [
+    {
+      "id": "the-music-hall",
+      "name": "The Music Hall",
+      "address": "123 Main Street",
+      "city": "Downtown",
+      "state": "CA",
+      "zipCode": "90210",
+      "capacity": 500,
+      "website": "https://themusichall.example.com",
+      "description": "Premier downtown venue featuring live music from indie to rock.",
+      "amenities": ["bar", "food", "parking", "coat-check"],
+      "accessibility": ["wheelchair-accessible", "accessible-restrooms"]
+    },
+    {
+      "id": "blue-note-cafe",
+      "name": "Blue Note Café",
+      "address": "456 Jazz Avenue",
+      "city": "Uptown",
+      "state": "CA",
+      "capacity": 150,
+      "description": "Intimate jazz club with excellent acoustics and craft cocktails.",
+      "amenities": ["bar", "food", "vip-area"],
+      "accessibility": ["wheelchair-accessible"]
+    },
+    {
+      "id": "warehouse-collective",
+      "name": "The Warehouse Collective",
+      "address": "789 Industrial Blvd",
+      "city": "Arts District",
+      "state": "CA",
+      "capacity": 200,
+      "description": "DIY venue in converted warehouse space, perfect for underground shows.",
+      "amenities": ["bar", "outdoor-area"],
+      "accessibility": ["wheelchair-accessible"]
+    },
+    {
+      "id": "pulse-nightclub",
+      "name": "Pulse Nightclub",
+      "address": "321 Dance Street",
+      "city": "Club District",
+      "state": "CA",
+      "capacity": 800,
+      "description": "High-energy nightclub with state-of-the-art sound system and lighting.",
+      "amenities": ["bar", "dance-floor", "vip-area", "coat-check"],
+      "accessibility": ["wheelchair-accessible", "accessible-restrooms"]
+    },
+    {
+      "id": "grind-coffee-house",
+      "name": "The Grind Coffee House",
+      "address": "159 Cozy Lane",
+      "city": "Neighborhood",
+      "state": "CA",
+      "capacity": 60,
+      "description": "Cozy neighborhood coffee shop hosting intimate acoustic performances.",
+      "amenities": ["food", "wifi"],
+      "accessibility": ["wheelchair-accessible"]
+    },
+    {
+      "id": "community-park",
+      "name": "Community Park Amphitheater",
+      "address": "555 Park Avenue",
+      "city": "Community",
+      "state": "CA",
+      "capacity": 1000,
+      "description": "Outdoor amphitheater perfect for community events and festivals.",
+      "amenities": ["parking", "outdoor-area"],
+      "accessibility": ["wheelchair-accessible", "accessible-parking", "accessible-seating"]
+    }
+  ],
+  "artists": [
+    {
+      "id": "the-velvet-echoes",
+      "name": "The Velvet Echoes",
+      "genre": "indie-rock",
+      "bio": "Four-piece indie rock band known for their dreamy soundscapes and introspective lyrics.",
+      "hometown": "San Francisco, CA",
+      "formed": "2020",
+      "tags": ["indie", "alternative", "dreamy", "local"],
+      "createdAt": "2025-08-07"
+    },
+    {
+      "id": "moonlight-drive",
+      "name": "Moonlight Drive",
+      "genre": "alternative",
+      "bio": "Supporting act with ethereal vocals and atmospheric instrumentation.",
+      "hometown": "Oakland, CA",
+      "formed": "2022",
+      "tags": ["atmospheric", "ethereal", "alternative"],
+      "createdAt": "2025-08-07"
+    },
+    {
+      "id": "marcus-johnson-trio",
+      "name": "Marcus Johnson Trio",
+      "genre": "jazz",
+      "bio": "Veteran jazz pianist Marcus Johnson with bass and drums, known for their sophisticated interpretations.",
+      "hometown": "Los Angeles, CA",
+      "formed": "2015",
+      "tags": ["jazz", "piano", "sophisticated", "veteran"],
+      "createdAt": "2025-08-07"
+    },
+    {
+      "id": "chaos-theory-band",
+      "name": "Chaos Theory",
+      "genre": "punk",
+      "bio": "High-energy punk rockers with politically charged lyrics and explosive live shows.",
+      "hometown": "Long Beach, CA",
+      "formed": "2021",
+      "tags": ["punk", "political", "energetic", "underground"],
+      "createdAt": "2025-08-07"
+    },
+    {
+      "id": "static-noise",
+      "name": "Static Noise",
+      "genre": "punk",
+      "bio": "Young punk trio making waves in the underground scene.",
+      "hometown": "San Diego, CA",
+      "formed": "2023",
+      "tags": ["underground", "young", "raw", "punk"],
+      "createdAt": "2025-08-07"
+    },
+    {
+      "id": "dj-synthwave",
+      "name": "DJ Synthwave",
+      "genre": "electronic",
+      "bio": "Electronic music producer and DJ specializing in synthwave and retro-futuristic sounds.",
+      "hometown": "San Francisco, CA",
+      "formed": "2018",
+      "tags": ["synthwave", "electronic", "retro", "producer"],
+      "createdAt": "2025-08-07"
+    },
+    {
+      "id": "sarah-melody",
+      "name": "Sarah Melody",
+      "genre": "singer-songwriter",
+      "bio": "Local singer-songwriter with heartfelt lyrics and beautiful acoustic arrangements.",
+      "hometown": "Local Area, CA",
+      "formed": "2019",
+      "tags": ["acoustic", "singer-songwriter", "local", "heartfelt"],
+      "createdAt": "2025-08-07"
+    },
+    {
+      "id": "jamie-strings",
+      "name": "Jamie Strings",
+      "genre": "folk",
+      "bio": "Folk guitarist with a passion for storytelling through music.",
+      "hometown": "Local Area, CA",
+      "formed": "2020",
+      "tags": ["folk", "storytelling", "guitar", "acoustic"],
+      "createdAt": "2025-08-07"
+    },
+    {
+      "id": "mc-flow",
+      "name": "MC Flow",
+      "genre": "hip-hop",
+      "bio": "Local hip-hop artist and community organizer bringing positive vibes to the neighborhood.",
+      "hometown": "Community, CA",
+      "formed": "2017",
+      "tags": ["hip-hop", "community", "positive", "local"],
+      "createdAt": "2025-08-07"
+    }
+  ],
+  "categories": [
+    {
+      "id": "concert",
+      "name": "Concert",
+      "description": "Traditional live music performances",
+      "emoji": "🎸",
+      "count": 4
+    },
+    {
+      "id": "festival",
+      "name": "Festival",
+      "description": "Multi-artist outdoor events and celebrations",
+      "emoji": "🎪",
+      "count": 1
+    },
+    {
+      "id": "dj-set",
+      "name": "DJ Set",
+      "description": "Electronic music and DJ performances",
+      "emoji": "🎧",
+      "count": 1
+    },
+    {
+      "id": "acoustic",
+      "name": "Acoustic",
+      "description": "Intimate unplugged performances",
+      "emoji": "🎼",
+      "count": 1
+    },
+    {
+      "id": "open-mic",
+      "name": "Open Mic",
+      "description": "Community open microphone nights",
+      "emoji": "🎤",
+      "count": 0
+    },
+    {
+      "id": "album-release",
+      "name": "Album Release",
+      "description": "Special album launch events",
+      "emoji": "💿",
+      "count": 0
+    }
+  ],
+  "genres": [
+    {
+      "id": "indie-rock",
+      "name": "Indie Rock",
+      "description": "Independent rock music with alternative sensibilities",
+      "color": "#E83F6F",
+      "count": 1
+    },
+    {
+      "id": "jazz",
+      "name": "Jazz",
+      "description": "Sophisticated improvisational music",
+      "color": "#FFD23F",
+      "count": 1
+    },
+    {
+      "id": "punk",
+      "name": "Punk",
+      "description": "Raw, energetic rock music",
+      "color": "#FF6B35",
+      "count": 2
+    },
+    {
+      "id": "electronic",
+      "name": "Electronic",
+      "description": "Synthesized and digital music",
+      "color": "#00F5FF",
+      "count": 1
+    },
+    {
+      "id": "acoustic",
+      "name": "Acoustic",
+      "description": "Unplugged, natural instrument sounds",
+      "color": "#8FBC8F",
+      "count": 1
+    },
+    {
+      "id": "hip-hop",
+      "name": "Hip-Hop",
+      "description": "Rhythmic spoken word over beats",
+      "color": "#9370DB",
+      "count": 1
+    },
+    {
+      "id": "alternative",
+      "name": "Alternative",
+      "description": "Non-mainstream rock and pop music",
+      "color": "#FF1493",
+      "count": 1
+    },
+    {
+      "id": "folk",
+      "name": "Folk",
+      "description": "Traditional and contemporary folk music",
+      "color": "#CD853F",
+      "count": 1
+    }
+  ]
+}
