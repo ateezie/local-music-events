@@ -104,6 +104,7 @@ export async function GET(request: NextRequest) {
     const transformedEvents = events.map(event => ({
       ...event,
       tags: event.tags ? JSON.parse(event.tags) : [],
+      subGenres: event.subGenres ? JSON.parse(event.subGenres) : [],
       artists: event.artists.map(ea => ea.artist)
     }))
 

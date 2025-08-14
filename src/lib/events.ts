@@ -6,24 +6,138 @@ export function getAllEvents(): Event[] {
   return eventsData.events as Event[]
 }
 
-// Get all venues
+// Get all venues (extracted from events)
 export function getAllVenues(): Venue[] {
-  return eventsData.venues as Venue[]
+  const events = getAllEvents()
+  const venues: Venue[] = []
+  const seenVenues = new Set<string>()
+  
+  events.forEach(event => {
+    if (event.venue && !seenVenues.has(event.venue.name)) {
+      venues.push(event.venue)
+      seenVenues.add(event.venue.name)
+    }
+  })
+  
+  return venues
 }
 
-// Get all artists
+// Get all artists (extracted from events)
 export function getAllArtists(): Artist[] {
-  return eventsData.artists as Artist[]
+  const events = getAllEvents()
+  const artists: Artist[] = []
+  const seenArtists = new Set<string>()
+  
+  events.forEach(event => {
+    if (event.artists) {
+      event.artists.forEach(artist => {
+        if (artist.name && !seenArtists.has(artist.name)) {
+          artists.push(artist)
+          seenArtists.add(artist.name)
+        }
+      })
+    }
+    // Also include promoters as artists if they're not already included
+    if (event.promoter && !seenArtists.has(event.promoter)) {
+      artists.push({
+        name: event.promoter,
+        genre: event.genre
+      })
+      seenArtists.add(event.promoter)
+    }
+  })
+  
+  return artists
 }
 
-// Get all categories
+// Get all categories (extracted from events)
 export function getAllCategories(): EventCategoryInfo[] {
-  return eventsData.categories as EventCategoryInfo[]
+  const events = getAllEvents()
+  const categories = new Set<string>()
+  
+  events.forEach(event => {
+    if (event.category) {
+      categories.add(event.category)
+    }
+  })
+  
+  return Array.from(categories).map(category => ({
+    id: category,
+    name: category.charAt(0).toUpperCase() + category.slice(1),
+    icon: '🎵',
+    color: 'music-purple-600'
+  }))
 }
 
-// Get all genres
+// Get all genres (extracted from events)
 export function getAllGenres(): GenreInfo[] {
-  return eventsData.genres as GenreInfo[]
+  const events = getAllEvents()
+  const genreCounts = new Map<string, number>()
+  
+  events.forEach(event => {
+    if (event.genre) {
+      genreCounts.set(event.genre, (genreCounts.get(event.genre) || 0) + 1)
+    }
+  })
+  
+  return Array.from(genreCounts.entries()).map(([genre, count]) => ({
+    id: genre,
+    name: genre.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+    color: getGenreColor(genre),
+    icon: '🎵',
+    count: count,
+    description: getGenreDescription(genre)
+  }))
+}
+
+// Helper function to get genre colors
+function getGenreColor(genre: string): string {
+  const genreColors: { [key: string]: string } = {
+    rock: '#FF6B35',
+    jazz: '#FFD700',
+    'indie-rock': '#E83F6F',
+    electronic: '#00FFFF',
+    punk: '#FF1493',
+    'hip-hop': '#9370DB',
+    blues: '#4169E1',
+    folk: '#CD853F',
+    acoustic: '#8FBC8F',
+    house: '#FF4500',
+    'drum-and-bass': '#32CD32',
+    'multi-genre': '#8b4aff',
+    dubstep: '#FF4500',
+    trap: '#9370DB',
+    techno: '#00FFFF',
+    trance: '#4169E1',
+    'ukg': '#32CD32',
+    other: '#8b4aff'
+  }
+  return genreColors[genre] || '#8b4aff'
+}
+
+// Helper function to get genre descriptions
+function getGenreDescription(genre: string): string {
+  const genreDescriptions: { [key: string]: string } = {
+    rock: 'Classic and modern rock music',
+    jazz: 'Smooth jazz and improvisation',
+    'indie-rock': 'Independent rock artists',
+    electronic: 'Electronic dance music',
+    punk: 'Raw and energetic punk rock',
+    'hip-hop': 'Hip hop and rap music',
+    blues: 'Traditional and modern blues',
+    folk: 'Acoustic folk music',
+    acoustic: 'Unplugged acoustic sets',
+    house: 'Deep house and progressive',
+    'drum-and-bass': 'High-energy drum and bass',
+    'multi-genre': 'Multiple music genres',
+    dubstep: 'Heavy bass dubstep',
+    trap: 'Trap and hip-hop beats',
+    techno: 'Electronic techno music',
+    trance: 'Uplifting trance music',
+    'ukg': 'UK Garage sounds',
+    other: 'Various music styles'
+  }
+  return genreDescriptions[genre] || 'Live music events'
 }
 
 // Get event by ID
@@ -355,9 +469,30 @@ export function getPopularTags(limit: number = 10): Array<{ tag: string, count: 
 // Get event statistics
 export function getEventStats() {
   const events = getAllEvents()
-  const venues = getAllVenues()
-  const artists = getAllArtists()
   const upcomingEvents = getUpcomingEvents()
+  
+  // Extract unique venues from events
+  const uniqueVenues = new Set<string>()
+  events.forEach(event => {
+    if (event.venue?.name) {
+      uniqueVenues.add(event.venue.name)
+    }
+  })
+  
+  // Extract unique artists from events
+  const uniqueArtists = new Set<string>()
+  events.forEach(event => {
+    if (event.artists) {
+      event.artists.forEach(artist => {
+        if (artist.name) {
+          uniqueArtists.add(artist.name)
+        }
+      })
+    }
+    if (event.promoter) {
+      uniqueArtists.add(event.promoter)
+    }
+  })
   
   // Count events by genre
   const genreCounts = new Map<string, number>()
@@ -372,8 +507,8 @@ export function getEventStats() {
   
   return {
     totalEvents: events.length,
-    totalVenues: venues.length,
-    totalArtists: artists.length,
+    totalVenues: uniqueVenues.size,
+    totalArtists: uniqueArtists.size,
     upcomingEvents: upcomingEvents.length,
     thisWeekEvents: getWeekendEvents().length,
     popularGenres

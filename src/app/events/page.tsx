@@ -3,8 +3,14 @@
 import { useState, useEffect } from 'react'
 import Layout from '@/components/Layout'
 import EventCard from '@/components/EventCard'
-import { getAllEvents, getEventsByGenre, getAllGenres, getEventStats } from '@/lib/events'
-import { Event, GenreInfo } from '@/types'
+import { Event } from '@/types'
+
+interface GenreInfo {
+  id: string
+  name: string
+  count: number
+  color: string
+}
 
 export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([])
@@ -12,18 +18,97 @@ export default function EventsPage() {
   const [selectedGenre, setSelectedGenre] = useState('all')
   const [loading, setLoading] = useState(true)
   const [genres, setGenres] = useState<GenreInfo[]>([])
-  const [stats, setStats] = useState(getEventStats())
+  const [stats, setStats] = useState({ totalEvents: 0, upcomingEvents: 0, totalVenues: 0 })
 
   useEffect(() => {
     const loadEvents = async () => {
       try {
-        const allEvents = getAllEvents()
-        const genreData = getAllGenres()
+        let combinedEvents: Event[] = []
         
-        setEvents(allEvents)
-        setFilteredEvents(allEvents)
+        // Load JSON events
+        try {
+          const jsonResponse = await fetch('/api/events/json')
+          if (jsonResponse.ok) {
+            const jsonData = await jsonResponse.json()
+            const jsonEvents = (jsonData.events || []).map((event: any) => ({
+              ...event,
+              _source: 'json'
+            }))
+            combinedEvents.push(...jsonEvents)
+          }
+        } catch (error) {
+          console.error('Error loading JSON events:', error)
+        }
+        
+        // Load database events  
+        try {
+          const dbResponse = await fetch('/api/events?limit=100')
+          if (dbResponse.ok) {
+            const dbData = await dbResponse.json()
+            const dbEvents = (dbData.events || []).map((event: any) => ({
+              ...event,
+              _source: 'database'
+            }))
+            combinedEvents.push(...dbEvents)
+          }
+        } catch (error) {
+          console.error('Error loading database events:', error)
+        }
+        
+        // Sort by date
+        combinedEvents.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+        
+        // Generate genre data from events
+        const genreMap = new Map<string, number>()
+        const venueSet = new Set<string>()
+        
+        combinedEvents.forEach(event => {
+          // Count genres
+          if (event.genre) {
+            genreMap.set(event.genre, (genreMap.get(event.genre) || 0) + 1)
+          }
+          // Count venues
+          if (event.venue?.id) {
+            venueSet.add(event.venue.id)
+          }
+        })
+        
+        // Create genre info array
+        const genreColors: { [key: string]: string } = {
+          'rock': '#FF6B35',
+          'jazz': '#FFD700', 
+          'electronic': '#00FFFF',
+          'hip-hop': '#9370DB',
+          'indie-rock': '#E83F6F',
+          'punk': '#FF1493',
+          'blues': '#4169E1',
+          'folk': '#CD853F',
+          'acoustic': '#8FBC8F',
+          'house': '#FF8C00',
+          'drum-and-bass': '#32CD32',
+          'techno': '#FF69B4',
+          'trance': '#8A2BE2',
+          'dubstep': '#00CED1',
+          'ukg': '#FFB6C1',
+          'multi-genre': '#8b4aff',
+          'other': '#808080'
+        }
+        
+        const genreData: GenreInfo[] = Array.from(genreMap.entries()).map(([id, count]) => ({
+          id,
+          name: id.charAt(0).toUpperCase() + id.slice(1).replace('-', ' & '),
+          count,
+          color: genreColors[id] || '#808080'
+        })).sort((a, b) => b.count - a.count)
+        
+        setEvents(combinedEvents)
+        setFilteredEvents(combinedEvents)
         setGenres(genreData)
-        setStats(getEventStats())
+        setStats({
+          totalEvents: combinedEvents.length,
+          upcomingEvents: combinedEvents.filter(e => new Date(e.date) >= new Date()).length,
+          totalVenues: venueSet.size
+        })
       } catch (error) {
         console.error('Error loading events:', error)
       } finally {
@@ -39,7 +124,7 @@ export default function EventsPage() {
     if (genreId === 'all') {
       setFilteredEvents(events)
     } else {
-      const filtered = getEventsByGenre(genreId)
+      const filtered = events.filter(event => event.genre === genreId)
       setFilteredEvents(filtered)
     }
   }

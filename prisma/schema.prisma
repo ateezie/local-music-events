@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -109,6 +109,7 @@ model Artist {
 model Event {
   id          String   @id
   title       String
+  slug        String?  @unique // URL-friendly version of title, e.g., "wicked-warehouse-troyboi-2025"
   description String
   date        String   // ISO date string
   time        String   // HH:MM format
@@ -116,15 +117,19 @@ model Event {
   
   // Event details
   genre       String
+  subGenres   String?  // JSON array of additional genres when genre is "multi-genre"
   category    String   // concert, festival, open-mic, etc.
   promoter    String?
+  promoters   String?  // JSON array of promoters
   ticketUrl   String?
   facebookEvent String?
   instagramPost String?
   flyer       String?
+  bannerImage String? // Event banner image
   price       String?
   ageRestriction String?
   featured    Boolean  @default(false)
+  hero        Boolean? @default(false) // Show in hero section
   status      String   @default("upcoming") // upcoming, cancelled, postponed, sold-out, past
   
   // Tags (stored as JSON array)

@@ -16,8 +16,36 @@
       "Bash(xcopy:*)",
       "Bash(powershell:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(npm run build:*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:localhost)",
+      "Bash(rm:*)",
+      "Bash(chmod:*)",
+      "Bash(node:*)",
+      "Bash(npx prisma:*)",
+      "Bash(DATABASE_URL=\"postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\" npx prisma db push)",
+      "Bash(DATABASE_URL=\"postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\" npx prisma db push --accept-data-loss)",
+      "Bash(DATABASE_URL=\"postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\" node scripts/fix-single-event-slug.js)",
+      "Bash(sed:*)",
+      "Bash(DATABASE_URL=\"postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\" npx prisma studio --port 5555 --browser none)",
+      "Bash(pkill:*)",
+      "Bash(DATABASE_URL=\"postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\" npx prisma db execute --stdin)",
+      "Bash(DATABASE_URL=\"postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\" node scripts/remove-tba-artist.js)",
+      "Bash(DATABASE_URL=\"postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\" npx prisma db push --force-reset)",
+      "Bash(DATABASE_URL=\"postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\" npx prisma generate)",
+      "Bash(DATABASE_URL=\"postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\" node check-schema.js)",
+      "Bash(DATABASE_URL=\"postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\" node test-update.js)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_wait_for",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_console_messages",
+      "mcp__playwright__browser_evaluate",
+      "mcp__playwright__browser_type",
+      "Bash(cp:*)"
     ],
-    "deny": []
+    "deny": [],
+    "defaultMode": "acceptEdits"
   }
 }

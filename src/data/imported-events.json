@@ -1,0 +1,745 @@
+[
+  {
+    "id": "import_1755003047967_gl6fa14mu",
+    "status": "rejected",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-12T12:50:47.967Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "event_date": "Friday, October 31, 2025",
+      "event_time": "8pm",
+      "venue_name": "Mississippi Underground",
+      "promoter": "Downright Entertainment",
+      "genre": "multi-genre",
+      "description": "We’re taking over Halloween night with a massive warehouse takeover featuring the genre-defying beats of the one and only TROYBOI! What to expect: A multi-stage Halloween rave",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "extracted_at": "2025-08-12T12:50:46.385Z"
+    },
+    "parsed_event": {
+      "title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "date": "Friday, October 31, 2025",
+      "time": "8pm",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "Downright Entertainment",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse"
+    }
+  },
+  {
+    "id": "import_1755003255365_3psucg6q5",
+    "status": "rejected",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-12T12:54:15.365Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "event_date": "Friday, October 31, 2025",
+      "event_time": "8pm",
+      "venue_name": "Mississippi Underground",
+      "promoter": "Downright Entertainment",
+      "genre": "multi-genre",
+      "description": "We’re taking over Halloween night with a massive warehouse takeover featuring the genre-defying beats of the one and only TROYBOI! What to expect: A multi-stage Halloween rave",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "extracted_at": "2025-08-12T12:54:13.946Z"
+    },
+    "parsed_event": {
+      "title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "date": "Friday, October 31, 2025",
+      "time": "8pm",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "Downright Entertainment",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse"
+    }
+  },
+  {
+    "id": "import_1755003310029_cbhtx6kih",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-12T12:55:10.029Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "event_date": "Friday, October 31, 2025",
+      "event_time": "8pm",
+      "venue_name": "Mississippi Underground",
+      "promoter": "Downright Entertainment",
+      "genre": "multi-genre",
+      "description": "We’re taking over Halloween night with a massive warehouse takeover featuring the genre-defying beats of the one and only TROYBOI! What to expect: A multi-stage Halloween rave",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "extracted_at": "2025-08-12T12:55:09.153Z"
+    },
+    "parsed_event": {
+      "title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "date": "Friday, October 31, 2025",
+      "time": "8pm",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "Downright Entertainment",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse"
+    }
+  },
+  {
+    "id": "import_1755041281122_pe9duo5m3",
+    "status": "rejected",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-12T23:28:01.122Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "event_date": "Friday, October 31, 2025",
+      "event_time": "8pm",
+      "venue_name": "Mississippi Underground",
+      "promoter": "Downright Entertainment",
+      "genre": "multi-genre",
+      "description": "We're taking over Halloween night with a massive warehouse takeover featuring the genre-defying beats of the one and only TROYBOI! What to expect: A multi-stage Halloween rave The wildest costumes Immersive lighting & visuals Warehouse vibes Bass you can feel in your bones 4 themed stages of music Underground energy All treats. No tricks.",
+      "image_url": "https://files.catbox.moe/el9lpm.jpg",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "extracted_at": "2025-08-12T23:27:55.139Z"
+    },
+    "parsed_event": {
+      "title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "date": "Friday, October 31, 2025",
+      "time": "8pm",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "Downright Entertainment",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "image_url": "https://files.catbox.moe/el9lpm.jpg"
+    }
+  },
+  {
+    "id": "import_1755041491584_coy3yji3s",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-12T23:31:31.584Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "event_date": "Friday, October 31, 2025",
+      "event_time": "8pm",
+      "venue_name": "Mississippi Underground",
+      "promoter": "Downright Entertainment",
+      "genre": "multi-genre",
+      "description": "We’re taking over Halloween night with a massive warehouse takeover featuring the genre-defying beats of the one and only TROYBOI! What to expect: A multi-stage Halloween rave",
+      "image_url": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/515437870_1347677050694945_8177330950080533677_n.jpg?_nc_cat=108&_nc_oc=Adl_WhIwZV767DIIi33-k_-4JqlXtj3i0Ixw2k8clFKHgjLmuteihU7U00pua1HVFQ4qlOhrV764igbg89cxtd_1&_nc_zt=23&_nc_gid=lddTwQWAjozknjjzLMPFvA",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "extracted_at": "2025-08-12T23:31:30.184Z"
+    },
+    "parsed_event": {
+      "title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "date": "Friday, October 31, 2025",
+      "time": "8pm",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "Downright Entertainment",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "image_url": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/515437870_1347677050694945_8177330950080533677_n.jpg?_nc_cat=108&_nc_oc=Adl_WhIwZV767DIIi33-k_-4JqlXtj3i0Ixw2k8clFKHgjLmuteihU7U00pua1HVFQ4qlOhrV764igbg89cxtd_1&_nc_zt=23&_nc_gid=lddTwQWAjozknjjzLMPFvA"
+    }
+  },
+  {
+    "id": "import_1755041725347_0t7pbv0a9",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-12T23:35:25.347Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "event_date": "Friday, October 31, 2025",
+      "event_time": "8pm",
+      "venue_name": "Mississippi Underground",
+      "promoter": "Downright Entertainment",
+      "genre": "multi-genre",
+      "description": "We’re taking over Halloween night with a massive warehouse takeover featuring the genre-defying beats of the one and only TROYBOI! What to expect: A multi-stage Halloween rave",
+      "image_url": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/515437870_1347677050694945_8177330950080533677_n.jpg?_nc_cat=108&_nc_oc=Adl_WhIwZV767DIIi33-k_-4JqlXtj3i0Ixw2k8clFKHgjLmuteihU7U00pua1HVFQ4qlOhrV764igbg89cxtd_1&_nc_zt=23&_nc_gid=Sg_xwvePIAnmaDTefSrmzA",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "extracted_at": "2025-08-12T23:35:23.532Z"
+    },
+    "parsed_event": {
+      "title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "date": "Friday, October 31, 2025",
+      "time": "8pm",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "Downright Entertainment",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "image_url": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/515437870_1347677050694945_8177330950080533677_n.jpg?_nc_cat=108&_nc_oc=Adl_WhIwZV767DIIi33-k_-4JqlXtj3i0Ixw2k8clFKHgjLmuteihU7U00pua1HVFQ4qlOhrV764igbg89cxtd_1&_nc_zt=23&_nc_gid=Sg_xwvePIAnmaDTefSrmzA"
+    }
+  },
+  {
+    "id": "import_1755041827337_v326zqi9r",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-12T23:37:07.337Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "event_date": "Friday, October 31, 2025",
+      "event_time": "8pm",
+      "venue_name": "Mississippi Underground",
+      "promoter": "Downright Entertainment",
+      "genre": "multi-genre",
+      "description": "We’re taking over Halloween night with a massive warehouse takeover featuring the genre-defying beats of the one and only TROYBOI! What to expect: A multi-stage Halloween rave",
+      "image_url": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/515437870_1347677050694945_8177330950080533677_n.jpg?_nc_cat=108&_nc_oc=Adl_WhIwZV767DIIi33-k_-4JqlXtj3i0Ixw2k8clFKHgjLmuteihU7U00pua1HVFQ4qlOhrV764igbg89cxtd_1&_nc_zt=23&_nc_gid=XoqhtagIaQUTrzPTxdX-gg",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "extracted_at": "2025-08-12T23:36:57.300Z"
+    },
+    "parsed_event": {
+      "title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "date": "Friday, October 31, 2025",
+      "time": "8pm",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "Downright Entertainment",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "image_url": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/515437870_1347677050694945_8177330950080533677_n.jpg?_nc_cat=108&_nc_oc=Adl_WhIwZV767DIIi33-k_-4JqlXtj3i0Ixw2k8clFKHgjLmuteihU7U00pua1HVFQ4qlOhrV764igbg89cxtd_1&_nc_zt=23&_nc_gid=XoqhtagIaQUTrzPTxdX-gg"
+    }
+  },
+  {
+    "id": "import_1755061329458_kci7v0zhf",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-13T05:02:09.458Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "event_date": "Friday, October 31, 2025",
+      "event_time": "8pm",
+      "venue_name": "Mississippi Underground",
+      "promoter": "Downright Entertainment",
+      "genre": "multi-genre",
+      "description": "We’re taking over Halloween night with a massive warehouse takeover featuring the genre-defying beats of the one and only TROYBOI! What to expect: A multi-stage Halloween rave",
+      "image_url": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/515437870_1347677050694945_8177330950080533677_n.jpg?_nc_cat=108&_nc_oc=Adl_WhIwZV767DIIi33-k_-4JqlXtj3i0Ixw2k8clFKHgjLmuteihU7U00pua1HVFQ4qlOhrV764igbg89cxtd_1&_nc_zt=23&_nc_gid=mTNOCGr4lxcr6u3PkU31Wg",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "extracted_at": "2025-08-13T05:02:08.251Z"
+    },
+    "parsed_event": {
+      "title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "date": "Friday, October 31, 2025",
+      "time": "8pm",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "Downright Entertainment",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "image_url": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/515437870_1347677050694945_8177330950080533677_n.jpg?_nc_cat=108&_nc_oc=Adl_WhIwZV767DIIi33-k_-4JqlXtj3i0Ixw2k8clFKHgjLmuteihU7U00pua1HVFQ4qlOhrV764igbg89cxtd_1&_nc_zt=23&_nc_gid=mTNOCGr4lxcr6u3PkU31Wg"
+    }
+  },
+  {
+    "id": "import_1755062210050_ufqp5qyjw",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-13T05:16:50.050Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "event_date": "Friday, October 31, 2025",
+      "event_time": "8pm",
+      "venue_name": "Mississippi Underground",
+      "promoter": "Downright Entertainment",
+      "genre": "multi-genre",
+      "description": "We’re taking over Halloween night with a massive warehouse takeover featuring the genre-defying beats of the one and only TROYBOI! What to expect: A multi-stage Halloween rave",
+      "image_url": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/515437870_1347677050694945_8177330950080533677_n.jpg?_nc_cat=108&_nc_oc=Adl_WhIwZV767DIIi33-k_-4JqlXtj3i0Ixw2k8clFKHgjLmuteihU7U00pua1HVFQ4qlOhrV764igbg89cxtd_1&_nc_zt=23&_nc_gid=WgQmD1v10SwNZPXeeZH9Qg",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "extracted_at": "2025-08-13T05:16:48.856Z"
+    },
+    "parsed_event": {
+      "title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "date": "Friday, October 31, 2025",
+      "time": "8pm",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "Downright Entertainment",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "image_url": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/515437870_1347677050694945_8177330950080533677_n.jpg?_nc_cat=108&_nc_oc=Adl_WhIwZV767DIIi33-k_-4JqlXtj3i0Ixw2k8clFKHgjLmuteihU7U00pua1HVFQ4qlOhrV764igbg89cxtd_1&_nc_zt=23&_nc_gid=WgQmD1v10SwNZPXeeZH9Qg"
+    }
+  },
+  {
+    "id": "import_1755062389884_96xnn639g",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-13T05:19:49.884Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "event_date": "Friday, October 31, 2025",
+      "event_time": "8pm",
+      "venue_name": "Mississippi Underground",
+      "promoter": "Downright Entertainment",
+      "genre": "multi-genre",
+      "description": "We’re taking over Halloween night with a massive warehouse takeover featuring the genre-defying beats of the one and only TROYBOI! What to expect: A multi-stage Halloween rave",
+      "image_url": "",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "extracted_at": "2025-08-13T05:19:47.304Z"
+    },
+    "parsed_event": {
+      "title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "date": "Friday, October 31, 2025",
+      "time": "8pm",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "Downright Entertainment",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "image_url": ""
+    }
+  },
+  {
+    "id": "import_1755062893699_10s7igvtx",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-13T05:28:13.699Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "event_date": "Friday, October 31, 2025",
+      "event_time": "8pm",
+      "venue_name": "Mississippi Underground",
+      "promoter": "Downright Entertainment",
+      "genre": "multi-genre",
+      "description": "We’re taking over Halloween night with a massive warehouse takeover featuring the genre-defying beats of the one and only TROYBOI! What to expect: A multi-stage Halloween rave",
+      "image_url": "",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "facebook_url": "https://www.facebook.com/events/1075055788085279",
+      "extracted_at": "2025-08-13T05:28:12.648Z"
+    },
+    "parsed_event": {
+      "title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "date": "Friday, October 31, 2025",
+      "time": "8pm",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "Downright Entertainment",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "image_url": ""
+    }
+  },
+  {
+    "id": "import_1755063317477_xagn3m7uu",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-13T05:35:17.477Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "TEST: Image Flow Verification Event",
+      "event_date": "2025-08-15",
+      "event_time": "8:00 PM",
+      "venue_name": "Test Venue",
+      "promoter": "Test Promoter",
+      "genre": "electronic",
+      "description": "This is a test event to verify the image flow works correctly.",
+      "image_url": "https://telegra.ph/file/d5fb5c5f5f5f5f5f5f5f5.jpg",
+      "ticket_url": "https://example.com/tickets",
+      "facebook_url": "https://facebook.com/events/test123",
+      "extracted_at": "2025-08-13T05:35:17.323Z"
+    },
+    "parsed_event": {
+      "title": "TEST: Image Flow Verification Event",
+      "date": "2025-08-15",
+      "time": "8:00 PM",
+      "venue": "Test Venue",
+      "artists": [],
+      "genre": "electronic",
+      "price": "",
+      "promoter": "Test Promoter",
+      "ticket_url": "https://example.com/tickets",
+      "image_url": "https://telegra.ph/file/d5fb5c5f5f5f5f5f5f5f5.jpg"
+    }
+  },
+  {
+    "id": "import_1755063695717_bbb7q7409",
+    "status": "approved",
+    "source": "mailparser",
+    "imported_at": "2025-08-13T05:41:35.718Z",
+    "raw_data": {
+      "event_title": "TEST EVENT - Connection Working",
+      "event_date": "2025-08-15",
+      "event_time": "8:00 PM",
+      "venue_name": "Test Venue",
+      "promoter": "Test Promoter",
+      "genre": "electronic",
+      "description": "Test event to verify connection works",
+      "image_url": "",
+      "ticket_url": "https://www.facebook.com/events/1075055788085279",
+      "facebook_url": "https://www.facebook.com/events/1075055788085279",
+      "extracted_at": "2025-08-13T05:41:32.475Z"
+    },
+    "parsed_event": {
+      "title": "TEST EVENT - Connection Working",
+      "date": "2025-08-15",
+      "time": "8:00 PM",
+      "venue": "Test Venue",
+      "artists": [],
+      "genre": "other",
+      "price": "",
+      "promoter": "Test Promoter",
+      "ticket_url": "https://www.facebook.com/events/1075055788085279",
+      "image_url": ""
+    }
+  },
+  {
+    "id": "import_1755064104490_jss5x576g",
+    "status": "rejected",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-13T05:48:24.490Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "event_date": "Friday, October 31, 2025",
+      "event_time": "8pm",
+      "venue_name": "Mississippi Underground",
+      "promoter": "Downright Entertainment",
+      "genre": "multi-genre",
+      "description": "We’re taking over Halloween night with a massive warehouse takeover featuring the genre-defying beats of the one and only TROYBOI! What to expect: A multi-stage Halloween rave",
+      "image_url": "",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "facebook_url": "https://www.facebook.com/events/1075055788085279",
+      "extracted_at": "2025-08-13T05:48:22.976Z"
+    },
+    "parsed_event": {
+      "title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "date": "Friday, October 31, 2025",
+      "time": "8pm",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "Downright Entertainment",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "image_url": ""
+    }
+  },
+  {
+    "id": "import_1755064864903_561iriqw4",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-13T06:01:04.903Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Events",
+      "event_date": "Friday, October 31, 2025 at 8 PM",
+      "event_time": "Tue, Sep 23 at 6:30 PM",
+      "venue_name": "TroyBoi236 past events   · Page · Musician/bandBookings:Jay Moss…Message",
+      "promoter": "",
+      "genre": "multi-genre",
+      "description": "",
+      "image_url": "http://localhost:3002/images/uploads/facebook-event-e1ca6a4f-3e20-4fcd-ac6e-0b2acfb2197d.jpg",
+      "ticket_url": "https://l.facebook.com/l.php",
+      "facebook_url": "https://www.facebook.com/events/1075055788085279",
+      "extracted_at": "2025-08-13T06:00:54.496Z"
+    },
+    "parsed_event": {
+      "title": "Events",
+      "date": "Friday, October 31, 2025 at 8 PM",
+      "time": "Tue, Sep 23 at 6:30 PM",
+      "venue": "TroyBoi236 past events   · Page · Musician/bandBookings:Jay Moss…Message",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "ticket_url": "https://l.facebook.com/l.php",
+      "image_url": "http://localhost:3002/images/uploads/facebook-event-e1ca6a4f-3e20-4fcd-ac6e-0b2acfb2197d.jpg"
+    }
+  },
+  {
+    "id": "import_1755065045252_98ttfwgqa",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-13T06:04:05.252Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Events",
+      "event_date": "Friday, October 31, 2025 at 8 PM",
+      "event_time": "Tue, Sep 23 at 6:30 PM",
+      "venue_name": "TroyBoi236 past events   · Page · Musician/bandBookings:Jay Moss…Message",
+      "promoter": "",
+      "genre": "multi-genre",
+      "description": "",
+      "image_url": "http://localhost:3002/images/uploads/facebook-event-adcf54b2-5a65-4d98-8632-7012ef00ed2f.jpg",
+      "ticket_url": "https://l.facebook.com/l.php",
+      "facebook_url": "https://www.facebook.com/events/1075055788085279",
+      "extracted_at": "2025-08-13T06:03:58.765Z"
+    },
+    "parsed_event": {
+      "title": "Events",
+      "date": "Friday, October 31, 2025 at 8 PM",
+      "time": "Tue, Sep 23 at 6:30 PM",
+      "venue": "TroyBoi236 past events   · Page · Musician/bandBookings:Jay Moss…Message",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "ticket_url": "https://l.facebook.com/l.php",
+      "image_url": "http://localhost:3002/images/uploads/facebook-event-adcf54b2-5a65-4d98-8632-7012ef00ed2f.jpg"
+    }
+  },
+  {
+    "id": "import_1755081887341_pf56lvyf5",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-13T10:44:47.341Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "event_date": "Friday, October 31, 2025",
+      "event_time": "8 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Mississippi Underground",
+        "TroyBoi",
+        "Downright Entertainment"
+      ],
+      "genre": "multi-genre",
+      "description": "We're taking over Halloween night with a massive warehouse takeover featuring the genre-defying beats of the one and only TROYBOI! What to expect: A multi-stage Halloween rave The wildest costumes Immersive lighting & visuals Warehouse vibes Bass you can feel in your bones 4 themed stages of music Underground energy All treats. No tricks.",
+      "image_url": "https://files.catbox.moe/el9lpm.jpg",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "facebook_url": "https://www.facebook.com/events/1075055788085279",
+      "extracted_at": "2025-08-13T10:44:39.714Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/515437870_1347677050694945_8177330950080533677_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=75d36f&_nc_ohc=l80-2yIuVwUQ7kNvwEP5ubV&_nc_oc=Adl_WhIwZV767DIIi33-k_-4JqlXtj3i0Ixw2k8clFKHgjLmuteihU7U00pua1HVFQ4qlOhrV764igbg89cxtd_1&_nc_zt=23&_nc_ht=scontent-ord5-1.xx&_nc_gid=GA3qGH9_GSpOlh6SlsAaZQ&oh=00_AfVPMwPWpgWQXPxyI_39GwJYDzNe2uxJ9NxrCMSFLvBcUw&oe=68A24237"
+    },
+    "parsed_event": {
+      "title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "date": "Friday, October 31, 2025",
+      "time": "8 PM",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Mississippi Underground",
+        "TroyBoi",
+        "Downright Entertainment"
+      ],
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "image_url": "https://files.catbox.moe/el9lpm.jpg"
+    }
+  },
+  {
+    "id": "import_1755082620778_nusaqyh82",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-13T10:57:00.778Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "event_date": "Friday, October 31, 2025",
+      "event_time": "8 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Mississippi Underground",
+        "TroyBoi",
+        "Downright Entertainment"
+      ],
+      "genre": "multi-genre",
+      "description": "We’re taking over Halloween night with a massive warehouse takeover featuring the genre-defying beats of the one and only TROYBOI! What to expect: A multi-stage Halloween rave The wildest costumes Immersive lighting & visuals Warehouse vibes Bass you can feel in your bones 4 themed stages of music Underground energy All treats. No tricks.",
+      "image_url": "https://files.catbox.moe/el9lpm.jpg",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "facebook_url": "https://www.facebook.com/events/1075055788085279",
+      "extracted_at": "2025-08-13T10:56:56.066Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/515437870_1347677050694945_8177330950080533677_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=75d36f&_nc_ohc=l80-2yIuVwUQ7kNvwEP5ubV&_nc_oc=Adl_WhIwZV767DIIi33-k_-4JqlXtj3i0Ixw2k8clFKHgjLmuteihU7U00pua1HVFQ4qlOhrV764igbg89cxtd_1&_nc_zt=23&_nc_ht=scontent-ord5-1.xx&_nc_gid=244VaaR53f1mY38jtIfZTw&oh=00_AfUlPnhpoTT0Z0PHfY_U1RosNNdBTv-YoGQSLgm-gBQY0A&oe=68A24237"
+    },
+    "parsed_event": {
+      "title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "date": "Friday, October 31, 2025",
+      "time": "8 PM",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Mississippi Underground",
+        "TroyBoi",
+        "Downright Entertainment"
+      ],
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "image_url": "https://files.catbox.moe/el9lpm.jpg"
+    }
+  },
+  {
+    "id": "import_1755082752032_p17t5oqd9",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-13T10:59:12.032Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "event_date": "Friday, October 31, 2025",
+      "event_time": "8 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Mississippi Underground",
+        "TroyBoi",
+        "Downright Entertainment"
+      ],
+      "genre": "multi-genre",
+      "description": "We’re taking over Halloween night with a massive warehouse takeover featuring the genre-defying beats of the one and only TROYBOI! What to expect: A multi-stage Halloween rave The wildest costumes Immersive lighting & visuals Warehouse vibes Bass you can feel in your bones 4 themed stages of music Underground energy All treats. No tricks.",
+      "image_url": "https://files.catbox.moe/el9lpm.jpg",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "facebook_url": "https://www.facebook.com/events/1075055788085279",
+      "extracted_at": "2025-08-13T10:59:08.186Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/515437870_1347677050694945_8177330950080533677_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=75d36f&_nc_ohc=l80-2yIuVwUQ7kNvwEP5ubV&_nc_oc=Adl_WhIwZV767DIIi33-k_-4JqlXtj3i0Ixw2k8clFKHgjLmuteihU7U00pua1HVFQ4qlOhrV764igbg89cxtd_1&_nc_zt=23&_nc_ht=scontent-ord5-1.xx&_nc_gid=6nB1v2j8rbqERU7mfC7FDA&oh=00_AfVC3fE3QiB3J9e6wuUV9abQg4oDwuvVvX7INmXxuGTatQ&oe=68A24237"
+    },
+    "parsed_event": {
+      "title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "date": "Friday, October 31, 2025",
+      "time": "8 PM",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Mississippi Underground",
+        "TroyBoi",
+        "Downright Entertainment"
+      ],
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "image_url": "https://files.catbox.moe/el9lpm.jpg"
+    }
+  },
+  {
+    "id": "import_1755121471697_k3vv8hf8l",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-13T21:44:31.697Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Thought Process B2B Chris Karns (of Pretty Lights live band), DJ Brownie (of The Disco Biscuits)",
+      "event_date": "",
+      "event_time": "EventsHomeYour EventsNotificationsCreate new eventYour upcoming events See allAug 15 at 4 PM – Aug 17 at 6 PMTaste of St. Louis 2025  Jessie and 38 friendsFriday at 8 PMDaemon EUPHONIC Album Release Party   Dan and 2 friendsFriday at 8 PMSTS9 at Atomic Pavilion Block Party  Cory and 84 friendsRecommended events See allTomorrow at 4 PM – 8 PMThursdays at Rockwell Beer Garden Farmers' Market  Andy and JillTomorrow at 7 PMYheti X lespecial: LIMINOID  Shelby and 30 friendsSaturday at 9 PMChef Chel | Free W/ RSVP  Shanda and 10 friendsCategoriesClassicsComedyCraftsDanceDrinksFitness & WorkoutsFoodsGamesGardeningHealth & MedicalHealthy Living & Self-CareHome & GardenMusic & AudioPartiesProfessional NetworkingReligionsShoppingSocial IssuesSportsTheaterTV & MoviesVisual Arts",
+      "venue_name": "Mississippi Underground",
+      "promoters": [],
+      "genre": "multi-genre",
+      "description": "",
+      "image_url": "https://files.catbox.moe/4n46bb.jpg",
+      "ticket_url": "https://theticketing.co/e/thoughtkarns",
+      "facebook_url": "https://www.facebook.com/events/1968087847282642",
+      "extracted_at": "2025-08-13T21:44:30.051Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/518094870_1336623151800335_749489994977750345_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=75d36f&_nc_ohc=bYieV__sVcgQ7kNvwG9oUov&_nc_oc=AdlT_ty4NY20fwMswg3JizgR6YuoB7Zu_785YXZv7GbcDVdQ4XCY0QgR1Ip_mgWzPmfP9F_Xr--K_KYxlua0DeOW&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=rDvef1CXfJCjShfZICgs1A&oh=00_AfWFCK1H6PcbSIffNOBNmH7jLsDDlImJE9xgKHT5wd-krQ&oe=68A2B68F"
+    },
+    "parsed_event": {
+      "title": "Thought Process B2B Chris Karns (of Pretty Lights live band), DJ Brownie (of The Disco Biscuits)",
+      "date": "",
+      "time": "EventsHomeYour EventsNotificationsCreate new eventYour upcoming events See allAug 15 at 4 PM – Aug 17 at 6 PMTaste of St. Louis 2025  Jessie and 38 friendsFriday at 8 PMDaemon EUPHONIC Album Release Party   Dan and 2 friendsFriday at 8 PMSTS9 at Atomic Pavilion Block Party  Cory and 84 friendsRecommended events See allTomorrow at 4 PM – 8 PMThursdays at Rockwell Beer Garden Farmers' Market  Andy and JillTomorrow at 7 PMYheti X lespecial: LIMINOID  Shelby and 30 friendsSaturday at 9 PMChef Chel | Free W/ RSVP  Shanda and 10 friendsCategoriesClassicsComedyCraftsDanceDrinksFitness & WorkoutsFoodsGamesGardeningHealth & MedicalHealthy Living & Self-CareHome & GardenMusic & AudioPartiesProfessional NetworkingReligionsShoppingSocial IssuesSportsTheaterTV & MoviesVisual Arts",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [],
+      "ticket_url": "https://theticketing.co/e/thoughtkarns",
+      "image_url": "https://files.catbox.moe/4n46bb.jpg"
+    }
+  },
+  {
+    "id": "import_1755125261365_41dwa1mzn",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-13T22:47:41.365Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "event_date": "Friday, October 31, 2025",
+      "event_time": "8 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Mississippi Underground",
+        "TroyBoi",
+        "Downright Entertainment"
+      ],
+      "genre": "multi-genre",
+      "description": "We’re taking over Halloween night with a massive warehouse takeover featuring the genre-defying beats of the one and only TROYBOI! What to expect: A multi-stage Halloween rave The wildest costumes Immersive lighting & visuals Warehouse vibes Bass you can feel in your bones 4 themed stages of music Underground energy All treats. No tricks.",
+      "image_url": "https://files.catbox.moe/el9lpm.jpg",
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "facebook_url": "https://www.facebook.com/events/1075055788085279",
+      "extracted_at": "2025-08-13T22:47:39.078Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/515437870_1347677050694945_8177330950080533677_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=75d36f&_nc_ohc=l80-2yIuVwUQ7kNvwEP5ubV&_nc_oc=Adl_WhIwZV767DIIi33-k_-4JqlXtj3i0Ixw2k8clFKHgjLmuteihU7U00pua1HVFQ4qlOhrV764igbg89cxtd_1&_nc_zt=23&_nc_ht=scontent-ord5-1.xx&_nc_gid=Is9dd70LavrXvhAcar8q2g&oh=00_AfWeBMO3azZqyTQ1E-pbOA89q_cv7FLHA5O6NNL2ZrhEJg&oe=68A2EAF7"
+    },
+    "parsed_event": {
+      "title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "date": "Friday, October 31, 2025",
+      "time": "8 PM",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Mississippi Underground",
+        "TroyBoi",
+        "Downright Entertainment"
+      ],
+      "ticket_url": "https://theticketing.co/e/wickedwarehouse",
+      "image_url": "https://files.catbox.moe/el9lpm.jpg"
+    }
+  },
+  {
+    "id": "import_1755126413717_aszwogl8y",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-13T23:06:53.717Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Thought Process B2B Chris Karns (of Pretty Lights live band), DJ Brownie (of The Disco Biscuits)",
+      "event_date": "",
+      "event_time": "EventsHomeYour EventsNotificationsCreate new eventYour upcoming events See allAug 15 at 4 PM – Aug 17 at 6 PMTaste of St. Louis 2025  Jessie and 38 friendsFriday at 8 PMDaemon EUPHONIC Album Release Party   Dan and 2 friendsFriday at 8 PMSTS9 at Atomic Pavilion Block Party  Cory and 84 friendsRecommended events See allToday at 7 PM – 9 PMDrag Bingo!  Jessie and 4 friendsTomorrow at 7 PMYheti X lespecial: LIMINOID  Shelby and 32 friendsToday at 5 PM – 11 PMX Marks The Spot - The Vandy Goes Exotic  AnandaCategoriesClassicsComedyCraftsDanceDrinksFitness & WorkoutsFoodsGamesGardeningHealth & MedicalHealthy Living & Self-CareHome & GardenMusic & AudioPartiesProfessional NetworkingReligionsShoppingSocial IssuesSportsTheaterTV & MoviesVisual Arts",
+      "venue_name": "Mississippi Underground",
+      "promoters": [],
+      "genre": "multi-genre",
+      "description": "",
+      "image_url": "https://files.catbox.moe/4n46bb.jpg",
+      "ticket_url": "https://theticketing.co/e/thoughtkarns",
+      "facebook_url": "https://www.facebook.com/events/1968087847282642/",
+      "extracted_at": "2025-08-13T23:06:51.955Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/518094870_1336623151800335_749489994977750345_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=75d36f&_nc_ohc=bYieV__sVcgQ7kNvwG9oUov&_nc_oc=AdlT_ty4NY20fwMswg3JizgR6YuoB7Zu_785YXZv7GbcDVdQ4XCY0QgR1Ip_mgWzPmfP9F_Xr--K_KYxlua0DeOW&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=WYdLZQE1oEKkC93b68en5g&oh=00_AfWkJXJqb9mMr7EE0wY4NNMJcA9qLVwyP-PGNs6PQC7CyQ&oe=68A2EECF"
+    },
+    "parsed_event": {
+      "title": "Thought Process B2B Chris Karns (of Pretty Lights live band), DJ Brownie (of The Disco Biscuits)",
+      "date": "",
+      "time": "EventsHomeYour EventsNotificationsCreate new eventYour upcoming events See allAug 15 at 4 PM – Aug 17 at 6 PMTaste of St. Louis 2025  Jessie and 38 friendsFriday at 8 PMDaemon EUPHONIC Album Release Party   Dan and 2 friendsFriday at 8 PMSTS9 at Atomic Pavilion Block Party  Cory and 84 friendsRecommended events See allToday at 7 PM – 9 PMDrag Bingo!  Jessie and 4 friendsTomorrow at 7 PMYheti X lespecial: LIMINOID  Shelby and 32 friendsToday at 5 PM – 11 PMX Marks The Spot - The Vandy Goes Exotic  AnandaCategoriesClassicsComedyCraftsDanceDrinksFitness & WorkoutsFoodsGamesGardeningHealth & MedicalHealthy Living & Self-CareHome & GardenMusic & AudioPartiesProfessional NetworkingReligionsShoppingSocial IssuesSportsTheaterTV & MoviesVisual Arts",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [],
+      "ticket_url": "https://theticketing.co/e/thoughtkarns",
+      "image_url": "https://files.catbox.moe/4n46bb.jpg"
+    }
+  }
+]

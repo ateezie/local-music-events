@@ -2,10 +2,22 @@
 
 import { useState, useEffect } from 'react'
 import Layout from '@/components/Layout'
-import { getAllVenues, getEventsByVenue, getEventStats } from '@/lib/events'
-import { Venue, Event } from '@/types'
+import { Event } from '@/types'
 import Link from 'next/link'
 import Image from 'next/image'
+
+interface Venue {
+  id: string
+  name: string
+  address: string
+  city: string
+  state: string
+  zipCode?: string
+  capacity?: number
+  description?: string
+  website?: string
+  image?: string
+}
 
 interface VenueWithEvents extends Venue {
   upcomingEvents: Event[]
@@ -14,19 +26,91 @@ interface VenueWithEvents extends Venue {
 export default function VenuesPage() {
   const [venues, setVenues] = useState<VenueWithEvents[]>([])
   const [loading, setLoading] = useState(true)
-  const [stats, setStats] = useState(getEventStats())
+  const [stats, setStats] = useState({ totalVenues: 0, totalEvents: 0, upcomingEvents: 0 })
 
   useEffect(() => {
     const loadVenues = async () => {
       try {
-        const allVenues = getAllVenues()
-        const venuesWithEvents = allVenues.map(venue => ({
+        let combinedEvents: Event[] = []
+        
+        // Load JSON events
+        try {
+          const jsonResponse = await fetch('/api/events/json')
+          if (jsonResponse.ok) {
+            const jsonData = await jsonResponse.json()
+            const jsonEvents = (jsonData.events || []).map((event: any) => ({
+              ...event,
+              _source: 'json'
+            }))
+            combinedEvents.push(...jsonEvents)
+          }
+        } catch (error) {
+          console.error('Error loading JSON events:', error)
+        }
+        
+        // Load database events  
+        try {
+          const dbResponse = await fetch('/api/events?limit=100')
+          if (dbResponse.ok) {
+            const dbData = await dbResponse.json()
+            const dbEvents = (dbData.events || []).map((event: any) => ({
+              ...event,
+              _source: 'database'
+            }))
+            combinedEvents.push(...dbEvents)
+          }
+        } catch (error) {
+          console.error('Error loading database events:', error)
+        }
+
+        // Try to load venues from API
+        let apiVenues: Venue[] = []
+        try {
+          const venuesResponse = await fetch('/api/venues')
+          if (venuesResponse.ok) {
+            const venuesData = await venuesResponse.json()
+            apiVenues = venuesData.venues || []
+          }
+        } catch (error) {
+          console.error('Error loading venues from API:', error)
+        }
+        
+        // Extract unique venues from events if no API venues
+        const venueMap = new Map<string, Venue>()
+        
+        // Add API venues first
+        apiVenues.forEach(venue => {
+          venueMap.set(venue.id, venue)
+        })
+        
+        // Add venues from events
+        combinedEvents.forEach(event => {
+          if (event.venue && !venueMap.has(event.venue.id)) {
+            venueMap.set(event.venue.id, {
+              id: event.venue.id,
+              name: event.venue.name,
+              address: event.venue.address || '',
+              city: event.venue.city || '',
+              state: event.venue.state || '',
+              capacity: event.venue.capacity
+            })
+          }
+        })
+        
+        // Create venues with events
+        const venuesWithEvents: VenueWithEvents[] = Array.from(venueMap.values()).map(venue => ({
           ...venue,
-          upcomingEvents: getEventsByVenue(venue.id)
+          upcomingEvents: combinedEvents.filter(event => 
+            event.venue?.id === venue.id && new Date(event.date) >= new Date()
+          ).slice(0, 5) // Limit to 5 upcoming events per venue
         }))
         
         setVenues(venuesWithEvents)
-        setStats(getEventStats())
+        setStats({
+          totalVenues: venuesWithEvents.length,
+          totalEvents: combinedEvents.length,
+          upcomingEvents: combinedEvents.filter(e => new Date(e.date) >= new Date()).length
+        })
       } catch (error) {
         console.error('Error loading venues:', error)
       } finally {
@@ -160,7 +244,7 @@ export default function VenuesPage() {
                         {venue.upcomingEvents.slice(0, 2).map((event) => (
                           <Link 
                             key={event.id} 
-                            href={`/events/${event.id}`}
+                            href={event.slug ? `/events/${event.slug}` : `/events/${event.id}`}
                             className="block text-xs text-music-neutral-600 hover:text-music-purple-600 transition-colors duration-200"
                           >
                             <div className="flex items-center justify-between">

@@ -6,33 +6,29 @@ import { verifyToken } from '@/lib/auth'
 // Validation schema for updating venues
 const UpdateVenueSchema = z.object({
   name: z.string().min(1, 'Name is required').optional(),
-  address: z.string().min(1, 'Address is required').optional(),
-  city: z.string().min(1, 'City is required').optional(),
-  state: z.string().min(1, 'State is required').optional(),
-  zipCode: z.string().optional(),
-  capacity: z.number().int().positive().optional(),
-  website: z.string().url().optional().or(z.literal('')),
-  phone: z.string().optional(),
-  email: z.string().email().optional().or(z.literal('')),
-  description: z.string().optional(),
-  image: z.string().optional(),
-  facebook: z.string().url().optional().or(z.literal('')),
-  instagram: z.string().url().optional().or(z.literal('')),
-  twitter: z.string().url().optional().or(z.literal('')),
-  latitude: z.number().optional(),
-  longitude: z.number().optional(),
-  amenities: z.array(z.string()).optional(),
-  accessibility: z.array(z.string()).optional()
+  address: z.string().optional().nullable(),
+  city: z.string().optional().nullable(),
+  state: z.string().optional().nullable(),
+  zipCode: z.string().optional().nullable(),
+  capacity: z.number().int().positive().optional().nullable(),
+  website: z.union([z.string().url(), z.literal(''), z.null()]).optional(),
+  phone: z.union([z.string(), z.null()]).optional(),
+  email: z.union([z.string().email(), z.literal(''), z.null()]).optional(),
+  description: z.union([z.string(), z.null()]).optional(),
+  facebook: z.union([z.string().url(), z.literal(''), z.null()]).optional(),
+  instagram: z.union([z.string().url(), z.literal(''), z.null()]).optional(),
+  twitter: z.union([z.string().url(), z.literal(''), z.null()]).optional()
 })
 
 // GET /api/venues/[id] - Get single venue
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const venue = await prisma.venue.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         events: {
           include: {
@@ -104,7 +100,7 @@ export async function GET(
 // PUT /api/venues/[id] - Update venue (admin only)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Verify admin authentication
@@ -124,9 +120,11 @@ export async function PUT(
       )
     }
 
+    const { id } = await params
+
     // Check if venue exists
     const existingVenue = await prisma.venue.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!existingVenue) {
@@ -137,18 +135,33 @@ export async function PUT(
     }
 
     const body = await request.json()
-    const validatedData = UpdateVenueSchema.parse(body)
 
-    // Update venue
-    const updateData: any = {
-      ...validatedData,
-      amenities: validatedData.amenities ? JSON.stringify(validatedData.amenities) : undefined,
-      accessibility: validatedData.accessibility ? JSON.stringify(validatedData.accessibility) : undefined
+    // Clean the data before validation
+    const cleanedData = {
+      ...body,
+      website: body.website?.trim() || null,
+      phone: body.phone?.trim() || null,
+      email: body.email?.trim() || null,
+      description: body.description?.trim() || null,
+      facebook: body.facebook?.trim() || null,
+      instagram: body.instagram?.trim() || null,
+      twitter: body.twitter?.trim() || null,
+      address: body.address?.trim() || null,
+      city: body.city?.trim() || null,
+      state: body.state?.trim() || null,
+      zipCode: body.zipCode?.trim() || null,
+      capacity: body.capacity ? parseInt(body.capacity) : null
     }
 
+    const validatedData = UpdateVenueSchema.parse(cleanedData)
+
+    // Update venue
     const venue = await prisma.venue.update({
-      where: { id: params.id },
-      data: updateData,
+      where: { id },
+      data: {
+        ...validatedData,
+        updatedAt: new Date().toISOString()
+      },
       include: {
         author: {
           select: {
@@ -204,7 +217,7 @@ export async function PUT(
 // DELETE /api/venues/[id] - Delete venue (admin only)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Verify admin authentication
@@ -224,9 +237,18 @@ export async function DELETE(
       )
     }
 
+    const { id } = await params
+
     // Check if venue exists
     const existingVenue = await prisma.venue.findUnique({
-      where: { id: params.id }
+      where: { id },
+      include: {
+        _count: {
+          select: {
+            events: true
+          }
+        }
+      }
     })
 
     if (!existingVenue) {
@@ -237,26 +259,19 @@ export async function DELETE(
     }
 
     // Check if venue has events
-    const eventCount = await prisma.event.count({
-      where: { venueId: params.id }
-    })
-
-    if (eventCount > 0) {
+    if (existingVenue._count.events > 0) {
       return NextResponse.json(
         { error: 'Cannot delete venue with existing events' },
-        { status: 409 }
+        { status: 400 }
       )
     }
 
     // Delete venue
     await prisma.venue.delete({
-      where: { id: params.id }
+      where: { id }
     })
 
-    return NextResponse.json(
-      { message: 'Venue deleted successfully' },
-      { status: 200 }
-    )
+    return NextResponse.json({ success: true })
 
   } catch (error) {
     console.error('Delete venue error:', error)

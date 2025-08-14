@@ -2,10 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import Local Music Events brand fonts from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+/* Typography loaded via HTML link in layout.tsx for better performance */
 
 /* Base styles */
 @layer base {
@@ -14,71 +11,148 @@
   }
 
   body {
-    font-family: 'Source Sans Pro', 'Inter', system-ui, sans-serif;
+    font-family: 'Montserrat', 'Inter', system-ui, sans-serif;
     line-height: 1.6;
-    color: #171717; /* music-neutral-900 */
-    background-color: #fafafa; /* music-neutral-50 */
+    color: #171717; /* neutral-900 */
+    background-color: #ffffff; /* white */
+  }
+
+  a {
+    color: #4C6286;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #3a4c66;
+    text-decoration: none;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Quicksand', 'Inter', system-ui, sans-serif;
-    line-height: 1.25;
-    color: #2D1B69; /* music-purple-950 */
-    font-weight: 600;
+    font-family: 'Bebas Neue', 'Inter', system-ui, sans-serif;
+    line-height: 1;
+    color: #000000; /* black for high contrast */
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+
+  /* Featured Events Heading */
+  .heading-h4 {
+    font-size: 2rem;
+    line-height: 1;
+    font-family: 'Bebas Neue', 'Inter', system-ui, sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+
+  /* Regular Events Heading */
+  .heading-h5 {
+    line-height: 1;
+    font-family: 'Bebas Neue', 'Inter', system-ui, sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
   }
 
   /* Focus styles for accessibility */
   *:focus {
-    outline: 2px solid #8b4aff; /* music-purple-600 */
+    outline: 2px solid #3b82f6; /* resolution-500 */
     outline-offset: 2px;
   }
 }
 
 /* Component styles */
 @layer components {
-  /* Local Music Events Button styles */
+  /* UI Elements Design System Button styles - Exact match */
   .btn-primary {
-    @apply bg-music-purple-600 hover:bg-music-purple-800 active:bg-music-purple-900 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-music-purple-600 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-music-purple-600/20 hover:shadow-music-purple-800/20;
+    background-color: rgb(29, 40, 58);
+    color: white;
+    @apply font-semibold py-3 px-6 rounded transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-primary:hover {
+    background-color: white;
+    color: rgb(29, 40, 58);
   }
 
   .btn-secondary {
-    @apply bg-white border-2 border-music-blue-800 text-music-blue-800 hover:bg-music-blue-50 active:bg-music-blue-100 font-medium py-3 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-music-blue-800 focus:ring-offset-2 shadow-md shadow-music-blue-800/10;
+    @apply bg-white border-2 text-white font-semibold py-3 px-6 rounded transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2;
+    border-color: rgb(29, 40, 58);
+    background-color: rgb(29, 40, 58);
+  }
+  
+  .btn-secondary:hover {
+    background-color: white;
+    color: rgb(29, 40, 58);
   }
 
   .btn-ghost {
-    @apply text-music-blue-800 hover:text-music-accent-600 hover:bg-music-accent-50 active:bg-music-accent-100 font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-music-accent-600 focus:ring-offset-2;
+    @apply font-medium py-2 px-4 rounded transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 bg-transparent;
+    color: rgb(29, 40, 58);
+  }
+  
+  .btn-ghost:hover {
+    background-color: white;
+    color: rgb(29, 40, 58);
   }
 
-  /* Local Music Events Card styles */
+  /* Small button variants */
+  .btn-sm {
+    @apply py-2 px-4 text-sm;
+  }
+
+  .btn-xs {
+    @apply py-1 px-3 text-xs;
+  }
+
+  /* Icon button styles */
+  .btn-icon {
+    @apply w-10 h-10 p-2 rounded flex items-center justify-center;
+  }
+
+  /* Public-facing button for homepage/Relume sections */
+  .public-button {
+    @apply px-8 py-4 rounded font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2;
+    background-color: rgb(29, 40, 58);
+    color: white;
+  }
+  
+  .public-button:hover {
+    background-color: white;
+    color: rgb(29, 40, 58);
+  }
+
+  /* New Design System Card styles */
   .event-card {
-    @apply bg-white rounded-xl shadow-md shadow-music-neutral-800/10 hover:shadow-lg hover:shadow-music-neutral-800/15 transition-all duration-300 overflow-hidden cursor-pointer hover:scale-[1.02] border border-music-neutral-100;
+    @apply bg-neutral-50 rounded-card shadow-medium hover:shadow-large transition-all duration-300 overflow-hidden cursor-pointer hover:scale-[1.02] border border-neutral-300;
   }
 
   .feature-card {
-    @apply bg-music-neutral-100 rounded-xl p-8 text-center border border-music-neutral-200 shadow-sm shadow-music-neutral-800/5;
+    @apply bg-neutral-50 rounded-card p-8 text-center border border-neutral-200 shadow-small hover:shadow-medium transition-all duration-200;
   }
 
-  /* Local Music Events Form styles */
+  /* New Design System Form styles */
   .input-field {
-    @apply w-full px-4 py-3 border border-music-neutral-300 rounded-lg focus:ring-2 focus:ring-music-purple-600 focus:border-music-purple-600 transition-colors duration-200 bg-white text-music-neutral-900 placeholder-music-neutral-500;
+    @apply w-full px-4 py-3 border border-neutral-300 rounded-button focus:ring-2 focus:ring-resolution-500 focus:border-resolution-500 transition-colors duration-200 bg-neutral-50 text-neutral-900 placeholder-neutral-500 shadow-small focus:shadow-medium;
   }
 
   .search-input {
-    @apply pl-10 pr-4 py-3 w-full border border-music-neutral-300 rounded-lg focus:ring-2 focus:ring-music-purple-600 focus:border-music-purple-600 transition-colors duration-200 bg-white text-music-neutral-900 placeholder-music-neutral-500;
+    @apply pl-10 pr-4 py-3 w-full border border-neutral-300 rounded-button focus:ring-2 focus:ring-resolution-500 focus:border-resolution-500 transition-colors duration-200 bg-neutral-50 text-neutral-900 placeholder-neutral-500 shadow-small focus:shadow-medium;
   }
 
-  /* Local Music Events Filter styles */
+  /* New Design System Filter styles */
   .filter-active {
-    @apply bg-music-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 shadow-md shadow-music-purple-600/20;
+    @apply bg-resolution-500 text-white px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 shadow-medium hover:shadow-large;
   }
 
   .filter-inactive {
-    @apply bg-music-neutral-200 text-music-neutral-800 hover:bg-music-neutral-300 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200;
+    @apply bg-neutral-200 text-neutral-700 hover:bg-neutral-300 hover:text-neutral-900 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 shadow-small hover:shadow-medium;
   }
 
   /* Local Music Events Navigation styles */
   .nav-link {
-    @apply text-music-neutral-800 hover:text-music-purple-600 font-medium transition-colors duration-200 relative;
+    @apply text-gray-300 hover:text-white font-medium transition-colors duration-200 relative;
   }
 
   .nav-link:hover::after {
@@ -87,7 +161,7 @@
 
   .nav-link::after {
     content: '';
-    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-music-purple-600 to-music-accent-600 transition-all duration-300;
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-music-blue-600 to-music-accent-500 transition-all duration-300;
   }
 
   /* Layout styles */
@@ -101,7 +175,7 @@
 
   /* Local Music Events Text styles */
   .text-gradient {
-    @apply bg-gradient-to-r from-music-purple-600 to-music-accent-600 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-music-blue-600 to-music-accent-500 bg-clip-text text-transparent;
   }
 }
 
@@ -145,20 +219,20 @@
   }
 
   /* Local Music Events Gradient backgrounds */
-  .gradient-music-purple {
-    background: linear-gradient(135deg, #8b4aff 0%, #2D1B69 100%);
-  }
-
   .gradient-music-blue {
-    background: linear-gradient(135deg, #0284c7 0%, #082f49 100%);
+    background: linear-gradient(135deg, #002B88 0%, #002053 100%);
   }
 
-  .gradient-music-accent {
-    background: linear-gradient(135deg, #e83f6f 0%, #922b3e 100%);
+  .gradient-music-yellow {
+    background: linear-gradient(135deg, #FCB60C 0%, #b76e02 100%);
+  }
+
+  .gradient-music-red {
+    background: linear-gradient(135deg, #c41e3a 0%, #991b1b 100%);
   }
 
   .gradient-music-night {
-    background: linear-gradient(135deg, #2D1B69 0%, #171717 100%);
+    background: linear-gradient(135deg, #002053 0%, #333333 100%);
   }
 
   /* Aspect ratio utilities */

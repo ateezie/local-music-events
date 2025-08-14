@@ -64,27 +64,27 @@ export default function Header() {
   }
 
   const navItems = [
-    { href: '/', label: 'Home' },
     { href: '/events', label: 'Events' },
     { href: '/venues', label: 'Venues' },
+    { href: '/promoters', label: 'Promoters' },
     { href: '/artists', label: 'Artists' },
     { href: '/calendar', label: 'Calendar' },
   ]
 
   return (
-    <header className="bg-white shadow-sm border-b border-music-neutral-200 sticky top-0 z-50">
+    <header className="bg-black text-white shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-3">
               {/* Music Events Logo */}
-              <div className="w-10 h-10 sm:w-14 sm:h-14 bg-gradient-music-purple rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 sm:w-14 sm:h-14 bg-resolution-600 rounded-lg flex items-center justify-center">
                 <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
                 </svg>
               </div>
-              <h1 className="text-xl sm:text-2xl font-heading font-bold text-music-purple-950">
+              <h1 className="text-xl sm:text-2xl font-heading font-bold text-white">
                 Local Music Events
               </h1>
             </Link>
@@ -110,7 +110,7 @@ export default function Header() {
               />
             </div>
             <button 
-              className="text-music-neutral-800 hover:text-music-purple-600 transition-colors duration-200 p-2"
+              className="text-gray-300 hover:text-white transition-colors duration-200 p-2"
               aria-label="User profile"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,7 +122,7 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-2">
             <button 
-              className="text-music-neutral-800 hover:text-music-purple-600 transition-colors duration-200 p-2"
+              className="text-gray-300 hover:text-white transition-colors duration-200 p-2"
               aria-label="Search"
               onClick={toggleMobileSearch}
             >
@@ -131,7 +131,7 @@ export default function Header() {
               </svg>
             </button>
             <button
-              className="text-music-neutral-800 hover:text-music-purple-600 transition-colors duration-200 p-2"
+              className="text-gray-300 hover:text-white transition-colors duration-200 p-2"
               onClick={toggleMenu}
               aria-label="Toggle menu"
               aria-expanded={isMenuOpen}
@@ -151,7 +151,7 @@ export default function Header() {
 
         {/* Mobile Search Interface */}
         {isMobileSearchOpen && (
-          <div className="md:hidden border-t border-music-neutral-200 bg-white animate-fade-in">
+          <div className="md:hidden border-t border-gray-700 bg-black animate-fade-in">
             <div className="px-4 py-4">
               <div className="flex items-center space-x-2">
                 <div className="flex-1">
@@ -165,7 +165,7 @@ export default function Header() {
                 </div>
                 <button
                   onClick={closeMobileSearch}
-                  className="text-music-neutral-800 hover:text-music-purple-600 transition-colors duration-200 p-2"
+                  className="text-gray-300 hover:text-white transition-colors duration-200 p-2"
                   aria-label="Close search"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -179,7 +179,7 @@ export default function Header() {
 
         {/* Mobile Navigation Menu */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-music-neutral-200 py-4 animate-fade-in bg-music-neutral-50">
+          <div className="md:hidden border-t border-gray-700 py-4 animate-fade-in bg-gray-900">
             <nav className="flex flex-col space-y-4">
               {navItems.map((item) => (
                 <NavItem 

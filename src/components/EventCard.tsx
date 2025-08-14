@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { EventCardProps } from '@/types'
-import RecipeImage from './RecipeImage' // We'll rename this to EventImage later
+import EventImage from './EventImage'
+import { formatEventDateSafe, formatEventTime } from '@/lib/dateUtils'
 
 function GenreBadge({ genre }: { genre: string }) {
   const genreColors: Record<string, string> = {
@@ -33,7 +34,7 @@ function GenreBadge({ genre }: { genre: string }) {
     'multi-genre': 'bg-yellow-100 text-yellow-700',
   }
 
-  const colorClass = genreColors[genre] || 'bg-music-neutral-100 text-music-neutral-700'
+  const colorClass = genreColors[genre] || 'bg-neutral-100 text-neutral-700'
 
   return (
     <span className={`px-2 py-1 rounded-full text-xs font-medium ${colorClass}`}>
@@ -42,61 +43,73 @@ function GenreBadge({ genre }: { genre: string }) {
   )
 }
 
-function PriceBadge({ price }: { price: string }) {
-  const isFree = price.toLowerCase().includes('free')
+function PriceBadge({ price }: { price: string | object }) {
+  // Handle both string and object price formats
+  let priceText: string
+  if (typeof price === 'object' && price !== null) {
+    const priceObj = price as any
+    if (priceObj.min === 0 && priceObj.max === null) {
+      // Only show 'Free' if explicitly set, not for missing price info
+      priceText = ''
+    } else if (priceObj.max) {
+      priceText = `$${priceObj.min}-$${priceObj.max}`
+    } else if (priceObj.min > 0) {
+      priceText = `$${priceObj.min}`
+    } else {
+      priceText = ''
+    }
+  } else {
+    priceText = (price as string) || ''
+  }
+
+  // Don't render anything if there's no price
+  if (!priceText) {
+    return null
+  }
+
+  const isFree = priceText.toLowerCase().includes('free')
   const colorClass = isFree 
     ? 'bg-green-100 text-green-700' 
-    : 'bg-music-purple-100 text-music-purple-700'
+    : 'bg-resolution-100 text-resolution-700'
 
   return (
     <span className={`px-2 py-1 rounded-full text-xs font-medium ${colorClass}`}>
-      {price}
+      {priceText}
     </span>
   )
 }
 
-function formatEventDate(dateString: string) {
-  const date = new Date(dateString)
-  const options: Intl.DateTimeFormatOptions = { 
-    weekday: 'short', 
-    month: 'short', 
-    day: 'numeric' 
-  }
-  return date.toLocaleDateString('en-US', options)
-}
-
-function formatEventTime(timeString: string) {
-  const [hours, minutes] = timeString.split(':')
-  const hour = parseInt(hours)
-  const ampm = hour >= 12 ? 'PM' : 'AM'
-  const displayHour = hour % 12 || 12
-  return `${displayHour}:${minutes} ${ampm}`
-}
+// Removed local functions - now using imported utilities from @/lib/dateUtils
 
 export default function EventCard({ event, className = '', featured = false }: EventCardProps) {
   const cardClasses = featured
     ? `event-card ${className} transform hover:scale-[1.02]`
     : `event-card ${className}`
 
-  const primaryArtist = event.artists[0]
-  const additionalArtistCount = event.artists.length - 1
+  const primaryArtist = event.artists && event.artists.length > 0 ? event.artists[0] : null
+  const additionalArtistCount = event.artists ? event.artists.length - 1 : 0
+
+  // Use slug if available, otherwise fall back to ID
+  const eventUrl = event.slug ? `/events/${event.slug}` : `/events/${event.id}`
 
   return (
-    <Link href={`/events/${event.id}`} className={cardClasses}>
+    <Link href={eventUrl} className={cardClasses}>
       {/* Event Image/Flyer */}
       <div className="aspect-video overflow-hidden relative">
-        <RecipeImage
-          src={event.flyer || '/images/flyers/default-event-flyer.jpg'}
+        <EventImage
+          src={event.flyer}
           alt={event.title}
           width={400}
           height={225}
           className="object-cover group-hover:scale-105 transition-transform duration-300 w-full h-full"
+          category={event.category}
+          genre={event.genre}
         />
         
         {/* Featured Badge */}
         {event.featured && (
           <div className="absolute top-3 right-3">
-            <span className="bg-music-accent-600 text-white px-3 py-1 rounded-full text-xs font-medium shadow-lg">
+            <span className="bg-sun-400 text-neutral-900 px-3 py-1 rounded-full text-xs font-semibold shadow-large">
               Featured
             </span>
           </div>
@@ -115,20 +128,20 @@ export default function EventCard({ event, className = '', featured = false }: E
         {featured && (
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div className="absolute bottom-4 left-4 right-4">
-              <div className="flex items-center text-white text-sm space-x-4">
+              <div className="flex items-center text-white text-sm">
                 <div className="flex items-center">
                   <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
-                  <span>{formatEventDate(event.date)}</span>
+                  <span>{formatEventDateSafe(event.date)}</span>
                 </div>
+                <span className="mx-2">•</span>
                 <div className="flex items-center">
                   <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <span>{formatEventTime(event.time)}</span>
                 </div>
-                <GenreBadge genre={event.genre} />
               </div>
             </div>
           </div>
@@ -137,38 +150,39 @@ export default function EventCard({ event, className = '', featured = false }: E
 
       {/* Event Content */}
       <div className={featured ? 'p-8' : 'p-6'}>
-        <h3 className={`font-heading font-semibold text-music-purple-950 mb-2 group-hover:text-music-purple-600 transition-colors duration-200 ${featured ? 'text-2xl' : 'text-xl'}`}>
+        <h3 
+          className={`${featured ? 'heading-h4' : 'heading-h5'} text-neutral-900 mb-2 group-hover:text-resolution-600 transition-colors duration-200`}
+          style={featured ? { fontSize: '2rem', lineHeight: '1' } : {}}
+        >
           {event.title}
         </h3>
         
-        <p className={`text-music-neutral-700 font-body mb-4 line-clamp-2 leading-relaxed ${featured ? 'text-base' : 'text-sm'}`}>
+        <p className={`text-neutral-600 mb-4 line-clamp-2 leading-relaxed ${featured ? 'text-regular' : 'text-small'}`}>
           {event.description}
         </p>
 
-        {/* Event Metadata */}
-        <div className="flex items-center justify-between text-xs text-music-neutral-600 mb-3">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center">
-              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <span>{formatEventDate(event.date)}</span>
-            </div>
-            <div className="flex items-center">
-              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>{formatEventTime(event.time)}</span>
-            </div>
-            <GenreBadge genre={event.genre} />
+        {/* Event Metadata - Date and Time on one line */}
+        <div className="flex items-center text-tiny text-neutral-500 mb-3">
+          <div className="flex items-center">
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span>{formatEventDateSafe(event.date)}</span>
+          </div>
+          <span className="mx-2">•</span>
+          <div className="flex items-center">
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>{formatEventTime(event.time)}</span>
           </div>
         </div>
 
         {/* Venue and Artist Info */}
-        <div className="flex items-center justify-between pt-3 border-t border-music-neutral-200">
-          <div className="flex-1">
+        <div className="pt-3 border-t border-neutral-200">
+          <div className="mb-3">
             {/* Venue Info */}
-            <div className="flex items-center text-xs text-music-neutral-600 font-body mb-1">
+            <div className="flex items-center text-tiny text-neutral-500 mb-1">
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -176,35 +190,45 @@ export default function EventCard({ event, className = '', featured = false }: E
               <span>{event.venue.name}</span>
             </div>
             
-            {/* Artist Info */}
-            <div className="flex items-center text-xs text-music-neutral-600 font-body">
-              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-              <span>
-                {primaryArtist.name}
-                {additionalArtistCount > 0 && (
-                  <span className="text-music-neutral-500">
-                    {` + ${additionalArtistCount} more`}
-                  </span>
-                )}
-              </span>
-            </div>
+            {/* Artist Info - Only show if not TBA */}
+            {primaryArtist && (
+              <div className="flex items-center text-tiny text-neutral-500">
+                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <span>
+                  {primaryArtist.name}
+                  {additionalArtistCount > 0 && (
+                    <span className="text-neutral-400">
+                      {` + ${additionalArtistCount} more`}
+                    </span>
+                  )}
+                </span>
+              </div>
+            )}
           </div>
-          
-          {/* Price */}
-          {event.price && (
-            <PriceBadge price={event.price} />
-          )}
+
+          {/* Genre Pills */}
+          <div className="flex flex-wrap gap-1">
+            {event.genre === 'multi-genre' && event.subGenres && Array.isArray(event.subGenres) && event.subGenres.length > 0 ? (
+              // Show only sub-genres as pills for multi-genre events (not the main "multi-genre" badge)
+              event.subGenres.map((genre) => (
+                <GenreBadge key={genre} genre={genre} />
+              ))
+            ) : event.genre !== 'multi-genre' ? (
+              // Show main genre for single-genre events (but not if it's multi-genre with no subGenres)
+              <GenreBadge genre={event.genre} />
+            ) : null}
+          </div>
         </div>
 
         {/* Tags (for featured cards) */}
-        {featured && event.tags.slice(0, 3).length > 0 && (
+        {featured && event.tags && event.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-4">
             {event.tags.slice(0, 3).map((tag) => (
               <span
                 key={tag}
-                className="px-2 py-1 bg-music-purple-100 text-music-purple-700 rounded-full text-xs font-medium"
+                className="px-2 py-1 bg-resolution-100 text-resolution-700 rounded-full text-xs font-medium"
               >
                 #{tag}
               </span>

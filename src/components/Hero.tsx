@@ -1,6 +1,7 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { Event } from '@/types'
+import EventImage from './EventImage'
+import { formatEventDateShort } from '@/lib/dateUtils'
 
 interface HeroProps {
   title?: string
@@ -32,9 +33,11 @@ export default function Hero({
   const heroImage = featuredEvent?.flyer || backgroundImage
   const eventName = featuredEvent?.title || "Featured Event"
   const eventVenue = featuredEvent?.venue?.name || "Local Venue"
-  const eventLink = featuredEvent ? `/events/${featuredEvent.id}` : "/events"
+  const eventLink = featuredEvent 
+    ? (featuredEvent.slug ? `/events/${featuredEvent.slug}` : `/events/${featuredEvent.id}`)
+    : "/events"
   return (
-    <section className={`relative bg-gradient-to-r from-music-purple-50 to-music-purple-100 overflow-hidden ${className}`}>
+    <section className={`relative bg-prussian-900 overflow-hidden ${className}`}>
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <svg className="w-full h-full" viewBox="0 0 100 100" fill="none">
@@ -52,13 +55,13 @@ export default function Hero({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Hero Content */}
           <div className="text-center lg:text-left animate-fade-in">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-music-purple-950 leading-tight mb-6">
+            <h1 className="heading-h1 text-white mb-6">
               {title}
-              <span className="text-music-purple-600 block">{subtitle}</span>
-              <span className="text-music-blue-600">Near You</span>
+              <span className="block">{subtitle}</span>
+              <span className="text-sun-400">Near You</span>
             </h1>
             
-            <p className="text-lg sm:text-xl text-music-neutral-700 mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+            <p className="text-medium text-neutral-300 mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
               {description}
             </p>
             
@@ -86,35 +89,19 @@ export default function Hero({
                 {secondaryButtonText}
               </Link>
             </div>
-
-            {/* Stats */}
-            <div className="flex flex-wrap justify-center lg:justify-start gap-8 mt-12 text-music-neutral-700">
-              <div className="text-center lg:text-left">
-                <div className="text-2xl sm:text-3xl font-bold text-music-purple-600">50+</div>
-                <div className="text-sm">Live Events</div>
-              </div>
-              <div className="text-center lg:text-left">
-                <div className="text-2xl sm:text-3xl font-bold text-music-purple-600">25+</div>
-                <div className="text-sm">Local Venues</div>
-              </div>
-              <div className="text-center lg:text-left">
-                <div className="text-2xl sm:text-3xl font-bold text-music-purple-600">100+</div>
-                <div className="text-sm">Artists Featured</div>
-              </div>
-            </div>
           </div>
 
           {/* Hero Image */}
           <div className="relative animate-slide-up">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-              <Image
+              <EventImage
                 src={heroImage}
                 alt={featuredEvent ? `${eventName} - Featured Event` : "Live music concert"}
                 width={600}
                 height={400}
                 className="w-full h-auto object-cover aspect-video"
-                priority
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                category={featuredEvent?.category || 'concert'}
+                genre={featuredEvent?.genre || 'indie-rock'}
               />
               
               {/* Image Overlay */}
@@ -126,25 +113,17 @@ export default function Hero({
                   <div className="bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg hover:bg-white/95 transition-colors duration-200">
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className="font-heading font-semibold text-music-purple-950 text-sm lg:text-base">
+                        <h3 className="font-heading font-semibold text-neutral-900" style={{ fontSize: '1.4rem' }}>
                           Featured Event
                         </h3>
-                        <p className="text-music-neutral-700 text-xs lg:text-sm font-body">
+                        <p className="text-neutral-700 text-xs lg:text-sm font-body">
                           {eventName}
                         </p>
                         {featuredEvent && (
-                          <p className="text-music-purple-600 text-xs font-body mt-1">
-                            {new Date(featuredEvent.date).toLocaleDateString()} • {eventVenue}
+                          <p className="text-resolution-600 text-xs font-body mt-1">
+                            {formatEventDateShort(featuredEvent.date)} • {eventVenue}
                           </p>
                         )}
-                      </div>
-                      <div className="flex items-center text-music-accent-500">
-                        <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                          <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span className="ml-1 text-xs lg:text-sm font-medium text-music-purple-950">
-                          {featuredEvent?.genre || 'Live Music'}
-                        </span>
                       </div>
                     </div>
                   </div>
@@ -152,32 +131,10 @@ export default function Hero({
               </div>
             </div>
 
-            {/* Decorative Elements */}
-            <div className="absolute -top-4 -right-4 w-24 h-24 bg-music-purple-200 rounded-full opacity-20 animate-pulse"></div>
-            <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-music-blue-200 rounded-full opacity-20 animate-pulse delay-1000"></div>
           </div>
         </div>
       </div>
 
-      {/* Wave Separator */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg className="w-full h-8 sm:h-12" viewBox="0 0 1200 120" preserveAspectRatio="none">
-          <path 
-            d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" 
-            opacity=".25" 
-            className="fill-white"
-          />
-          <path 
-            d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" 
-            opacity=".5" 
-            className="fill-white"
-          />
-          <path 
-            d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" 
-            className="fill-white"
-          />
-        </svg>
-      </div>
     </section>
   )
 }

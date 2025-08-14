@@ -1,0 +1,86 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Sample Electronic Music Events//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Electronic Music Events
+
+BEGIN:VEVENT
+UID:house-event-001@localmusicevents.com
+DTSTART:20250815T200000Z
+DTEND:20250815T230000Z
+SUMMARY:House Vibes Night with DJ Deep Groove
+DESCRIPTION:Join us for an incredible night of deep house music featuring DJ Deep Groove and special guests. Experience the underground sounds of Chicago house with modern progressive touches.\n\nLineup:\n- DJ Deep Groove (Headliner)\n- Local Support Acts\n\nDoor: 8PM\nShow: 9PM
+LOCATION:The Underground Club, 456 Bass Street, Downtown
+ORGANIZER;CN=Downtown Music Collective:mailto:events@downtownmusic.com
+URL:https://tickets.example.com/house-vibes-deep-groove
+CATEGORIES:HOUSE,ELECTRONIC,NIGHTCLUB
+STATUS:CONFIRMED
+END:VEVENT
+
+BEGIN:VEVENT
+UID:dnb-event-002@localmusicevents.com
+DTSTART:20250818T190000Z
+DTEND:20250818T020000Z
+SUMMARY:Drum & Bass Session: Liquid Nights
+DESCRIPTION:High-energy drum & bass session featuring liquid DnB and jungle classics. Get ready for an intense night of rolling basslines and breakbeats.\n\nFeaturing:\n- MC Flow & The Bass Collective\n- DJ Neurofunk\n- Special Jungle Set\n\nAge: 18+\nDress Code: Casual
+LOCATION:Warehouse 23, 789 Industrial Avenue, Arts District
+ORGANIZER;CN=Bassline Events:mailto:bookings@basslineevents.com
+URL:https://basslineevents.com/liquid-nights
+CATEGORIES:DRUM AND BASS,DNB,LIQUID
+STATUS:CONFIRMED
+END:VEVENT
+
+BEGIN:VEVENT
+UID:dubstep-event-003@localmusicevents.com
+DTSTART:20250822T210000Z
+DTEND:20250823T030000Z
+SUMMARY:Dubstep Mayhem: Heavy Bass Experience
+DESCRIPTION:Prepare for the heaviest dubstep experience in the city. Featuring riddim, future bass, and the filthiest drops you've ever heard.\n\n🔊 LINEUP:\n• Chaos Theory (Live)\n• Bass Destroyer\n• Wub Machine\n\n⚠️ LOUD VOLUME WARNING ⚠️\nEarplugs recommended!
+LOCATION:Bass Arena, 321 Drop Street, Electronic District  
+ORGANIZER;CN=Underground Bass Collective:mailto:info@undergroundbass.com
+URL:https://undergroundbass.com/dubstep-mayhem
+CATEGORIES:DUBSTEP,BASS MUSIC,RIDDIM
+STATUS:CONFIRMED
+END:VEVENT
+
+BEGIN:VEVENT
+UID:trance-event-004@localmusicevents.com
+DTSTART:20250825T200000Z
+DTEND:20250826T040000Z
+SUMMARY:Trance Journey: Progressive & Uplifting
+DESCRIPTION:Experience a euphoric journey through progressive and uplifting trance. From deep progressive builds to hands-in-the-air anthems.\n\n✨ TRANCE FAMILY UNITE ✨\n\nProgressive Trance:\n8PM - 11PM\n\nUplifting Trance:\n11PM - 4AM\n\nFree water all night!
+LOCATION:Elevation Nightclub, 555 Sky Avenue, Uptown
+ORGANIZER;CN=Club Circuit:mailto:hello@clubcircuit.com  
+URL:https://clubcircuit.com/trance-journey
+CATEGORIES:TRANCE,PROGRESSIVE,UPLIFTING
+STATUS:CONFIRMED
+END:VEVENT
+
+BEGIN:VEVENT
+UID:ukg-event-005@localmusicevents.com
+DTSTART:20250828T190000Z
+DTEND:20250829T010000Z
+SUMMARY:UK Garage Showcase: 2-Step & Bassline
+DESCRIPTION:The finest UK Garage sounds featuring skippy 2-step rhythms, soulful vocal samples, and that signature UKG swing.\n\n🇬🇧 GARAGE VIBES 🇬🇧\n\nDJ Sets:\n- Sarah Melody (UKG Specialist)\n- Jamie Strings (2-Step Master)\n- Guest: London import DJ\n\nProper garage atmosphere!
+LOCATION:The Garage Loft, 159 Swing Street, Music Quarter
+ORGANIZER;CN=Bassline Events:mailto:bookings@basslineevents.com
+URL:https://basslineevents.com/ukg-showcase
+CATEGORIES:UK GARAGE,UKG,2-STEP,BASSLINE
+STATUS:CONFIRMED
+END:VEVENT
+
+BEGIN:VEVENT
+UID:techno-event-006@localmusicevents.com
+DTSTART:20250830T220000Z
+DTEND:20250831T080000Z
+SUMMARY:Minimal Techno Marathon: 10 Hour Session
+DESCRIPTION:Industrial-strength minimal techno marathon. Deep, hypnotic rhythms and driving basslines for the dedicated techno heads.\n\n⚫ DARK & MINIMAL ⚫\n\n10PM - 8AM NONSTOP\n\n• Underground Location\n• Proper Sound System  \n• No Phones Policy\n• Serious Techno Only\n\nThis is not for beginners.
+LOCATION:Secret Warehouse Location (Address sent with ticket)
+ORGANIZER;CN=Underground Collective:mailto:info@undergroundcollective.com
+URL:https://undergroundcollective.com/minimal-marathon
+CATEGORIES:TECHNO,MINIMAL,UNDERGROUND
+STATUS:CONFIRMED
+END:VEVENT
+
+END:VCALENDAR

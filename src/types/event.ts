@@ -1,6 +1,7 @@
 export interface Event {
   id: string
   title: string
+  slug?: string // URL-friendly version of title
   description: string
   date: string // ISO date string
   time: string // HH:MM format
@@ -8,6 +9,7 @@ export interface Event {
   venue: Venue
   artists: Artist[]
   genre: string
+  subGenres?: string[] // Additional genres when genre is "multi-genre"
   category: EventCategory
   promoter?: string
   ticketUrl?: string
@@ -17,6 +19,7 @@ export interface Event {
   price?: string
   ageRestriction?: string
   featured: boolean
+  hero?: boolean
   tags: string[]
   createdAt: string
   updatedAt?: string
@@ -60,6 +63,16 @@ export interface Artist {
   tags: string[]
 }
 
+export interface Promoter {
+  id: string
+  name: string
+  description: string
+  website?: string
+  contact?: string
+  specialties: string[]
+  eventCount: number
+}
+
 export interface SocialMedia {
   website?: string
   facebook?: string
@@ -97,33 +110,13 @@ export type EventCategory =
 export type EventStatus = 'upcoming' | 'cancelled' | 'postponed' | 'sold-out' | 'past'
 
 export type MusicGenre = 
-  | 'rock' 
-  | 'indie-rock' 
-  | 'punk' 
-  | 'metal' 
-  | 'alternative' 
-  | 'pop' 
-  | 'hip-hop' 
-  | 'rap' 
-  | 'r&b' 
-  | 'jazz' 
-  | 'blues' 
-  | 'country' 
-  | 'folk' 
-  | 'acoustic' 
-  | 'electronic' 
-  | 'edm' 
   | 'house' 
+  | 'drum-and-bass' 
+  | 'ukg' 
+  | 'dubstep' 
+  | 'trance' 
   | 'techno' 
-  | 'reggae' 
-  | 'ska' 
-  | 'classical' 
-  | 'experimental' 
-  | 'indie' 
-  | 'singer-songwriter'
-  | 'covers'
-  | 'tribute'
-  | 'multi-genre'
+  | 'other'
 
 // Category definitions for filtering
 export interface EventCategoryInfo {
@@ -149,6 +142,7 @@ export interface EventData {
   artists: Artist[]
   categories: EventCategoryInfo[]
   genres: GenreInfo[]
+  promoters: Promoter[]
 }
 
 // Filter and search types
@@ -161,6 +155,7 @@ export interface EventFilterOptions {
   venue?: string
   genre?: MusicGenre | MusicGenre[]
   category?: EventCategory | EventCategory[]
+  promoter?: string
   priceRange?: {
     min: number
     max: number
@@ -305,6 +300,7 @@ export interface ArtistFormData {
 export type EventId = Event['id']
 export type VenueId = Venue['id']
 export type ArtistId = Artist['id']
+export type PromoterId = Promoter['id']
 export type EventGenre = Event['genre']
 export type EventTitle = Event['title']
 

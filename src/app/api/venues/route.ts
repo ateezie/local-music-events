@@ -5,25 +5,19 @@ import { verifyToken } from '@/lib/auth'
 
 // Validation schema for creating venues
 const CreateVenueSchema = z.object({
-  id: z.string().min(1, 'ID is required'),
   name: z.string().min(1, 'Name is required'),
-  address: z.string().min(1, 'Address is required'),
-  city: z.string().min(1, 'City is required'),
-  state: z.string().min(1, 'State is required'),
-  zipCode: z.string().optional(),
-  capacity: z.number().int().positive().optional(),
-  website: z.string().url().optional().or(z.literal('')),
-  phone: z.string().optional(),
-  email: z.string().email().optional().or(z.literal('')),
-  description: z.string().optional(),
-  image: z.string().optional(),
-  facebook: z.string().url().optional().or(z.literal('')),
-  instagram: z.string().url().optional().or(z.literal('')),
-  twitter: z.string().url().optional().or(z.literal('')),
-  latitude: z.number().optional(),
-  longitude: z.number().optional(),
-  amenities: z.array(z.string()).default([]),
-  accessibility: z.array(z.string()).default([])
+  address: z.string().optional().nullable(),
+  city: z.string().optional().nullable(),
+  state: z.string().optional().nullable(),
+  zipCode: z.string().optional().nullable(),
+  capacity: z.number().int().positive().optional().nullable(),
+  website: z.union([z.string().url(), z.literal(''), z.null()]).optional(),
+  phone: z.union([z.string(), z.null()]).optional(),
+  email: z.union([z.string().email(), z.literal(''), z.null()]).optional(),
+  description: z.union([z.string(), z.null()]).optional(),
+  facebook: z.union([z.string().url(), z.literal(''), z.null()]).optional(),
+  instagram: z.union([z.string().url(), z.literal(''), z.null()]).optional(),
+  twitter: z.union([z.string().url(), z.literal(''), z.null()]).optional()
 })
 
 // GET /api/venues - Get all venues with optional filtering
@@ -154,42 +148,51 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const validatedData = CreateVenueSchema.parse(body)
 
-    // Check if venue ID already exists
-    const existingVenue = await prisma.venue.findUnique({
-      where: { id: validatedData.id }
-    })
-
-    if (existingVenue) {
-      return NextResponse.json(
-        { error: 'Venue with this ID already exists' },
-        { status: 409 }
-      )
+    // Clean the data before validation
+    const cleanedData = {
+      ...body,
+      website: body.website?.trim() || null,
+      phone: body.phone?.trim() || null,
+      email: body.email?.trim() || null,
+      description: body.description?.trim() || null,
+      facebook: body.facebook?.trim() || null,
+      instagram: body.instagram?.trim() || null,
+      twitter: body.twitter?.trim() || null,
+      address: body.address?.trim() || null,
+      city: body.city?.trim() || null,
+      state: body.state?.trim() || null,
+      zipCode: body.zipCode?.trim() || null,
+      capacity: body.capacity ? parseInt(body.capacity) : null
     }
+
+    const validatedData = CreateVenueSchema.parse(cleanedData)
+
+    // Generate venue ID
+    const venueId = `venue-${Date.now()}`
 
     // Create venue
     const venue = await prisma.venue.create({
       data: {
-        id: validatedData.id,
+        id: venueId,
         name: validatedData.name,
-        address: validatedData.address,
-        city: validatedData.city,
-        state: validatedData.state,
-        zipCode: validatedData.zipCode,
+        address: validatedData.address || '',
+        city: validatedData.city || '',
+        state: validatedData.state || '',
+        zipCode: validatedData.zipCode || '',
         capacity: validatedData.capacity,
-        website: validatedData.website,
-        phone: validatedData.phone,
-        email: validatedData.email,
-        description: validatedData.description,
-        image: validatedData.image,
-        facebook: validatedData.facebook,
-        instagram: validatedData.instagram,
-        twitter: validatedData.twitter,
-        latitude: validatedData.latitude,
-        longitude: validatedData.longitude,
-        amenities: JSON.stringify(validatedData.amenities),
-        accessibility: JSON.stringify(validatedData.accessibility),
+        website: validatedData.website || null,
+        phone: validatedData.phone || null,
+        email: validatedData.email || null,
+        description: validatedData.description || null,
+        image: null,
+        facebook: validatedData.facebook || null,
+        instagram: validatedData.instagram || null,
+        twitter: validatedData.twitter || null,
+        latitude: null,
+        longitude: null,
+        amenities: '{}',
+        accessibility: '{}',
         authorId: payload.userId
       },
       include: {

@@ -10,7 +10,7 @@ function FooterLink({ href, children }: FooterLinkProps) {
   return (
     <Link 
       href={href} 
-      className="hover:text-white transition-colors duration-200 text-sm"
+      className="text-gray-300 hover:text-white transition-colors duration-200 text-sm"
     >
       {children}
     </Link>
@@ -26,7 +26,7 @@ function FooterSection({ title, children }: FooterSectionProps) {
   return (
     <div>
       <h4 className="font-heading font-semibold mb-4 text-white">{title}</h4>
-      <ul className="space-y-2 text-music-neutral-200 font-body">
+      <ul className="space-y-2 text-gray-300 font-body">
         {children}
       </ul>
     </div>
@@ -34,11 +34,11 @@ function FooterSection({ title, children }: FooterSectionProps) {
 }
 
 export default function Footer() {
-  // Use a static year to avoid hydration mismatch
-  const currentYear = 2024
+  // Use dynamic year
+  const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-music-purple-900 text-white py-12">
+    <footer className="bg-black text-white py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Section */}
@@ -47,7 +47,7 @@ export default function Footer() {
               <MusicLogo size="small" />
               <h3 className="text-xl font-heading font-bold">Local Music Events</h3>
             </div>
-            <p className="text-music-neutral-200 font-body text-sm leading-relaxed">
+            <p className="text-gray-300 font-body text-sm leading-relaxed">
               Discover live music events in your area. From concerts and festivals 
               to intimate acoustic sets, find your next musical experience.
             </p>
@@ -55,7 +55,7 @@ export default function Footer() {
               {/* Social Media Links */}
               <a 
                 href="#" 
-                className="text-music-neutral-400 hover:text-music-purple-400 transition-colors duration-200"
+                className="text-gray-400 hover:text-white transition-colors duration-200"
                 aria-label="Follow us on Facebook"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -64,7 +64,7 @@ export default function Footer() {
               </a>
               <a 
                 href="#" 
-                className="text-music-neutral-400 hover:text-music-purple-400 transition-colors duration-200"
+                className="text-gray-400 hover:text-white transition-colors duration-200"
                 aria-label="Follow us on Instagram"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -73,7 +73,7 @@ export default function Footer() {
               </a>
               <a 
                 href="#" 
-                className="text-music-neutral-400 hover:text-music-purple-400 transition-colors duration-200"
+                className="text-gray-400 hover:text-white transition-colors duration-200"
                 aria-label="Follow us on Twitter"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -82,7 +82,7 @@ export default function Footer() {
               </a>
               <a 
                 href="#" 
-                className="text-music-neutral-400 hover:text-music-purple-400 transition-colors duration-200"
+                className="text-gray-400 hover:text-white transition-colors duration-200"
                 aria-label="Subscribe to our YouTube channel"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -98,52 +98,37 @@ export default function Footer() {
             <li><FooterLink href="/events">All Events</FooterLink></li>
             <li><FooterLink href="/events?category=concerts">Concerts</FooterLink></li>
             <li><FooterLink href="/events?category=festivals">Festivals</FooterLink></li>
-            <li><FooterLink href="/events?category=acoustic">Acoustic</FooterLink></li>
+            <li><FooterLink href="/events?category=dj-set">DJ Sets</FooterLink></li>
             <li><FooterLink href="/events?featured=true">Featured Events</FooterLink></li>
+            <li><FooterLink href="/venues">Venues</FooterLink></li>
+            <li><FooterLink href="/artists">Artists</FooterLink></li>
           </FooterSection>
           
           {/* Genres Section */}
           <FooterSection title="Genres">
-            <li><FooterLink href="/events?genre=rock">Rock</FooterLink></li>
-            <li><FooterLink href="/events?genre=jazz">Jazz</FooterLink></li>
-            <li><FooterLink href="/events?genre=electronic">Electronic</FooterLink></li>
-            <li><FooterLink href="/events?genre=indie">Indie</FooterLink></li>
-            <li><FooterLink href="/events?genre=hip-hop">Hip-Hop</FooterLink></li>
+            <li><FooterLink href="/events?genre=house">House</FooterLink></li>
+            <li><FooterLink href="/events?genre=drum-and-bass">Drum & Bass</FooterLink></li>
+            <li><FooterLink href="/events?genre=ukg">UK Garage</FooterLink></li>
+            <li><FooterLink href="/events?genre=dubstep">Dubstep</FooterLink></li>
+            <li><FooterLink href="/events?genre=trance">Trance</FooterLink></li>
+            <li><FooterLink href="/events?genre=techno">Techno</FooterLink></li>
+            <li><FooterLink href="/events?genre=other">Other</FooterLink></li>
           </FooterSection>
           
-          {/* Company Section */}
-          <FooterSection title="Company">
+          {/* Promoters Section */}
+          <FooterSection title="Promoters">
+            <li><FooterLink href="/events?promoter=downtown-music-collective">Downtown Music Collective</FooterLink></li>
+            <li><FooterLink href="/events?promoter=underground-music-collective">Underground Music Collective</FooterLink></li>
+            <li><FooterLink href="/events?promoter=bassline-events">Bassline Events</FooterLink></li>
+            <li><FooterLink href="/events?promoter=club-circuit">Club Circuit</FooterLink></li>
             <li><FooterLink href="/about">About Us</FooterLink></li>
             <li><FooterLink href="/contact">Contact</FooterLink></li>
-            <li><FooterLink href="/newsletter">Newsletter</FooterLink></li>
-            <li><FooterLink href="/privacy">Privacy Policy</FooterLink></li>
-            <li><FooterLink href="/terms">Terms of Service</FooterLink></li>
           </FooterSection>
-        </div>
-        
-        {/* Newsletter Signup */}
-        <div className="border-t border-music-purple-800 mt-8 pt-8">
-          <div className="max-w-md">
-            <h4 className="font-heading font-semibold mb-2 text-white">Subscribe to Our Newsletter</h4>
-            <p className="text-music-neutral-200 font-body text-sm mb-4">
-              Get the latest music events and venue updates delivered to your inbox.
-            </p>
-            <div className="flex">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-2 rounded-l-lg border border-music-purple-700 bg-music-purple-800 text-white font-body placeholder-music-neutral-400 focus:outline-none focus:ring-2 focus:ring-music-purple-400 focus:border-music-purple-400"
-              />
-              <button className="btn-primary rounded-l-none">
-                Subscribe
-              </button>
-            </div>
-          </div>
         </div>
         
         {/* Copyright */}
-        <div className="border-t border-music-purple-800 mt-8 pt-8 text-center">
-          <p className="text-music-neutral-400 font-body text-sm">
+        <div className="border-t border-gray-700 mt-8 pt-8 text-center">
+          <p className="text-gray-400 font-body text-sm">
             &copy; {currentYear} Local Music Events. All rights reserved. Made with ❤️ for music lovers.
           </p>
         </div>

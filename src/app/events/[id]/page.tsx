@@ -1,14 +1,15 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useParams } from 'next/navigation'
 import Layout from '@/components/Layout'
-import { getEventById, getRelatedEvents } from '@/lib/events'
 import { Event } from '@/types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import EventCard from '@/components/EventCard'
+import EventImage from '@/components/EventImage'
+import { formatEventDateSafe, formatEventTime } from '@/lib/dateUtils'
 
 export default function EventDetailPage() {
   const { id } = useParams()
@@ -18,23 +19,82 @@ export default function EventDetailPage() {
 
   useEffect(() => {
     if (id) {
-      try {
-        const eventData = getEventById(id as string)
-        if (!eventData) {
-          notFound()
-          return
-        }
-        
-        setEvent(eventData)
-        setRelatedEvents(getRelatedEvents(eventData, 3))
-      } catch (error) {
-        console.error('Error loading event:', error)
-        notFound()
-      } finally {
-        setLoading(false)
-      }
+      loadEvent(id as string)
     }
   }, [id])
+
+  const loadEvent = async (eventId: string) => {
+    try {
+      // Try to load from API first
+      const response = await fetch(`/api/events/${eventId}`)
+      if (response.ok) {
+        const data = await response.json()
+        setEvent(data.event)
+        
+        // Load related events from the same genre or venue
+        loadRelatedEvents(data.event)
+      } else {
+        console.error('Event not found')
+        notFound()
+      }
+    } catch (error) {
+      console.error('Error loading event:', error)
+      notFound()
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const loadRelatedEvents = async (currentEvent: Event) => {
+    try {
+      let combinedEvents: Event[] = []
+      
+      // Load JSON events
+      try {
+        const jsonResponse = await fetch('/api/events/json')
+        if (jsonResponse.ok) {
+          const jsonData = await jsonResponse.json()
+          combinedEvents.push(...(jsonData.events || []))
+        }
+      } catch (error) {
+        console.error('Error loading JSON events:', error)
+      }
+      
+      // Load database events
+      try {
+        const dbResponse = await fetch('/api/events?limit=50')
+        if (dbResponse.ok) {
+          const dbData = await dbResponse.json()
+          combinedEvents.push(...(dbData.events || []))
+        }
+      } catch (error) {
+        console.error('Error loading database events:', error)
+      }
+      
+      // Filter related events (same genre or venue, excluding current event)
+      const related = combinedEvents
+        .filter(e => e.id !== currentEvent.id)
+        .filter(e => 
+          e.genre === currentEvent.genre || 
+          e.venue?.id === currentEvent.venue?.id ||
+          e.category === currentEvent.category
+        )
+        .slice(0, 3)
+      
+      setRelatedEvents(related)
+    } catch (error) {
+      console.error('Error loading related events:', error)
+    }
+  }
+
+  // Move useMemo before any conditional returns
+  const { isUpcoming, isPast } = useMemo(() => {
+    if (!event) return { isUpcoming: false, isPast: true }
+    const eventDate = new Date(event.date)
+    const now = new Date()
+    const upcoming = eventDate > now
+    return { isUpcoming: upcoming, isPast: !upcoming }
+  }, [event?.date])
 
   if (loading) {
     return (
@@ -59,109 +119,119 @@ export default function EventDetailPage() {
     notFound()
   }
 
-  const eventDate = new Date(event.date)
-  const isUpcoming = eventDate > new Date()
-  const isPast = !isUpcoming
-
   return (
     <Layout>
       <div className="min-h-screen bg-music-neutral-50">
-        {/* Hero Section */}
-        <div className="relative bg-gradient-to-r from-music-purple-900 to-music-blue-900 text-white overflow-hidden">
-          {event.flyer && (
-            <div className="absolute inset-0 opacity-20">
-              <Image
-                src={event.flyer}
+        {/* Hero Section - Clean Flyer Display */}
+        <div className="relative overflow-hidden h-[40vh]">
+          {(event.flyer || event.bannerImage) && (
+            <div className="w-full h-full">
+              <EventImage
+                src={event.flyer || event.bannerImage || ''}
                 alt={event.title}
-                fill
-                className="object-cover"
+                width={1200}
+                height={600}
+                className="w-full h-full object-cover"
+                category={event.category}
+                genre={event.genre}
               />
             </div>
           )}
-          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div className="text-center">
-              {/* Status Badge */}
-              <div className="mb-4">
-                <span className={`inline-block px-4 py-2 rounded-full text-sm font-medium ${
-                  event.status === 'sold-out' ? 'bg-red-600 text-white' :
-                  event.status === 'cancelled' ? 'bg-red-600 text-white' :
-                  event.status === 'postponed' ? 'bg-yellow-600 text-white' :
-                  isPast ? 'bg-music-neutral-600 text-white' :
-                  'bg-green-600 text-white'
-                }`}>
-                  {event.status === 'sold-out' ? 'Sold Out' :
-                   event.status === 'cancelled' ? 'Cancelled' :
-                   event.status === 'postponed' ? 'Postponed' :
-                   isPast ? 'Past Event' : 'Tickets Available'}
-                </span>
-              </div>
+        </div>
 
-              <h1 className="text-4xl sm:text-5xl font-bold mb-4">{event.title}</h1>
+        {/* Event Meta Information */}
+        <div className="bg-gradient-to-r from-music-purple-50 to-music-purple-100 border-b border-music-neutral-200">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="text-center">
+              <h1 className="text-4xl sm:text-5xl font-bold mb-6 text-music-purple-950 whitespace-nowrap overflow-hidden text-ellipsis max-w-full">{event.title}</h1>
               
               {/* Artists */}
-              <div className="mb-6">
-                {event.artists.map((artist, index) => (
-                  <span key={artist.id}>
-                    <Link 
-                      href={`/artists/${artist.id}`}
-                      className="text-music-accent-300 hover:text-music-accent-100 font-semibold text-xl"
-                    >
-                      {artist.name}
-                    </Link>
-                    {index < event.artists.length - 1 && <span className="text-music-neutral-300 mx-2">•</span>}
-                  </span>
-                ))}
-              </div>
+              {event.artists && event.artists.length > 0 && (
+                <div className="mb-6">
+                  {event.artists.map((artist, index) => (
+                    <span key={artist.id}>
+                      <Link 
+                        href={`/artists/${artist.id}`}
+                        className="text-music-accent-600 hover:text-music-accent-700 font-semibold text-xl"
+                      >
+                        {artist.name}
+                      </Link>
+                      {index < event.artists.length - 1 && <span className="text-music-neutral-400 mx-2">•</span>}
+                    </span>
+                  ))}
+                </div>
+              )}
 
-              {/* Genre */}
-              <div className="mb-4">
-                <span className="inline-block bg-music-accent-600 text-white px-3 py-1 rounded-full text-sm font-medium capitalize">
-                  {event.genre.replace('-', ' ')}
-                </span>
-              </div>
+              {/* Sub-genres */}
+              {event.subGenres && event.subGenres.length > 0 && (
+                <div className="mb-6 flex justify-center items-center gap-3 flex-wrap">
+                  <div className="flex justify-center items-center gap-3 flex-wrap">
+                    {event.subGenres.map((subGenre) => (
+                      <span key={subGenre} className="inline-block text-white px-4 py-2 rounded-full text-sm font-medium capitalize" style={{ backgroundColor: '#4C6286' }}>
+                        {subGenre.replace('-', ' ')}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Date & Venue */}
-              <div className="text-lg text-music-neutral-200">
-                <div className="mb-2">
-                  📅 {eventDate.toLocaleDateString('en-US', { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                  })}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                <div className="flex items-center justify-center text-music-neutral-700">
+                  <svg className="w-5 h-5 mr-2 text-music-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span className="font-medium">{formatEventDateSafe(event.date)}</span>
                 </div>
-                <div className="mb-2">
-                  🕒 {event.time}{event.endTime && ` - ${event.endTime}`}
+                <div className="flex items-center justify-center text-music-neutral-700">
+                  <svg className="w-5 h-5 mr-2 text-music-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span className="font-medium">{formatEventTime(event.time)}{event.endTime && ` - ${formatEventTime(event.endTime)}`}</span>
                 </div>
-                <div className="mb-4">
-                  📍 <Link 
+                <div className="flex items-center justify-center text-music-neutral-700">
+                  <svg className="w-5 h-5 mr-2 text-music-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <Link 
                     href={`/venues/${event.venue.id}`}
-                    className="text-music-blue-300 hover:text-music-blue-100 underline"
+                    className="font-medium"
+                    style={{ color: '#4C6286' }}
+                    onMouseEnter={(e) => e.target.style.color = '#3a4c66'}
+                    onMouseLeave={(e) => e.target.style.color = '#4C6286'}
                   >
-                    {event.venue.name}, {event.venue.city}
+                    {event.venue.name}
                   </Link>
                 </div>
               </div>
 
-              {/* Price & Tickets */}
-              <div className="flex justify-center space-x-4 text-lg">
-                {event.price && (
-                  <div className="text-music-accent-300 font-semibold">
-                    💰 {event.price}
-                  </div>
-                )}
-                {event.ageRestriction && (
-                  <div className="text-music-neutral-300">
-                    🔞 {event.ageRestriction}
-                  </div>
-                )}
-              </div>
+              {/* Price & Age Restriction */}
+              {(event.price || event.ageRestriction) && (
+                <div className="flex justify-center space-x-6 mt-6 text-music-neutral-700">
+                  {event.price && (
+                    <div className="flex items-center">
+                      <svg className="w-5 h-5 mr-2 text-music-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                      </svg>
+                      <span className="font-medium">{event.price}</span>
+                    </div>
+                  )}
+                  {event.ageRestriction && (
+                    <div className="flex items-center">
+                      <span className="text-music-neutral-600 mr-2">Age:</span>
+                      <span className="font-medium">{event.ageRestriction}</span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="bg-gradient-to-r from-music-purple-50 to-music-purple-100">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Event Details */}
             <div className="lg:col-span-2">
@@ -173,27 +243,6 @@ export default function EventDetailPage() {
                     <p>{event.description}</p>
                   </div>
                 )}
-
-                {/* Event Details Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  <div>
-                    <h3 className="font-semibold text-music-purple-900 mb-3">Event Details</h3>
-                    <div className="space-y-2 text-sm">
-                      <div><span className="font-medium">Category:</span> {event.category.replace('-', ' ')}</div>
-                      <div><span className="font-medium">Genre:</span> {event.genre.replace('-', ' ')}</div>
-                      {event.promoter && <div><span className="font-medium">Promoter:</span> {event.promoter}</div>}
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h3 className="font-semibold text-music-purple-900 mb-3">Venue Info</h3>
-                    <div className="space-y-2 text-sm">
-                      <div><span className="font-medium">Address:</span> {event.venue.address}</div>
-                      <div><span className="font-medium">City:</span> {event.venue.city}, {event.venue.state}</div>
-                      {event.venue.capacity && <div><span className="font-medium">Capacity:</span> {event.venue.capacity}</div>}
-                    </div>
-                  </div>
-                </div>
 
                 {/* Tags */}
                 {event.tags && event.tags.length > 0 && (
@@ -260,7 +309,10 @@ export default function EventDetailPage() {
                       href={event.ticketUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block w-full bg-music-accent-600 hover:bg-music-accent-700 text-white text-center py-3 px-4 rounded-lg font-semibold transition-colors duration-200"
+                      className="block w-full text-white text-center py-3 px-4 rounded-lg font-semibold transition-colors duration-200"
+                      style={{ backgroundColor: 'rgb(0, 43, 136)', borderColor: 'rgb(0, 43, 136)' }}
+                      onMouseEnter={(e) => (e.target as HTMLElement).style.backgroundColor = 'rgb(0, 35, 110)'}
+                      onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = 'rgb(0, 43, 136)'}
                     >
                       Buy Tickets 🎫
                     </a>
@@ -290,36 +342,83 @@ export default function EventDetailPage() {
               {/* Venue Details */}
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h3 className="font-bold text-music-purple-950 mb-4">Venue Details</h3>
-                <Link href={`/venues/${event.venue.id}`} className="block group">
-                  <div className="space-y-3">
-                    <h4 className="font-semibold text-music-purple-700 group-hover:text-music-purple-500">
+                <div className="space-y-4">
+                  <Link href={`/venues/${event.venue.id}`} className="block group">
+                    <h4 className="font-semibold group-hover:opacity-80" style={{ color: '#4C6286' }}>
                       {event.venue.name}
                     </h4>
-                    <p className="text-sm text-music-neutral-600">
-                      {event.venue.address}<br />
-                      {event.venue.city}, {event.venue.state} {event.venue.zipCode}
-                    </p>
-                    {event.venue.phone && (
-                      <p className="text-sm text-music-neutral-600">
-                        📞 {event.venue.phone}
+                  </Link>
+                  
+                  {(event.venue.address || event.venue.city) && (
+                    <div>
+                      <p className="text-sm text-music-neutral-600 mb-2">
+                        {event.venue.address && (
+                          <>
+                            {event.venue.address}<br />
+                          </>
+                        )}
+                        {event.venue.city && event.venue.state && (
+                          <>{event.venue.city}, {event.venue.state}</>
+                        )}
+                        {event.venue.zipCode && ` ${event.venue.zipCode}`}
                       </p>
-                    )}
-                    {event.venue.website && (
-                      <p className="text-sm">
-                        <a 
-                          href={event.venue.website}
+                      
+                      {/* Get Directions Button */}
+                      {(event.venue.address || event.venue.city) && (
+                        <a
+                          href={`https://maps.google.com/maps?q=${encodeURIComponent(
+                            `${event.venue.address || ''} ${event.venue.city || ''} ${event.venue.state || ''} ${event.venue.zipCode || ''}`.trim()
+                          )}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-music-blue-600 hover:text-music-blue-800"
+                          className="inline-flex items-center text-sm font-medium"
+                          style={{ color: '#4C6286' }}
+                          onMouseEnter={(e) => e.target.style.color = '#3a4c66'}
+                          onMouseLeave={(e) => e.target.style.color = '#4C6286'}
                         >
-                          Visit Website ↗
+                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                          Get Directions
                         </a>
-                      </p>
-                    )}
-                  </div>
-                </Link>
+                      )}
+                    </div>
+                  )}
+                  
+                  {event.venue.phone && (
+                    <div className="flex items-center text-sm text-music-neutral-600">
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                      </svg>
+                      <a href={`tel:${event.venue.phone}`} className="hover:text-music-purple-600">
+                        {event.venue.phone}
+                      </a>
+                    </div>
+                  )}
+                  
+                  {event.venue.website && (
+                    <div className="flex items-center text-sm">
+                      <svg className="w-4 h-4 mr-2 text-music-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                      <a 
+                        href={event.venue.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium"
+                        style={{ color: '#4C6286' }}
+                        onMouseEnter={(e) => e.target.style.color = '#3a4c66'}
+                        onMouseLeave={(e) => e.target.style.color = '#4C6286'}
+                      >
+                        Visit Website
+                      </a>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
 

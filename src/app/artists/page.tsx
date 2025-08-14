@@ -223,7 +223,7 @@ export default function ArtistsPage() {
                             {artist.upcomingEvents.slice(0, 2).map((event) => (
                               <Link 
                                 key={event.id} 
-                                href={`/events/${event.id}`}
+                                href={event.slug ? `/events/${event.slug}` : `/events/${event.id}`}
                                 className="block text-xs text-music-neutral-600 hover:text-music-purple-600 transition-colors duration-200"
                               >
                                 <div className="flex items-center justify-between">

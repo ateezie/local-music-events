@@ -1,46 +1,192 @@
+'use client'
+
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Layout from '@/components/Layout'
 import Hero from '@/components/Hero'
 import EventCard from '@/components/EventCard'
-// import EventFilter from '@/components/EventFilter' // Currently unused
-import { getAllGenres, getFeaturedEvents, getAllEvents, getEventStats } from '@/lib/events'
+import { Event } from '@/types'
+import { getAllGenres } from '@/lib/events'
+
+// Helper functions for genre processing (extracted from events.ts)
+function getGenreColor(genre: string): string {
+  const genreColors: { [key: string]: string } = {
+    rock: '#FF6B35',
+    jazz: '#FFD700',
+    'indie-rock': '#E83F6F',
+    electronic: '#00FFFF',
+    punk: '#FF1493',
+    'hip-hop': '#9370DB',
+    blues: '#4169E1',
+    folk: '#CD853F',
+    acoustic: '#8FBC8F',
+    house: '#FF4500',
+    'drum-and-bass': '#32CD32',
+    'multi-genre': '#8b4aff',
+    dubstep: '#FF4500',
+    trap: '#9370DB',
+    techno: '#00FFFF',
+    trance: '#4169E1',
+    'ukg': '#32CD32',
+    other: '#8b4aff'
+  }
+  return genreColors[genre] || '#8b4aff'
+}
+
+function getGenreDescription(genre: string): string {
+  const genreDescriptions: { [key: string]: string } = {
+    rock: 'Classic and modern rock music',
+    jazz: 'Smooth jazz and improvisation',
+    'indie-rock': 'Independent rock artists',
+    electronic: 'Electronic dance music',
+    punk: 'Raw and energetic punk rock',
+    'hip-hop': 'Hip hop and rap music',
+    blues: 'Traditional and modern blues',
+    folk: 'Acoustic folk music',
+    acoustic: 'Unplugged acoustic sets',
+    house: 'Deep house and progressive',
+    'drum-and-bass': 'High-energy drum and bass',
+    'multi-genre': 'Multiple music genres',
+    dubstep: 'Heavy bass dubstep',
+    trap: 'Trap and hip-hop beats',
+    techno: 'Electronic techno music',
+    trance: 'Uplifting trance music',
+    'ukg': 'UK Garage sounds',
+    other: 'Various music styles'
+  }
+  return genreDescriptions[genre] || 'Live music events'
+}
 
 export default function HomePage() {
-  const genres = getAllGenres()
-  const featuredEvents = getFeaturedEvents().slice(0, 4)
-  const allEvents = getAllEvents().slice(0, 8)
-  const stats = getEventStats()
+  const [featuredEvents, setFeaturedEvents] = useState<Event[]>([])
+  const [allEvents, setAllEvents] = useState<Event[]>([])
+  const [loading, setLoading] = useState(true)
   
-  // Get the first featured event for the hero (or fallback to first event)
-  const heroFeaturedEvent = featuredEvents[0] || allEvents[0]
+  // Calculate genres from loaded events
+  const genres = React.useMemo(() => {
+    const combinedEvents = [...featuredEvents, ...allEvents]
+    if (combinedEvents.length === 0) return []
+    
+    const genreCounts = new Map<string, number>()
+    
+    combinedEvents.forEach(event => {
+      if (event.genre) {
+        genreCounts.set(event.genre, (genreCounts.get(event.genre) || 0) + 1)
+      }
+    })
+    
+    return Array.from(genreCounts.entries()).map(([genre, count]) => ({
+      id: genre,
+      name: genre.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+      color: getGenreColor(genre),
+      icon: '🎵',
+      count: count,
+      description: getGenreDescription(genre)
+    }))
+  }, [featuredEvents, allEvents])
+  
+  // Get the hero event (event with hero: true), fallback to first featured event
+  const heroFeaturedEvent = [...featuredEvents, ...allEvents].find(event => event.hero) || featuredEvents[0] || allEvents[0]
+
+  useEffect(() => {
+    loadEvents()
+  }, [])
+
+  const loadEvents = async () => {
+    try {
+      let combinedEvents: Event[] = []
+      
+      // Load JSON events
+      try {
+        const jsonResponse = await fetch('/api/events/json')
+        if (jsonResponse.ok) {
+          const jsonData = await jsonResponse.json()
+          const jsonEvents = (jsonData.events || []).map((event: any) => ({
+            ...event,
+            _source: 'json'
+          }))
+          combinedEvents.push(...jsonEvents)
+        }
+      } catch (error) {
+        console.error('Error loading JSON events:', error)
+      }
+      
+      // Load database events  
+      try {
+        const dbResponse = await fetch('/api/events?limit=100')
+        if (dbResponse.ok) {
+          const dbData = await dbResponse.json()
+          const dbEvents = (dbData.events || []).map((event: any) => ({
+            ...event,
+            _source: 'database'
+          }))
+          combinedEvents.push(...dbEvents)
+        }
+      } catch (error) {
+        console.error('Error loading database events:', error)
+      }
+      
+      // Sort by date
+      combinedEvents.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      
+      // Filter featured events
+      const featured = combinedEvents.filter(event => event.featured).slice(0, 4)
+      setFeaturedEvents(featured)
+      setAllEvents(combinedEvents.slice(0, 8))
+      
+    } catch (error) {
+      console.error('Error loading events:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-900 mx-auto mb-4"></div>
+            <p className="text-gray-700">Loading events...</p>
+          </div>
+        </div>
+      </Layout>
+    )
+  }
 
   return (
     <Layout>
       {/* Hero Section */}
-      <Hero featuredEvent={heroFeaturedEvent} />
+      {heroFeaturedEvent && <Hero featuredEvent={heroFeaturedEvent} />}
 
       {/* Featured Events Section */}
-      <section className="section-container bg-white">
-        <div className="content-container">
+      <section className="px-[5%] py-16 md:py-24 lg:py-28 bg-neutral-100">
+        <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-heading font-bold text-music-purple-950 mb-4">
+            <h2 className="heading-h2 text-black mb-6">
               Featured Events
             </h2>
-            <p className="text-lg font-body text-music-neutral-700 max-w-2xl mx-auto">
+            <p className="text-medium text-gray-700 max-w-2xl mx-auto">
               Don&apos;t miss these hand-picked live music experiences happening in your city this week.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {featuredEvents.map((event) => (
-              <EventCard key={event.id} event={event} featured />
-            ))}
-          </div>
+          {featuredEvents.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              {featuredEvents.map((event) => (
+                <EventCard key={event.id} event={event} featured />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-gray-600">No featured events available.</p>
+            </div>
+          )}
 
           <div className="text-center">
             <Link 
               href="/events?featured=true"
-              className="btn-primary inline-flex items-center"
+              className="bg-blue-900 text-white px-8 py-4 rounded font-semibold hover:bg-blue-800 transition-colors inline-flex items-center"
             >
               View All Featured Events
               <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -52,23 +198,23 @@ export default function HomePage() {
       </section>
 
       {/* Genres Section */}
-      <section className="section-container bg-music-neutral-100">
-        <div className="content-container">
+      <section className="px-[5%] py-16 md:py-24 lg:py-28 bg-gradient-to-r from-music-purple-50 to-music-purple-100">
+        <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-heading font-bold text-music-purple-950 mb-4">
+            <h2 className="heading-h2 text-black mb-6">
               Browse by Genre
             </h2>
-            <p className="text-lg font-body text-music-neutral-700 max-w-2xl mx-auto">
+            <p className="text-medium text-gray-700 max-w-2xl mx-auto">
               Discover live music events that match your taste. From indie rock to jazz, electronic to acoustic.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
-            {genres.slice(0, 8).map((genre) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-8">
+            {genres.map((genre) => (
               <Link
                 key={genre.id}
                 href={`/events?genre=${genre.id}`}
-                className="feature-card group hover:scale-105 transform transition-all duration-200 hover:shadow-lg"
+                className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transform transition-all duration-200 text-center group hover:scale-105"
               >
                 <div 
                   className="w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center text-white font-bold text-xl group-hover:scale-110 transition-transform duration-200"
@@ -76,13 +222,13 @@ export default function HomePage() {
                 >
                   🎵
                 </div>
-                <h3 className="text-lg font-heading font-semibold text-music-purple-950 mb-2 group-hover:text-music-purple-600 transition-colors duration-200">
+                <h3 className="text-lg font-bold text-black mb-2 group-hover:text-blue-900 transition-colors duration-200 uppercase">
                   {genre.name}
                 </h3>
-                <p className="text-music-neutral-700 font-body text-sm mb-3">
+                <p className="text-gray-700 text-sm mb-3">
                   {genre.description}
                 </p>
-                <span className="text-music-purple-600 font-medium text-sm">
+                <span className="text-black font-semibold text-sm">
                   {genre.count} events →
                 </span>
               </Link>
@@ -92,7 +238,7 @@ export default function HomePage() {
           <div className="text-center">
             <Link 
               href="/events"
-              className="btn-secondary inline-flex items-center"
+              className="border border-black text-black px-8 py-4 rounded font-semibold hover:bg-black hover:text-white transition-colors inline-flex items-center"
             >
               View All Events
               <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,136 +249,32 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Today's Events Section */}
-      <section className="section-container bg-white">
-        <div className="content-container">
+      {/* Upcoming Events Section */}
+      <section className="px-[5%] py-16 md:py-24 lg:py-28 bg-prussian-900">
+        <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-heading font-bold text-music-purple-950 mb-4">
-              Happening Today
+            <h2 className="heading-h2 text-white mb-6">
+              Upcoming Events
             </h2>
-            <p className="text-lg font-body text-music-neutral-700 max-w-2xl mx-auto">
+            <p className="text-medium text-neutral-300 max-w-4xl mx-auto">
               Don&apos;t miss out! These live music events are happening today in your area.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {allEvents.map((event) => (
-              <EventCard key={event.id} event={event} />
-            ))}
-          </div>
+          {allEvents.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {allEvents.map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-gray-600">No events available.</p>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="section-container gradient-music-warm">
-        <div className="content-container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-heading font-bold text-music-purple-950 mb-4">
-              Why Choose Local Music Events?
-            </h2>
-            <p className="text-lg font-body text-music-neutral-700 max-w-2xl mx-auto">
-              We&apos;re passionate about connecting music lovers with amazing live experiences in their city.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            <div className="feature-card text-center group hover:scale-105 transform transition-all duration-200">
-              <div className="w-16 h-16 mx-auto mb-6 bg-music-purple-600 text-white rounded-full flex items-center justify-center text-2xl group-hover:bg-music-purple-700 transition-colors duration-200 shadow-lg shadow-music-purple-600/20">
-                🎯
-              </div>
-              <h3 className="text-xl font-heading font-semibold text-music-purple-950 mb-4">
-                Curated Events
-              </h3>
-              <p className="text-music-neutral-700 font-body leading-relaxed">
-                Every event is hand-picked by local music enthusiasts to ensure quality live music experiences.
-              </p>
-            </div>
-
-            <div className="feature-card text-center group hover:scale-105 transform transition-all duration-200">
-              <div className="w-16 h-16 mx-auto mb-6 bg-music-blue-600 text-white rounded-full flex items-center justify-center text-2xl group-hover:bg-music-blue-700 transition-colors duration-200 shadow-lg shadow-music-blue-600/20">
-                📍
-              </div>
-              <h3 className="text-xl font-heading font-semibold text-music-purple-950 mb-4">
-                Local Focus
-              </h3>
-              <p className="text-music-neutral-700 font-body leading-relaxed">
-                Discover hidden gems and support local venues and artists in your community.
-              </p>
-            </div>
-
-            <div className="feature-card text-center group hover:scale-105 transform transition-all duration-200">
-              <div className="w-16 h-16 mx-auto mb-6 bg-music-accent-600 text-white rounded-full flex items-center justify-center text-2xl group-hover:bg-music-accent-700 transition-colors duration-200 shadow-lg shadow-music-accent-600/20">
-                🎪
-              </div>
-              <h3 className="text-xl font-heading font-semibold text-music-purple-950 mb-4">
-                All Genres
-              </h3>
-              <p className="text-music-neutral-700 font-body leading-relaxed">
-                From intimate acoustic sets to high-energy electronic shows, we cover every musical taste.
-              </p>
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="bg-white rounded-2xl shadow-lg shadow-music-purple-950/10 border border-music-neutral-100 p-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              <div>
-                <div className="text-3xl font-heading font-bold text-music-purple-600 mb-2">
-                  {stats.totalEvents}+
-                </div>
-                <div className="text-music-neutral-700 font-body font-medium">Live Events</div>
-              </div>
-              <div>
-                <div className="text-3xl font-heading font-bold text-music-blue-600 mb-2">
-                  {stats.totalVenues}+
-                </div>
-                <div className="text-music-neutral-700 font-body font-medium">Local Venues</div>
-              </div>
-              <div>
-                <div className="text-3xl font-heading font-bold text-music-accent-600 mb-2">
-                  {stats.totalArtists}+
-                </div>
-                <div className="text-music-neutral-700 font-body font-medium">Featured Artists</div>
-              </div>
-              <div>
-                <div className="text-3xl font-heading font-bold text-music-purple-700 mb-2">
-                  {stats.upcomingEvents}
-                </div>
-                <div className="text-music-neutral-700 font-body font-medium">This Week</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Newsletter Section */}
-      <section className="section-container bg-music-purple-950 text-white">
-        <div className="content-container">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl font-heading font-bold mb-4">
-              Never Miss a Beat
-            </h2>
-            <p className="text-xl font-body text-music-neutral-200 mb-8">
-              Subscribe to our newsletter and get the latest events, artist spotlights, and exclusive concert alerts delivered to your inbox.
-            </p>
-            
-            <div className="max-w-md mx-auto flex flex-col sm:flex-row gap-4">
-              <input
-                type="email"
-                placeholder="Enter your email address"
-                className="flex-1 px-6 py-3 rounded-lg border-0 text-music-purple-950 font-body placeholder-music-neutral-500 focus:outline-none focus:ring-2 focus:ring-music-purple-400"
-              />
-              <button className="btn-primary whitespace-nowrap">
-                Subscribe Now
-              </button>
-            </div>
-            
-            <p className="text-music-neutral-400 font-body text-sm mt-4">
-              Join 5,000+ music lovers. No spam, unsubscribe anytime.
-            </p>
-          </div>
-        </div>
-      </section>
     </Layout>
   )
 }

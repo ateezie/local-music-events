@@ -1,0 +1,26 @@
+# Production Docker Compose for Local Music Events
+version: '3.8'
+
+services:
+  music-events:
+    image: ghcr.io/ateezie/local-music-events:latest
+    container_name: local-music-events
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+    volumes:
+      - ./data:/app/data
+      - ./public/uploads:/app/public/uploads
+    networks:
+      - music-events-network
+
+networks:
+  music-events-network:
+    driver: bridge

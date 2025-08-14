@@ -1,0 +1,106 @@
+{
+  "events": [
+    {
+      "id": "indie-rocks-the-music-hall",
+      "title": "House Vibes with The Velvet Echoes",
+      "description": "Dance the night away to deep house beats with The Velvet Echoes bringing their signature underground sound.",
+      "date": "2025-08-15",
+      "time": "20:00",
+      "endTime": "23:00",
+      "venue": {
+        "id": "the-music-hall",
+        "name": "The Music Hall",
+        "address": "123 Main Street",
+        "city": "Downtown",
+        "state": "CA",
+        "zipCode": "90210",
+        "capacity": 500
+      },
+      "artists": [
+        {
+          "id": "the-velvet-echoes",
+          "name": "The Velvet Echoes",
+          "genre": "house"
+        }
+      ],
+      "genre": "house",
+      "category": "concert",
+      "promoter": "Downtown Music Collective",
+      "ticketUrl": "https://tickets.example.com/velvet-echoes",
+      "price": "$25-30",
+      "featured": true,
+      "status": "upcoming"
+    },
+    {
+      "id": "jazz-night-blue-note-cafe", 
+      "title": "Drum & Bass Night with Marcus Johnson Trio",
+      "description": "High-energy drum & bass session with the acclaimed Marcus Johnson Trio.",
+      "date": "2025-08-12",
+      "time": "19:30",
+      "endTime": "22:30",
+      "venue": {
+        "id": "blue-note-cafe",
+        "name": "Blue Note Café", 
+        "address": "456 Jazz Avenue",
+        "city": "Uptown",
+        "state": "CA",
+        "capacity": 150
+      },
+      "artists": [
+        {
+          "id": "marcus-johnson-trio",
+          "name": "Marcus Johnson Trio",
+          "genre": "drum-and-bass"
+        }
+      ],
+      "genre": "drum-and-bass",
+      "category": "concert",
+      "promoter": "Bassline Events",
+      "ticketUrl": "https://bluenote.example.com/tickets",
+      "price": "$35-45",
+      "featured": false,
+      "status": "upcoming"
+    },
+    {
+      "id": "evt_1755003431340_poftc57wb",
+      "title": "Wicked Warehouse Ft. Troyboi, Richard Finger & More!",
+      "description": "Live music event featuring Downright Entertainment",
+      "date": "2025-10-31",
+      "time": "20:00",
+      "endTime": null,
+      "venue": {
+        "name": "Mississippi Underground",
+        "address": "",
+        "city": "",
+        "state": "",
+        "zipCode": "",
+        "capacity": null
+      },
+      "artists": [
+        {
+          "name": "Downright Entertainment",
+          "genre": "multi-genre"
+        }
+      ],
+      "genre": "multi-genre", 
+      "category": "concert",
+      "price": {
+        "min": 0,
+        "max": null,
+        "currency": "USD"
+      },
+      "tickets": {
+        "url": "https://theticketing.co/e/wickedwarehouse",
+        "available": true,
+        "soldOut": false
+      },
+      "images": [],
+      "featured": false,
+      "status": "published",
+      "promoter": "Downright Entertainment",
+      "tags": ["multi-genre"],
+      "createdAt": "2025-08-12T12:57:11.340Z",
+      "updatedAt": "2025-08-12T12:57:11.340Z"
+    }
+  ]
+}

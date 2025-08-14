@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useParams } from 'next/navigation'
 import Layout from '@/components/Layout'
 import EventCard from '@/components/EventCard'
@@ -59,8 +59,12 @@ export default function ArtistDetailPage() {
     notFound()
   }
 
-  const upcomingEvents = events.filter(event => new Date(event.date) > new Date())
-  const pastEvents = events.filter(event => new Date(event.date) <= new Date())
+  const { upcomingEvents, pastEvents } = useMemo(() => {
+    const now = new Date()
+    const upcoming = events.filter(event => new Date(event.date) > now)
+    const past = events.filter(event => new Date(event.date) <= now)
+    return { upcomingEvents: upcoming, pastEvents: past }
+  }, [events])
 
   return (
     <Layout>
@@ -180,7 +184,7 @@ export default function ArtistDetailPage() {
                       <div key={event.id} className="border border-music-neutral-200 rounded-lg p-4 hover:border-music-purple-300 transition-colors duration-200">
                         <div className="flex items-center justify-between">
                           <div className="flex-1">
-                            <Link href={`/events/${event.id}`} className="group">
+                            <Link href={event.slug ? `/events/${event.slug}` : `/events/${event.id}`} className="group">
                               <h3 className="font-semibold text-music-purple-950 group-hover:text-music-purple-600 mb-1">
                                 {event.title}
                               </h3>

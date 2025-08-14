@@ -25,8 +25,8 @@ export default function MusicLogo({ size = 'medium', className = '' }: MusicLogo
 
   // Fallback placeholder logo
   const PlaceholderLogo = () => (
-    <div className="w-full h-full rounded-full bg-gradient-to-br from-music-purple-400 to-music-purple-600 border-2 border-music-neutral-700 flex items-center justify-center shadow-lg">
-      <span className="text-white font-bold text-xl">🎵</span>
+    <div className="w-full h-full rounded-full bg-gradient-to-br from-music-blue-600 to-music-blue-800 border-2 border-music-yellow-500 flex items-center justify-center shadow-lg">
+      <span className="text-music-yellow-500 font-bold text-xl">🎵</span>
     </div>
   )
 

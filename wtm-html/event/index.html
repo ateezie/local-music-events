@@ -1,0 +1,389 @@
+<section
+  class="z-[999] flex w-full items-center border-b border-scheme-border bg-scheme-background lg:min-h-18 lg:px-[5%]"
+>
+  <div
+    class="mx-auto size-full lg:grid lg:grid-cols-[0.375fr_1fr_0.375fr] lg:items-center lg:justify-between lg:gap-4"
+  >
+    <div
+      class="flex min-h-16 items-center justify-between px-[5%] md:min-h-18 lg:min-h-full lg:px-0"
+    >
+      <a href="#"
+        ><img
+          src="https://d22po4pjz3o32e.cloudfront.net/logo-image.svg"
+          alt="Logo image"
+      /></a>
+      <div class="flex items-center gap-4 lg:hidden">
+        <div>
+          <button
+            data-slot="button"
+            class="inline-flex items-center justify-center gap-3 rounded-button whitespace-nowrap transition-all duration-200 ease-in-out focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 border border-scheme-border bg-neutral-darkest text-white w-full px-4 py-1"
+            title="Join"
+          >
+            Join
+          </button>
+        </div>
+        <button
+          class="-mr-2 flex size-12 flex-col items-center justify-center lg:hidden"
+        >
+          <span class="my-[3px] h-0.5 w-6 bg-neutral-darkest"></span
+          ><span class="my-[3px] h-0.5 w-6 bg-neutral-darkest"></span
+          ><span class="my-[3px] h-0.5 w-6 bg-neutral-darkest"></span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="overflow-hidden px-[5%] text-center lg:flex lg:items-center lg:justify-center lg:px-0 lg:[--height-closed:auto] lg:[--height-open:auto]"
+      style="height:var(--height-closed, 0)"
+    >
+      <a
+        href="#"
+        class="text-regular block py-3 first:pt-7 lg:px-4 lg:py-2 first:lg:pt-2"
+        >Events Calendar</a
+      ><a
+        href="#"
+        class="text-regular block py-3 first:pt-7 lg:px-4 lg:py-2 first:lg:pt-2"
+        >Artist Spotlight</a
+      ><a
+        href="#"
+        class="text-regular block py-3 first:pt-7 lg:px-4 lg:py-2 first:lg:pt-2"
+        >Venue Guide</a
+      >
+      <div>
+        <button
+          class="text-regular flex w-full items-center justify-center gap-4 py-3 text-center lg:w-auto lg:flex-none lg:justify-start lg:gap-2 lg:px-4 lg:py-2"
+        >
+          <span>Get Involved</span
+          ><span
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24px"
+              height="24px"
+              viewBox="0 -960 960 960"
+              class="text-scheme-text"
+              fill="currentColor"
+            >
+              <path
+                d="M480-361q-8 0-15-2.5t-13-8.5L268-556q-11-11-11-28t11-28q11-11 28-11t28 11l156 156 156-156q11-11 28-11t28 11q11 11 11 28t-11 28L508-372q-6 6-13 8.5t-15 2.5Z"
+              ></path></svg
+          ></span>
+        </button>
+        <nav
+          class="bg-scheme-background lg:absolute lg:z-50 lg:border lg:border-scheme-border lg:p-2 lg:[--y-close:25%]"
+          style="visibility:hidden;opacity:var(--opacity-close, 0);display:none;transform:translateY(var(--y-close, 0%))"
+        >
+          <a
+            href="#"
+            class="block py-3 text-center lg:px-4 lg:py-2 lg:text-left"
+            >Contact Us</a
+          ><a
+            href="#"
+            class="block py-3 text-center lg:px-4 lg:py-2 lg:text-left"
+            >FAQs</a
+          ><a
+            href="#"
+            class="block py-3 text-center lg:px-4 lg:py-2 lg:text-left"
+            >Newsletter Signup</a
+          >
+        </nav>
+      </div>
+    </div>
+    <div class="hidden justify-self-end lg:block">
+      <button
+        data-slot="button"
+        class="inline-flex items-center justify-center gap-3 rounded-button whitespace-nowrap transition-all duration-200 ease-in-out focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 border border-scheme-border bg-neutral-darkest text-white px-6 py-2"
+        title="Join"
+      >
+        Join
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="px-[5%]">
+  <div class="mx-auto max-w-lg py-16 text-center md:py-24 lg:py-28">
+    <div>
+      <h1 class="heading-h1 mb-5 font-bold md:mb-6">Dance Night Out</h1>
+      <p class="text-medium">
+        Join us for an unforgettable evening of music and dance in the heart of
+        Saint Louis!
+      </p>
+      <div class="mt-5 flex flex-wrap justify-center gap-2 md:mt-6">
+        <span
+          data-slot="badge"
+          class="inline-flex items-center rounded-badge px-2 py-1 text-sm font-semibold focus:outline-none border border-transparent bg-neutral-lightest text-neutral-darkest"
+          ><a href="#">Live DJ</a></span
+        ><span
+          data-slot="badge"
+          class="inline-flex items-center rounded-badge px-2 py-1 text-sm font-semibold focus:outline-none border border-transparent bg-neutral-lightest text-neutral-darkest"
+          ><a href="#">Dance Party</a></span
+        ><span
+          data-slot="badge"
+          class="inline-flex items-center rounded-badge px-2 py-1 text-sm font-semibold focus:outline-none border border-transparent bg-neutral-lightest text-neutral-darkest"
+          ><a href="#">Nightlife Event</a></span
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="px-[5%] py-16 md:py-24 lg:py-28">
+  <div class="container max-w-lg">
+    <div
+      class="mb-8 grid grid-cols-2 gap-6 md:mb-10 md:grid-cols-4 md:gap-8 lg:mb-12"
+    >
+      <div>
+        <h3 class="heading-h6 mb-2 font-bold">Event</h3>
+        <p>DJ Lineup</p>
+      </div>
+      <div>
+        <h3 class="heading-h6 mb-2 font-bold">Schedule</h3>
+        <p>Special Features</p>
+      </div>
+      <div>
+        <h3 class="heading-h6 mb-2 font-bold">Details</h3>
+        <p>Venue Info</p>
+      </div>
+      <div>
+        <h3 class="heading-h6 mb-2 font-bold">Attractions</h3>
+        <p>Tickets Available</p>
+      </div>
+    </div>
+    <div
+      class="prose-base max-w-full prose-p:m-0 prose-p:mb-4 prose-p:leading-[1.5]"
+    >
+      <p>
+        Morbi sed imperdiet in ipsum, adipiscing elit dui lectus. Tellus id
+        scelerisque est ultricies ultricies. Duis est sit sed leo nisl, blandit
+        elit sagittis. Quisque tristique consequat quam sed. Nisl at scelerisque
+        amet nulla purus habitasse.
+      </p>
+      <p>
+        Nunc sed faucibus bibendum feugiat sed interdum. Ipsum egestas
+        condimentum mi massa. In tincidunt pharetra consectetur sed duis
+        facilisis metus. Etiam egestas in nec sed et. Quis lobortis at sit
+        dictum eget nibh tortor commodo cursus.
+      </p>
+      <p>
+        Odio felis sagittis, morbi feugiat tortor vitae feugiat fusce aliquet.
+        Nam elementum urna nisi aliquet erat dolor enim. Ornare id morbi eget
+        ipsum. Aliquam senectus neque ut id eget consectetur dictum. Donec
+        posuere pharetra odio consequat scelerisque et, nunc tortor. Nulla
+        adipiscing erat a erat. Condimentum lorem posuere gravida enim posuere
+        cursus diam.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="px-[5%] py-16 md:py-24 lg:py-28">
+  <div class="container">
+    <div
+      class="grid grid-cols-1 gap-y-12 md:grid-flow-row md:grid-cols-2 md:items-center md:gap-x-12 lg:gap-x-20"
+    >
+      <div>
+        <h1 class="heading-h3 mb-5 font-bold md:mb-6">
+          Discover the electrifying talent performing at our upcoming dance
+          music event!
+        </h1>
+        <p class="text-medium mb-6 md:mb-8">
+          Get ready to experience unforgettable performances from top artists in
+          the dance music scene. Check out their latest tracks and mixes to get
+          hyped for the event!
+        </p>
+        <div class="grid grid-cols-1 gap-6 py-2 sm:grid-cols-2">
+          <div>
+            <h6 class="heading-h6 mb-3 font-bold md:mb-4">Featured Artists</h6>
+            <p>
+              Listen to their tracks on YouTube and SoundCloud to feel the vibe.
+            </p>
+          </div>
+          <div>
+            <h6 class="heading-h6 mb-3 font-bold md:mb-4">Mixes Available</h6>
+            <p>Explore exclusive mixes on Mixcloud and get ready to dance!</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <img
+          src="https://d22po4pjz3o32e.cloudfront.net/placeholder-image.svg"
+          class="w-full rounded-image object-cover"
+          alt="Relume placeholder image"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="px-[5%] py-16 md:py-24 lg:py-28">
+  <div class="container">
+    <div
+      class="grid grid-cols-1 items-center gap-12 md:grid-cols-2 lg:gap-x-20"
+    >
+      <div class="order-2 md:order-1">
+        <img
+          src="https://d22po4pjz3o32e.cloudfront.net/placeholder-image.svg"
+          class="w-full rounded-image object-cover"
+          alt="Relume placeholder image"
+        />
+      </div>
+      <div class="order-1 md:order-2">
+        <div class="mb-5 md:mb-6">
+          <svg
+            width="100%"
+            height="100%"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            class="size-20 text-scheme-text"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M20.73 7.12L20.59 6.87C20.4094 6.56769 20.1547 6.31643 19.85 6.14L13.14 2.27C12.8362 2.09375 12.4913 2.00062 12.14 2H11.85C11.4987 2.00062 11.1538 2.09375 10.85 2.27L4.14 6.15C3.83697 6.32526 3.58526 6.57697 3.41 6.88L3.27 7.13C3.09375 7.43384 3.00062 7.77874 3 8.13V15.88C3.00062 16.2313 3.09375 16.5762 3.27 16.88L3.41 17.13C3.58979 17.4295 3.84049 17.6802 4.14 17.86L10.86 21.73C11.1623 21.9099 11.5082 22.0033 11.86 22H12.14C12.4913 21.9994 12.8362 21.9063 13.14 21.73L19.85 17.85C20.156 17.6787 20.4087 17.426 20.58 17.12L20.73 16.87C20.9041 16.5653 20.9971 16.221 21 15.87V8.12C20.9994 7.76874 20.9063 7.42384 20.73 7.12ZM11.85 4H12.14L18 7.38L12 10.84L6 7.38L11.85 4ZM13 19.5L18.85 16.12L19 15.87V9.11L13 12.58V19.5Z"
+            ></path>
+          </svg>
+        </div>
+        <h2 class="heading-h2 mb-5 font-bold md:mb-6">
+          Choose Your Ticket Package for the Event
+        </h2>
+        <p class="text-medium">
+          Explore our diverse ticket options designed to fit every budget.
+          Whether you&#x27;re a casual attendee or a dedicated fan, we have the
+          perfect package for you!
+        </p>
+        <div class="mt-6 flex flex-wrap gap-4 md:mt-8">
+          <button
+            data-slot="button"
+            class="inline-flex items-center justify-center gap-3 rounded-button whitespace-nowrap transition-all duration-200 ease-in-out focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 border border-scheme-border bg-scheme-background text-scheme-text px-6 py-3"
+            title="Buy"
+          >
+            Buy</button
+          ><button
+            data-slot="button"
+            class="inline-flex items-center justify-center rounded-button whitespace-nowrap transition-all duration-200 ease-in-out focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 gap-2 text-scheme-text p-0"
+            title="Learn More"
+          >
+            Learn More<svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24px"
+              height="24px"
+              viewBox="0 -960 960 960"
+              class="text-scheme-text"
+              fill="currentColor"
+            >
+              <path
+                d="M504-480 348-636q-11-11-11-28t11-28q11-11 28-11t28 11l184 184q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L404-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l156-156Z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="px-[5%] py-12 md:py-18 lg:py-20">
+  <div class="container">
+    <div
+      class="grid grid-cols-1 items-center justify-center justify-items-center gap-x-[4vw] gap-y-12 pb-12 md:pb-18 lg:grid-cols-[0.25fr_1fr_0.25fr] lg:justify-between lg:gap-y-4 lg:pb-20"
+    >
+      <a href="#" class="lg:justify-self-start"
+        ><img
+          src="https://d22po4pjz3o32e.cloudfront.net/logo-image.svg"
+          alt="Logo image"
+          class="inline-block"
+      /></a>
+      <ul
+        class="grid grid-flow-row grid-cols-1 items-start justify-center justify-items-center gap-6 md:grid-flow-col md:grid-cols-[max-content] md:justify-center md:justify-items-start"
+      >
+        <li class="font-semibold"><a href="#">Event Listings</a></li>
+        <li class="font-semibold"><a href="#">Get Involved</a></li>
+        <li class="font-semibold"><a href="#">Contact Us</a></li>
+        <li class="font-semibold"><a href="#">About Us</a></li>
+        <li class="font-semibold"><a href="#">Join Now</a></li>
+      </ul>
+      <div
+        class="flex items-start justify-start justify-items-center gap-x-3 lg:justify-self-end"
+      >
+        <a href="#"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24px"
+            height="24px"
+            viewBox="0 0 24 24"
+            class="size-6 text-scheme-text"
+            fill="currentColor"
+          >
+            <path
+              d="M12.001 2.002c-5.522 0-9.999 4.477-9.999 9.999 0 4.99 3.656 9.126 8.437 9.879v-6.988h-2.54v-2.891h2.54V9.798c0-2.508 1.493-3.891 3.776-3.891 1.094 0 2.24.195 2.24.195v2.459h-1.264c-1.24 0-1.628.772-1.628 1.563v1.875h2.771l-.443 2.891h-2.328v6.988C18.344 21.129 22 16.992 22 12.001c0-5.522-4.477-9.999-9.999-9.999z"
+            ></path></svg></a
+        ><a href="#"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24px"
+            height="24px"
+            viewBox="0 0 24 24"
+            class="size-6 text-scheme-text"
+            fill="currentColor"
+          >
+            <path
+              d="M11.999 7.377a4.623 4.623 0 1 0 0 9.248 4.623 4.623 0 0 0 0-9.248zm0 7.627a3.004 3.004 0 1 1 0-6.008 3.004 3.004 0 0 1 0 6.008z"
+            ></path>
+            <circle cx="16.806" cy="7.207" r="1.078"></circle>
+            <path
+              d="M20.533 6.111A4.605 4.605 0 0 0 17.9 3.479a6.606 6.606 0 0 0-2.186-.42c-.963-.042-1.268-.054-3.71-.054s-2.755 0-3.71.054a6.554 6.554 0 0 0-2.184.42 4.6 4.6 0 0 0-2.633 2.632 6.585 6.585 0 0 0-.419 2.186c-.043.962-.056 1.267-.056 3.71 0 2.442 0 2.753.056 3.71.015.748.156 1.486.419 2.187a4.61 4.61 0 0 0 2.634 2.632 6.584 6.584 0 0 0 2.185.45c.963.042 1.268.055 3.71.055s2.755 0 3.71-.055a6.615 6.615 0 0 0 2.186-.419 4.613 4.613 0 0 0 2.633-2.633c.263-.7.404-1.438.419-2.186.043-.962.056-1.267.056-3.71s0-2.753-.056-3.71a6.581 6.581 0 0 0-.421-2.217zm-1.218 9.532a5.043 5.043 0 0 1-.311 1.688 2.987 2.987 0 0 1-1.712 1.711 4.985 4.985 0 0 1-1.67.311c-.95.044-1.218.055-3.654.055-2.438 0-2.687 0-3.655-.055a4.96 4.96 0 0 1-1.669-.311 2.985 2.985 0 0 1-1.719-1.711 5.08 5.08 0 0 1-.311-1.669c-.043-.95-.053-1.218-.053-3.654 0-2.437 0-2.686.053-3.655a5.038 5.038 0 0 1 .311-1.687c.305-.789.93-1.41 1.719-1.712a5.01 5.01 0 0 1 1.669-.311c.951-.043 1.218-.055 3.655-.055s2.687 0 3.654.055a4.96 4.96 0 0 1 1.67.311 2.991 2.991 0 0 1 1.712 1.712 5.08 5.08 0 0 1 .311 1.669c.043.951.054 1.218.054 3.655 0 2.436 0 2.698-.043 3.654h-.011z"
+            ></path></svg></a
+        ><a href="#"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24px"
+            height="24px"
+            viewBox="0 0 512 512"
+            class="size-6 p-0.5 text-scheme-text"
+            fill="currentColor"
+          >
+            <path
+              d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"
+            ></path></svg></a
+        ><a href="#"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24px"
+            height="24px"
+            viewBox="0 0 24 24"
+            class="size-6 text-scheme-text"
+            fill="currentColor"
+          >
+            <path
+              d="M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM8.339 18.337H5.667v-8.59h2.672v8.59zM7.003 8.574a1.548 1.548 0 1 1 0-3.096 1.548 1.548 0 0 1 0 3.096zm11.335 9.763h-2.669V14.16c0-.996-.018-2.277-1.388-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248h-2.667v-8.59h2.56v1.174h.037c.355-.675 1.227-1.387 2.524-1.387 2.704 0 3.203 1.778 3.203 4.092v4.71z"
+            ></path></svg></a
+        ><a href="#"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24px"
+            height="24px"
+            viewBox="0 0 24 24"
+            class="size-6 text-scheme-text"
+            fill="currentColor"
+          >
+            <path
+              d="M21.593 7.203a2.506 2.506 0 0 0-1.762-1.766C18.265 5.007 12 5 12 5s-6.264-.007-7.831.404a2.56 2.56 0 0 0-1.766 1.778c-.413 1.566-.417 4.814-.417 4.814s-.004 3.264.406 4.814c.23.857.905 1.534 1.763 1.765 1.582.43 7.83.437 7.83.437s6.265.007 7.831-.403a2.515 2.515 0 0 0 1.767-1.763c.414-1.565.417-4.812.417-4.812s.02-3.265-.407-4.831zM9.996 15.005l.005-6 5.207 3.005-5.212 2.995z"
+            ></path></svg
+        ></a>
+      </div>
+    </div>
+    <div class="h-px w-full bg-scheme-border"></div>
+    <div
+      class="text-small flex flex-col-reverse items-center justify-center justify-items-center pt-6 pb-4 md:flex-row md:gap-x-6 md:pt-8 md:pb-0"
+    >
+      <ul
+        class="text-small grid grid-flow-row grid-cols-[max-content] items-center justify-center justify-items-center gap-y-4 md:grid-flow-col md:gap-x-6 md:gap-y-0"
+      >
+        <p class="mt-8 md:mt-0">© 2024 Relume. All rights reserved.</p>
+        <a href="#" class="underline">Privacy Policy</a
+        ><a href="#" class="underline">Terms of Use</a
+        ><a href="#" class="underline">Cookie Preferences</a>
+      </ul>
+    </div>
+  </div>
+</footer>

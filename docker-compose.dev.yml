@@ -1,0 +1,48 @@
+# Development Docker Compose for Local Music Events
+version: '3.8'
+
+services:
+  music-events-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: local-music-events-dev
+    restart: unless-stopped
+    ports:
+      - "3003:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - NEXTAUTH_URL=http://localhost:3003
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - ./public/uploads:/app/public/uploads
+    networks:
+      - music-events-dev-network
+    
+  # Optional: Local PostgreSQL for development
+  postgres-dev:
+    image: postgres:15-alpine
+    container_name: music-events-postgres-dev
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=local_music_events
+      - POSTGRES_USER=musicadmin
+      - POSTGRES_PASSWORD=musicpass123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - music-events-dev-network
+
+volumes:
+  postgres_data:
+
+networks:
+  music-events-dev-network:
+    driver: bridge

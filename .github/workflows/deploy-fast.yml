@@ -1,0 +1,60 @@
+name: 🚀 Fast Deploy (AMD64 Only)
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for fast deploy'
+        required: false
+        default: 'Quick fix deployment'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ateezie/local-music-events
+
+jobs:
+  fast-build-deploy:
+    name: Fast Build & Deploy (AMD64)
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      packages: write
+      
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Log in to Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Build and push (AMD64 only)
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        platforms: linux/amd64
+        push: true
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        
+    - name: Deploy to production
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd /opt/local-music-events
+          echo "Fast deploying: ${{ github.event.inputs.reason }}"
+          docker-compose pull
+          docker-compose up -d
+          docker system prune -f
+          echo "🚀 Fast deploy completed!"
