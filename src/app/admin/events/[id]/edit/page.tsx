@@ -154,6 +154,23 @@ export default function EditEventPage() {
           eventData.promoters = []
         }
         
+        // Initialize subGenres based on main genre if not already set
+        if (!eventData.subGenres && eventData.genre && eventData.genre !== 'multi-genre') {
+          // If we have a main genre but no subGenres, initialize subGenres with the main genre
+          eventData.subGenres = [eventData.genre]
+        } else if (!eventData.subGenres) {
+          // If no subGenres at all, initialize empty array
+          eventData.subGenres = []
+        } else if (typeof eventData.subGenres === 'string') {
+          // If subGenres is a JSON string, parse it
+          try {
+            eventData.subGenres = JSON.parse(eventData.subGenres)
+          } catch (e) {
+            // If parsing fails, initialize with main genre or empty array
+            eventData.subGenres = eventData.genre && eventData.genre !== 'multi-genre' ? [eventData.genre] : []
+          }
+        }
+        
         // Check if there's a pending extension image URL to apply
         const pendingImageUrl = (window as any).pendingExtensionImageUrl
         if (pendingImageUrl) {
@@ -343,9 +360,14 @@ export default function EditEventPage() {
                   <GenreMultiSelect
                     selectedGenres={event.subGenres || []}
                     onChange={(genres) => {
-                      updateEvent('subGenres', genres)
-                      // Set main genre to 'multi-genre' if multiple selected, otherwise use the single genre
-                      updateEvent('genre', genres.length > 1 ? 'multi-genre' : (genres[0] || 'other'))
+                      // Update both subGenres and genre in a single state update to avoid conflicts
+                      if (event) {
+                        setEvent({
+                          ...event,
+                          subGenres: genres,
+                          genre: genres.length > 1 ? 'multi-genre' : (genres[0] || 'other')
+                        })
+                      }
                     }}
                     placeholder="Select genres for this event..."
                   />

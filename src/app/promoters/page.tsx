@@ -112,7 +112,7 @@ export default function PromotersPage() {
     return (
       <Layout>
         <div className="min-h-screen bg-music-neutral-50">
-          <div className="bg-gradient-to-r from-music-accent-50 to-music-accent-100 py-12">
+          <div className="bg-gradient-to-r from-music-purple-50 to-music-purple-100 py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center">
                 <div className="h-12 bg-music-neutral-200 rounded mb-6 animate-pulse"></div>
@@ -136,7 +136,7 @@ export default function PromotersPage() {
     <Layout>
       <div className="min-h-screen bg-music-neutral-50">
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-music-accent-50 to-music-accent-100 py-16">
+        <div className="bg-gradient-to-r from-music-purple-50 to-music-purple-100 py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <h1 className="text-4xl sm:text-5xl font-bold text-music-purple-950 mb-4">
@@ -177,7 +177,7 @@ export default function PromotersPage() {
             {promoters.map((promoter) => (
               <div key={promoter.name} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden">
                 {/* Promoter Header */}
-                <div className="h-32 bg-gradient-to-br from-music-accent-100 to-music-purple-100 flex items-center justify-center">
+                <div className="h-32 bg-gradient-to-br from-music-purple-100 to-music-purple-200 flex items-center justify-center">
                   <div className="text-center">
                     <div className="w-16 h-16 mx-auto mb-2 bg-music-accent-500 rounded-full flex items-center justify-center">
                       <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">

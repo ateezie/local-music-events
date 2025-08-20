@@ -84,10 +84,14 @@ export async function authenticateAdmin(request: NextRequest): Promise<JWTPayloa
   return payload
 }
 
-// Create default admin user if it doesn't exist
+// Create admin user with required environment variables
 export async function createDefaultAdmin() {
-  const adminEmail = process.env.ADMIN_EMAIL || 'admin@localmusicevents.com'
-  const adminPassword = process.env.ADMIN_PASSWORD || 'admin123'
+  const adminEmail = process.env.ADMIN_EMAIL
+  const adminPassword = process.env.ADMIN_PASSWORD
+
+  if (!adminEmail || !adminPassword) {
+    throw new Error('ADMIN_EMAIL and ADMIN_PASSWORD environment variables are required')
+  }
 
   const existingAdmin = await prisma.user.findUnique({
     where: { email: adminEmail }
@@ -109,6 +113,6 @@ export async function createDefaultAdmin() {
     }
   })
 
-  console.log('✓ Created default admin user:', adminEmail)
+  console.log('✓ Created admin user:', adminEmail)
   return admin
 }

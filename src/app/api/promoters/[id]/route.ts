@@ -34,43 +34,32 @@ export async function GET(
 
     const { id } = await params
 
-    // In a real app, you would fetch from database:
-    // const promoter = await prisma.promoter.findUnique({
-    //   where: { id },
-    //   include: {
-    //     _count: {
-    //       select: { events: true }
-    //     }
-    //   }
-    // })
-    
-    // For demo, find in mock data
-    const mockPromoters = [
-      {
-        id: 'promoter-1',
-        name: 'Mississippi Underground',
-        description: 'Premier underground music venue and event promoter in St. Louis',
-        website: 'https://mississippiunderground.com',
-        email: 'info@mississippiunderground.com',
-        phone: '(314) 555-0123',
-        image: '/images/promoters/mississippi-underground.jpg',
-        facebook: 'https://facebook.com/mississippiunderground',
-        instagram: 'https://instagram.com/mississippiunderground',
-        twitter: 'https://twitter.com/mississippiunderground',
-        eventCount: 15
+    // Find promoter by either slug or ID
+    const promoter = await prisma.promoter.findFirst({
+      where: {
+        OR: [
+          { id },
+          { slug: id }
+        ]
+      },
+      include: {
+        _count: {
+          select: { events: true }
+        }
       }
-    ]
-    
-    const promoter = mockPromoters.find(p => p.id === id)
+    })
     
     if (!promoter) {
       return NextResponse.json({ error: 'Promoter not found' }, { status: 404 })
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      promoter 
-    })
+    // Format the response to include event count
+    const formattedPromoter = {
+      ...promoter,
+      eventCount: promoter._count.events
+    }
+
+    return NextResponse.json(formattedPromoter)
 
   } catch (error) {
     console.error('Error fetching promoter:', error)
@@ -101,43 +90,43 @@ export async function PUT(
       return NextResponse.json({ error: 'Promoter name is required' }, { status: 400 })
     }
 
-    // In a real app, you would update in database:
-    // const promoter = await prisma.promoter.update({
-    //   where: { id },
-    //   data: {
-    //     name: name.trim(),
-    //     description: description?.trim(),
-    //     website: website?.trim(),
-    //     email: email?.trim(),
-    //     phone: phone?.trim(),
-    //     image: image?.trim(),
-    //     facebook: facebook?.trim(),
-    //     instagram: instagram?.trim(),
-    //     twitter: twitter?.trim(),
-    //     updatedAt: new Date()
-    //   }
-    // })
+    // Generate slug if name has changed
+    const slug = name.trim().toLowerCase()
+      .replace(/[^a-z0-9 -]/g, '') // Remove special characters
+      .replace(/\s+/g, '-')        // Replace spaces with hyphens
+      .replace(/-+/g, '-')         // Replace multiple hyphens with single hyphen
+      .trim()
 
-    // For demo, return updated data
+    // Update promoter in database
+    const promoter = await prisma.promoter.update({
+      where: { id },
+      data: {
+        name: name.trim(),
+        slug,
+        description: description?.trim() || null,
+        website: website?.trim() || null,
+        email: email?.trim() || null,
+        phone: phone?.trim() || null,
+        image: image?.trim() || null,
+        facebook: facebook?.trim() || null,
+        instagram: instagram?.trim() || null,
+        twitter: twitter?.trim() || null,
+        updatedAt: new Date()
+      },
+      include: {
+        _count: {
+          select: { events: true }
+        }
+      }
+    })
+
+    // Format the response
     const updatedPromoter = {
-      id,
-      name: name.trim(),
-      description: description?.trim() || undefined,
-      website: website?.trim() || undefined,
-      email: email?.trim() || undefined,
-      phone: phone?.trim() || undefined,
-      image: image?.trim() || undefined,
-      facebook: facebook?.trim() || undefined,
-      instagram: instagram?.trim() || undefined,
-      twitter: twitter?.trim() || undefined,
-      eventCount: 0, // Would be calculated from actual events
-      updatedAt: new Date().toISOString()
+      ...promoter,
+      eventCount: promoter._count.events
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      promoter: updatedPromoter 
-    })
+    return NextResponse.json(updatedPromoter)
 
   } catch (error) {
     console.error('Error updating promoter:', error)
@@ -162,10 +151,10 @@ export async function DELETE(
 
     const { id } = await params
 
-    // In a real app, you would delete from database:
-    // const promoter = await prisma.promoter.delete({
-    //   where: { id }
-    // })
+    // Delete promoter from database
+    await prisma.promoter.delete({
+      where: { id }
+    })
 
     return NextResponse.json({ 
       success: true, 

@@ -52,6 +52,12 @@ export default function AdminHeader({ title, showLogout = true }: AdminHeaderPro
               Promoters
             </Link>
             <Link
+              href="/admin/artists"
+              className="text-sm text-prussian-600 hover:text-prussian-500 transition-colors"
+            >
+              Artists
+            </Link>
+            <Link
               href="/admin/import-ics"
               className="text-sm text-prussian-600 hover:text-prussian-500 transition-colors"
             >

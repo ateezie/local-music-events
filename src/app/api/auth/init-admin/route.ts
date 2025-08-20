@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
   // Check if admin already exists
   try {
     const { prisma } = await import('@/lib/prisma')
-    const adminEmail = process.env.ADMIN_EMAIL || 'admin@localmusicevents.com'
+    const adminEmail = process.env.ADMIN_EMAIL
     
     const existingAdmin = await prisma.user.findUnique({
       where: { email: adminEmail }

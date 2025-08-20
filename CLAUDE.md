@@ -21,9 +21,8 @@ BEFORE doing ANYTHING else, when you see ANY task management scenario:
 ## Quick Reference
 
 ### Admin Access
-- Email: `hello@alexthip.com`
-- Password: `admin123` 
 - URL: http://localhost:3000/admin
+- Credentials: Set via ADMIN_EMAIL and ADMIN_PASSWORD environment variables
 
 ### Development Environment (STREAMLINED)
 

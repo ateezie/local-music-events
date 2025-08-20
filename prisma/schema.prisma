@@ -21,9 +21,10 @@ model User {
   updatedAt DateTime @updatedAt
 
   // Relations
-  events   Event[]
-  venues   Venue[]
-  artists  Artist[]
+  events    Event[]
+  venues    Venue[]
+  artists   Artist[]
+  promoters Promoter[]
 
   @@map("users")
 }
@@ -89,6 +90,16 @@ model Artist {
   bandcamp   String?
   soundcloud String?
   
+  // Spotify integration fields
+  spotifyId       String? // Spotify artist ID
+  spotifyUrl      String? // Spotify artist URL
+  spotifyPopularity Int?  // Spotify popularity score (0-100)
+  spotifyFollowers  Int?  // Number of Spotify followers
+  spotifyGenres     String? // JSON array of Spotify genres
+  spotifyTopTracks  String? // JSON array of top track data
+  spotifyAlbums     String? // JSON array of album data
+  lastSpotifySync   DateTime? // Last time Spotify data was fetched
+  
   // Band members (stored as JSON array)
   members String? // JSON array of member names
   
@@ -104,6 +115,33 @@ model Artist {
   author   User?         @relation(fields: [authorId], references: [id])
 
   @@map("artists")
+}
+
+// Promoter model
+model Promoter {
+  id          String  @id @default(cuid())
+  name        String
+  slug        String? @unique // URL-friendly version of name, e.g., "mississippi-underground"
+  description String?
+  website     String?
+  email       String?
+  phone       String?
+  image       String?
+
+  // Social media
+  facebook  String?
+  instagram String?
+  twitter   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  events   Event[]
+  authorId String?
+  author   User?   @relation(fields: [authorId], references: [id])
+
+  @@map("promoters")
 }
 
 // Event model
@@ -143,6 +181,10 @@ model Event {
   venueId     String
   venue       Venue          @relation(fields: [venueId], references: [id])
   artists     EventArtist[]
+  
+  // Optional promoter relation (keeping string promoter field for flexibility)
+  promoterId  String?
+  promoterRel Promoter?      @relation(fields: [promoterId], references: [id])
   
   // Created by admin user
   authorId    String?

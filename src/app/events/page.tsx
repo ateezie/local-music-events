@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Layout from '@/components/Layout'
 import EventCard from '@/components/EventCard'
 import { Event } from '@/types'
@@ -19,6 +20,7 @@ export default function EventsPage() {
   const [loading, setLoading] = useState(true)
   const [genres, setGenres] = useState<GenreInfo[]>([])
   const [stats, setStats] = useState({ totalEvents: 0, upcomingEvents: 0, totalVenues: 0 })
+  const searchParams = useSearchParams()
 
   useEffect(() => {
     const loadEvents = async () => {
@@ -63,10 +65,20 @@ export default function EventsPage() {
         const venueSet = new Set<string>()
         
         combinedEvents.forEach(event => {
-          // Count genres
+          // Count genres from main genre field
           if (event.genre) {
             genreMap.set(event.genre, (genreMap.get(event.genre) || 0) + 1)
           }
+          
+          // Count genres from subGenres array
+          if (event.subGenres && Array.isArray(event.subGenres)) {
+            event.subGenres.forEach(subGenre => {
+              if (subGenre && subGenre !== event.genre) { // Don't double-count the main genre
+                genreMap.set(subGenre, (genreMap.get(subGenre) || 0) + 1)
+              }
+            })
+          }
+          
           // Count venues
           if (event.venue?.id) {
             venueSet.add(event.venue.id)
@@ -119,12 +131,32 @@ export default function EventsPage() {
     loadEvents()
   }, [])
 
+  // Handle URL query parameters after events are loaded
+  useEffect(() => {
+    if (events.length > 0) {
+      const genreParam = searchParams.get('genre')
+      if (genreParam && genreParam !== selectedGenre) {
+        handleGenreFilter(genreParam)
+      }
+    }
+  }, [events, searchParams])
+
   const handleGenreFilter = (genreId: string) => {
     setSelectedGenre(genreId)
     if (genreId === 'all') {
       setFilteredEvents(events)
     } else {
-      const filtered = events.filter(event => event.genre === genreId)
+      const filtered = events.filter(event => {
+        // Check main genre field
+        if (event.genre === genreId) return true
+        
+        // Check subGenres array if it exists
+        if (event.subGenres && Array.isArray(event.subGenres)) {
+          return event.subGenres.includes(genreId)
+        }
+        
+        return false
+      })
       setFilteredEvents(filtered)
     }
   }

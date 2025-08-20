@@ -101,19 +101,25 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // In a real app, you would fetch from database:
-    // const promoters = await prisma.promoter.findMany({
-    //   orderBy: { name: 'asc' },
-    //   include: {
-    //     _count: {
-    //       select: { events: true }
-    //     }
-    //   }
-    // })
+    // Fetch promoters from database
+    const promoters = await prisma.promoter.findMany({
+      orderBy: { name: 'asc' },
+      include: {
+        _count: {
+          select: { events: true }
+        }
+      }
+    })
+
+    // Format the response to include event count
+    const formattedPromoters = promoters.map(promoter => ({
+      ...promoter,
+      eventCount: promoter._count.events
+    }))
 
     return NextResponse.json({ 
       success: true, 
-      promoters: mockPromoters 
+      promoters: formattedPromoters 
     })
 
   } catch (error) {
@@ -141,42 +147,40 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Promoter name is required' }, { status: 400 })
     }
 
-    // Create new promoter
-    const newPromoter: Promoter = {
-      id: `promoter-${Date.now()}`,
-      name: name.trim(),
-      description: description?.trim() || undefined,
-      website: website?.trim() || undefined,
-      email: email?.trim() || undefined,
-      phone: phone?.trim() || undefined,
-      image: image?.trim() || undefined,
-      facebook: facebook?.trim() || undefined,
-      instagram: instagram?.trim() || undefined,
-      twitter: twitter?.trim() || undefined,
-      eventCount: 0,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+    // Generate slug from name
+    const slug = name.trim().toLowerCase()
+      .replace(/[^a-z0-9 -]/g, '') // Remove special characters
+      .replace(/\s+/g, '-')        // Replace spaces with hyphens
+      .replace(/-+/g, '-')         // Replace multiple hyphens with single hyphen
+      .trim()
+
+    // Create promoter in database
+    const promoter = await prisma.promoter.create({
+      data: {
+        name: name.trim(),
+        slug,
+        description: description?.trim() || null,
+        website: website?.trim() || null,
+        email: email?.trim() || null,
+        phone: phone?.trim() || null,
+        image: image?.trim() || null,
+        facebook: facebook?.trim() || null,
+        instagram: instagram?.trim() || null,
+        twitter: twitter?.trim() || null,
+        authorId: user.userId
+      },
+      include: {
+        _count: {
+          select: { events: true }
+        }
+      }
+    })
+
+    // Format the response
+    const newPromoter = {
+      ...promoter,
+      eventCount: promoter._count.events
     }
-
-    // In a real app, you would save to database:
-    // const promoter = await prisma.promoter.create({
-    //   data: {
-    //     id: newPromoter.id,
-    //     name: newPromoter.name,
-    //     description: newPromoter.description,
-    //     website: newPromoter.website,
-    //     email: newPromoter.email,
-    //     phone: newPromoter.phone,
-    //     image: newPromoter.image,
-    //     facebook: newPromoter.facebook,
-    //     instagram: newPromoter.instagram,
-    //     twitter: newPromoter.twitter,
-    //     authorId: user.id
-    //   }
-    // })
-
-    // For demo purposes, add to mock data
-    mockPromoters.push(newPromoter)
 
     return NextResponse.json({ 
       success: true, 

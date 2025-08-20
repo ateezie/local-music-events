@@ -10,6 +10,7 @@ import ImageUpload from '@/components/ImageUpload'
 interface Promoter {
   id: string
   name: string
+  slug?: string
   description?: string
   website?: string
   email?: string
@@ -35,19 +36,6 @@ export default function PromotersPage() {
   const [promoters, setPromoters] = useState<Promoter[]>([])
   const [loading, setLoading] = useState(true)
   const [promotersLoading, setPromotersLoading] = useState(true)
-  const [showForm, setShowForm] = useState(false)
-  const [editingPromoter, setEditingPromoter] = useState<Promoter | null>(null)
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    website: '',
-    email: '',
-    phone: '',
-    image: '',
-    facebook: '',
-    instagram: '',
-    twitter: ''
-  })
   const router = useRouter()
 
   useEffect(() => {
@@ -96,54 +84,6 @@ export default function PromotersPage() {
     }
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    try {
-      const token = localStorage.getItem('admin_token')
-      const url = editingPromoter ? `/api/promoters/${editingPromoter.id}` : '/api/promoters'
-      const method = editingPromoter ? 'PUT' : 'POST'
-      
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(formData)
-      })
-
-      if (response.ok) {
-        loadPromoters()
-        setShowForm(false)
-        setEditingPromoter(null)
-        resetForm()
-        alert(editingPromoter ? '✅ Promoter updated successfully!' : '✅ Promoter created successfully!')
-      } else {
-        const data = await response.json()
-        alert('Error: ' + data.error)
-      }
-    } catch (error) {
-      console.error('Error saving promoter:', error)
-      alert('Error saving promoter')
-    }
-  }
-
-  const handleEdit = (promoter: Promoter) => {
-    setEditingPromoter(promoter)
-    setFormData({
-      name: promoter.name,
-      description: promoter.description || '',
-      website: promoter.website || '',
-      email: promoter.email || '',
-      phone: promoter.phone || '',
-      image: promoter.image || '',
-      facebook: promoter.facebook || '',
-      instagram: promoter.instagram || '',
-      twitter: promoter.twitter || ''
-    })
-    setShowForm(true)
-  }
 
   const handleDelete = async (id: string, name: string) => {
     if (!confirm(`Are you sure you want to delete promoter "${name}"?\n\nThis will not delete events but will remove the promoter record.`)) return
@@ -168,19 +108,6 @@ export default function PromotersPage() {
     }
   }
 
-  const resetForm = () => {
-    setFormData({
-      name: '',
-      description: '',
-      website: '',
-      email: '',
-      phone: '',
-      image: '',
-      facebook: '',
-      instagram: '',
-      twitter: ''
-    })
-  }
 
   if (loading) {
     return (
@@ -205,150 +132,14 @@ export default function PromotersPage() {
             <h2 className="text-2xl font-bold text-neutral-50 mb-2">Promoters</h2>
             <p className="text-neutral-400">Manage event promoters and their information</p>
           </div>
-          <button
-            onClick={() => {
-              setEditingPromoter(null)
-              resetForm()
-              setShowForm(true)
-            }}
+          <Link
+            href="/admin/promoters/new"
             className="bg-resolution-600 text-white px-4 py-2 rounded-md hover:bg-resolution-700 transition-colors duration-200"
           >
             Add New Promoter
-          </button>
+          </Link>
         </div>
 
-        {/* Add/Edit Form */}
-        {showForm && (
-          <div className="bg-neutral-700 rounded-lg shadow-medium p-6 mb-8">
-            <h3 className="text-lg font-medium text-neutral-50 mb-6">
-              {editingPromoter ? 'Edit Promoter' : 'Add New Promoter'}
-            </h3>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-neutral-300 mb-2">
-                    Promoter Name *
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-3 py-2 border border-neutral-500 rounded-md focus:outline-none focus:ring-2 focus:ring-resolution-500 bg-neutral-600 text-white"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-neutral-300 mb-2">
-                    Website
-                  </label>
-                  <input
-                    type="url"
-                    value={formData.website}
-                    onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                    className="w-full px-3 py-2 border border-neutral-500 rounded-md focus:outline-none focus:ring-2 focus:ring-resolution-500 bg-neutral-600 text-white"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-neutral-300 mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-3 py-2 border border-neutral-500 rounded-md focus:outline-none focus:ring-2 focus:ring-resolution-500 bg-neutral-600 text-white"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-neutral-300 mb-2">
-                    Phone
-                  </label>
-                  <input
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-3 py-2 border border-neutral-500 rounded-md focus:outline-none focus:ring-2 focus:ring-resolution-500 bg-neutral-600 text-white"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-neutral-300 mb-2">
-                    Facebook
-                  </label>
-                  <input
-                    type="url"
-                    value={formData.facebook}
-                    onChange={(e) => setFormData({ ...formData, facebook: e.target.value })}
-                    className="w-full px-3 py-2 border border-neutral-500 rounded-md focus:outline-none focus:ring-2 focus:ring-resolution-500 bg-neutral-600 text-white"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-neutral-300 mb-2">
-                    Instagram
-                  </label>
-                  <input
-                    type="url"
-                    value={formData.instagram}
-                    onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
-                    className="w-full px-3 py-2 border border-neutral-500 rounded-md focus:outline-none focus:ring-2 focus:ring-resolution-500 bg-neutral-600 text-white"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-neutral-300 mb-2">
-                    Twitter
-                  </label>
-                  <input
-                    type="url"
-                    value={formData.twitter}
-                    onChange={(e) => setFormData({ ...formData, twitter: e.target.value })}
-                    className="w-full px-3 py-2 border border-neutral-500 rounded-md focus:outline-none focus:ring-2 focus:ring-resolution-500 bg-neutral-600 text-white"
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Description
-                </label>
-                <textarea
-                  rows={3}
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-music-purple-500 bg-gray-700 text-white"
-                  placeholder="Describe the promoter organization..."
-                />
-              </div>
-
-              <div>
-                <ImageUpload
-                  currentImage={formData.image}
-                  onImageChange={(imageUrl) => setFormData({ ...formData, image: imageUrl })}
-                  label="Promoter Logo/Image"
-                  className="w-full"
-                />
-              </div>
-
-              <div className="flex justify-end space-x-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowForm(false)
-                    setEditingPromoter(null)
-                    resetForm()
-                  }}
-                  className="px-4 py-2 border border-neutral-500 rounded-md text-neutral-300 hover:bg-neutral-600 bg-neutral-700 transition-colors duration-200"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-resolution-600 text-white rounded-md hover:bg-resolution-700 transition-colors duration-200"
-                >
-                  {editingPromoter ? 'Update Promoter' : 'Add Promoter'}
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
 
         {/* Promoters Table */}
         <div className="bg-neutral-700 rounded-lg shadow-medium overflow-hidden">
@@ -361,16 +152,12 @@ export default function PromotersPage() {
               <div className="text-6xl mb-4">🎪</div>
               <h3 className="text-xl font-semibold text-neutral-50 mb-2">No promoters found</h3>
               <p className="text-neutral-400 mb-6">Add your first promoter to start managing event organizers!</p>
-              <button
-                onClick={() => {
-                  setEditingPromoter(null)
-                  resetForm()
-                  setShowForm(true)
-                }}
+              <Link
+                href="/admin/promoters/new"
                 className="bg-resolution-600 text-white px-4 py-2 rounded-md hover:bg-resolution-700 transition-colors duration-200"
               >
                 Add New Promoter
-              </button>
+              </Link>
             </div>
           ) : (
             <div className="w-full">
@@ -467,12 +254,12 @@ export default function PromotersPage() {
                       </td>
                       <td className="px-4 py-4 text-right text-sm font-medium">
                         <div className="flex items-center justify-end space-x-2">
-                          <button
-                            onClick={() => handleEdit(promoter)}
+                          <Link
+                            href={`/admin/promoters/${promoter.slug || promoter.id}/edit`}
                             className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium text-resolution-400 hover:text-resolution-300 hover:bg-neutral-600 transition-colors duration-200"
                           >
                             ✏️ Edit
-                          </button>
+                          </Link>
                           <button
                             onClick={() => handleDelete(promoter.id, promoter.name)}
                             className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium text-cardinal-400 hover:text-cardinal-300 hover:bg-neutral-600 transition-colors duration-200"

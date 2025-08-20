@@ -27,11 +27,12 @@ const UpdateArtistSchema = z.object({
 // GET /api/artists/[id] - Get single artist
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const artist = await prisma.artist.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         events: {
           include: {
@@ -112,9 +113,11 @@ export async function GET(
 // PUT /api/artists/[id] - Update artist (admin only)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
+    
     // Verify admin authentication
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     if (!token) {
@@ -134,7 +137,7 @@ export async function PUT(
 
     // Check if artist exists
     const existingArtist = await prisma.artist.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!existingArtist) {
@@ -155,7 +158,7 @@ export async function PUT(
     }
 
     const artist = await prisma.artist.update({
-      where: { id: params.id },
+      where: { id },
       data: updateData,
       include: {
         author: {
@@ -220,9 +223,11 @@ export async function PUT(
 // DELETE /api/artists/[id] - Delete artist (admin only)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
+    
     // Verify admin authentication
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
     if (!token) {
@@ -242,7 +247,7 @@ export async function DELETE(
 
     // Check if artist exists
     const existingArtist = await prisma.artist.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!existingArtist) {
@@ -254,7 +259,7 @@ export async function DELETE(
 
     // Check if artist has events
     const eventCount = await prisma.eventArtist.count({
-      where: { artistId: params.id }
+      where: { artistId: id }
     })
 
     if (eventCount > 0) {
@@ -266,7 +271,7 @@ export async function DELETE(
 
     // Delete artist
     await prisma.artist.delete({
-      where: { id: params.id }
+      where: { id }
     })
 
     return NextResponse.json(
