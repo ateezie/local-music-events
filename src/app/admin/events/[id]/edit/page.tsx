@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import MusicLogo from '@/components/MusicLogo'
+import AdminHeader from '@/components/AdminHeader'
 import ImageUpload from '@/components/ImageUpload'
 import PromoterMultiSelect from '@/components/PromoterMultiSelect'
 import GenreMultiSelect from '@/components/GenreMultiSelect'
@@ -162,6 +163,13 @@ export default function EditEventPage() {
         }
         
         setEvent(eventData)
+        
+        // Redirect to slug-based URL if we loaded by database ID and event has a slug
+        if (eventData.slug && eventId !== eventData.slug && eventId.startsWith('db-')) {
+          console.log('Redirecting to slug-based URL:', `/admin/events/${eventData.slug}/edit`)
+          router.replace(`/admin/events/${eventData.slug}/edit`)
+          return
+        }
       } else {
         setError('Event not found')
       }
@@ -249,35 +257,30 @@ export default function EditEventPage() {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      {/* Header */}
-      <header className="bg-gray-800 shadow-sm border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <MusicLogo className="h-8 w-8 mr-3" />
-              <h1 className="text-xl font-bold text-white">
-                Edit Event: {event.title}
-              </h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Link
-                href="/admin/dashboard"
-                className="text-sm text-music-purple-600 hover:text-music-purple-700"
-              >
-                Back to Dashboard
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <AdminHeader title={`Edit Event: ${event.title}`} />
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <form onSubmit={handleSave} className="space-y-8">
+          {/* Event Banner Image */}
+          <div className="bg-gray-800 rounded-lg shadow p-6">
+            <h3 className="text-lg font-medium text-white mb-6">Event Banner</h3>
+            <ImageUpload
+              currentImage={event.bannerImage || event.flyer || ''}
+              onImageChange={(imageUrl) => updateEvent('bannerImage', imageUrl)}
+              label="Event Banner Image"
+              className="w-full"
+            />
+            <p className="text-sm text-gray-400 mt-2">
+              Upload a banner image for your event. This will be displayed prominently on event pages and cards.
+            </p>
+          </div>
+
           {/* Basic Information */}
           <div className="bg-gray-800 rounded-lg shadow p-6">
             <h3 className="text-lg font-medium text-white mb-6">Basic Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="space-y-6">
+              {/* Event Title - Full Width */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Event Title
@@ -290,73 +293,64 @@ export default function EditEventPage() {
                   required
                 />
               </div>
-              <div>
+
+              {/* Permalink - Smaller Width */}
+              <div className="max-w-md">
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Promoters
+                  Permalink (URL Slug)
                 </label>
-                <PromoterMultiSelect
-                  selectedPromoters={event.promoters || []}
-                  availablePromoters={availablePromoters}
-                  onChange={(promoters) => {
-                    // Update both promoters and promoter field in a single state update
-                    if (event) {
-                      setEvent({
-                        ...event,
-                        promoters: promoters,
-                        promoter: promoters.join(', ')
-                      })
-                    }
-                  }}
-                  placeholder="Select promoters for this event..."
-                />
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-400">/events/</span>
+                  <input
+                    type="text"
+                    value={event.slug || ''}
+                    onChange={(e) => updateEvent('slug', e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-music-purple-500 bg-gray-700 text-white"
+                    placeholder="auto-generated-from-title"
+                  />
+                </div>
+                <p className="text-xs text-gray-400 mt-1">
+                  Leave empty to auto-generate from event title.
+                </p>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Genre
-                </label>
-                <select
-                  value={event.genre}
-                  onChange={(e) => updateEvent('genre', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-music-purple-500 bg-gray-700 text-white"
-                >
-                  <option value="house">House</option>
-                  <option value="drum-and-bass">Drum & Bass</option>
-                  <option value="ukg">UK Garage</option>
-                  <option value="dubstep">Dubstep</option>
-                  <option value="trance">Trance</option>
-                  <option value="techno">Techno</option>
-                  <option value="other">Other</option>
-                </select>
+              
+              {/* Promoters and Genres - 50% each */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Promoters
+                  </label>
+                  <PromoterMultiSelect
+                    selectedPromoters={event.promoters || []}
+                    availablePromoters={availablePromoters}
+                    onChange={(promoters) => {
+                      // Update both promoters and promoter field in a single state update
+                      if (event) {
+                        setEvent({
+                          ...event,
+                          promoters: promoters,
+                          promoter: promoters.join(', ')
+                        })
+                      }
+                    }}
+                    placeholder="Select promoters for this event..."
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Genres
+                  </label>
+                  <GenreMultiSelect
+                    selectedGenres={event.subGenres || []}
+                    onChange={(genres) => {
+                      updateEvent('subGenres', genres)
+                      // Set main genre to 'multi-genre' if multiple selected, otherwise use the single genre
+                      updateEvent('genre', genres.length > 1 ? 'multi-genre' : (genres[0] || 'other'))
+                    }}
+                    placeholder="Select genres for this event..."
+                  />
+                </div>
               </div>
-              {/* Sub-Genre Selector - Always available for additional genre specification */}
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Additional Sub-Genres (optional)
-                </label>
-                <GenreMultiSelect
-                  selectedGenres={event.subGenres || []}
-                  onChange={(genres) => updateEvent('subGenres', genres)}
-                  placeholder="Select additional sub-genres if applicable..."
-                />
-              </div>
-            </div>
-            <div className="mt-6">
-              <label className="block text-sm font-medium text-chang-brown-700 mb-2">
-                Permalink (URL Slug)
-              </label>
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-gray-400">/events/</span>
-                <input
-                  type="text"
-                  value={event.slug || ''}
-                  onChange={(e) => updateEvent('slug', e.target.value)}
-                  className="flex-1 px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-music-purple-500 bg-gray-700 text-white"
-                  placeholder="auto-generated-from-title"
-                />
-              </div>
-              <p className="text-xs text-gray-400 mt-1">
-                Leave empty to auto-generate from event title. Only use letters, numbers, and hyphens.
-              </p>
             </div>
             <div className="mt-6">
               <label className="block text-sm font-medium text-chang-brown-700 mb-2">
@@ -370,20 +364,6 @@ export default function EditEventPage() {
                 placeholder="Describe the event..."
               />
             </div>
-          </div>
-
-          {/* Event Banner Image */}
-          <div className="bg-gray-800 rounded-lg shadow p-6">
-            <h3 className="text-lg font-medium text-white mb-6">Event Banner</h3>
-            <ImageUpload
-              currentImage={event.bannerImage || event.flyer || ''}
-              onImageChange={(imageUrl) => updateEvent('bannerImage', imageUrl)}
-              label="Event Banner Image"
-              className="w-full"
-            />
-            <p className="text-sm text-gray-400 mt-2">
-              Upload a banner image for your event. This will be displayed prominently on event pages and cards.
-            </p>
           </div>
 
           {/* Date & Time */}
@@ -471,6 +451,18 @@ export default function EditEventPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Facebook Event URL
+                </label>
+                <input
+                  type="url"
+                  value={event.facebookEvent || ''}
+                  onChange={(e) => updateEvent('facebookEvent', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-music-purple-500 bg-gray-700 text-white"
+                  placeholder="https://www.facebook.com/events/..."
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Status
                 </label>
                 <select
@@ -484,7 +476,7 @@ export default function EditEventPage() {
                   <option value="sold-out">Sold Out</option>
                 </select>
               </div>
-              <div>
+              <div className="flex items-center space-x-6">
                 <label className="flex items-center">
                   <input
                     type="checkbox"
@@ -494,8 +486,6 @@ export default function EditEventPage() {
                   />
                   <span className="text-sm font-medium text-gray-300">Featured Event</span>
                 </label>
-              </div>
-              <div>
                 <label className="flex items-center">
                   <input
                     type="checkbox"
@@ -503,7 +493,7 @@ export default function EditEventPage() {
                     onChange={(e) => updateEvent('hero', e.target.checked)}
                     className="mr-2"
                   />
-                  <span className="text-sm font-medium text-gray-300">Hero Event (Show in hero section)</span>
+                  <span className="text-sm font-medium text-gray-300">Set as Hero Event</span>
                 </label>
               </div>
             </div>

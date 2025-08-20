@@ -52,6 +52,13 @@ document.addEventListener('DOMContentLoaded', function() {
         extractBtn.textContent = '📊 Extracting...';
         extractBtn.disabled = true;
         
+        // Add timeout to prevent hanging
+        let timeoutId = setTimeout(() => {
+            showStatus('❌ Extraction timeout - please try again', 'error');
+            extractBtn.textContent = '📊 Extract Event Data';
+            extractBtn.disabled = false;
+        }, 15000); // 15 second timeout
+        
         // Send message to content script
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
             const tabId = tabs[0].id;
@@ -64,9 +71,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     chrome.scripting.executeScript({
                         target: { tabId: tabId },
-                        files: ['content.js']
+                        files: ['content-fixed.js']
                     }, function() {
                         if (chrome.runtime.lastError) {
+                            clearTimeout(timeoutId);
                             showStatus('❌ Failed to inject content script: ' + chrome.runtime.lastError.message, 'error');
                             extractBtn.textContent = '📊 Extract Event Data';
                             extractBtn.disabled = false;
@@ -76,11 +84,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Wait a moment for script to load, then try again
                         setTimeout(() => {
                             chrome.tabs.sendMessage(tabId, {action: 'extractEventData'}, function(response) {
+                                clearTimeout(timeoutId);
                                 handleExtractResponse(response);
                             });
                         }, 500);
                     });
                 } else {
+                    clearTimeout(timeoutId);
                     handleExtractResponse(response);
                 }
             });
@@ -138,6 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         sendBtn.textContent = '📤 Sending...';
         sendBtn.disabled = true;
+        showStatus('📤 Sending event data to import system...', 'info');
 
         // Check if user is on an admin edit page
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
@@ -298,12 +309,13 @@ document.addEventListener('DOMContentLoaded', function() {
             // Get the current tab's origin to build the API URL dynamically
             chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
                 const currentOrigin = new URL(tabs[0].url).origin;
-                // Try multiple possible ports for development
+                // Try multiple possible ports for development - prioritize 3004 (current dev server)
                 const possibleUrls = [
                     currentOrigin.includes('localhost') ? currentOrigin : null,
-                    'http://localhost:3000',
-                    'http://localhost:3001', 
+                    'http://localhost:3004', // Current dev server port
                     'http://localhost:3002',
+                    'http://localhost:3001',
+                    'http://localhost:3000', 
                     'http://localhost:3003'
                 ].filter(Boolean);
                 
@@ -315,22 +327,36 @@ document.addEventListener('DOMContentLoaded', function() {
                         try {
                             console.log(`Extension: Trying ${apiUrl}/api/events/import-from-email`);
                             
+                            // Add timeout to prevent hanging
+                            const controller = new AbortController();
+                            const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+                            
                             const response = await fetch(`${apiUrl}/api/events/import-from-email`, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
                                 },
-                                body: JSON.stringify(finalData)
+                                body: JSON.stringify(finalData),
+                                signal: controller.signal
                             });
+                            
+                            clearTimeout(timeoutId);
                             
                             if (response.ok) {
                                 console.log(`Extension: Success with ${apiUrl}`);
-                                return response.json();
+                                const result = await response.json();
+                                console.log('Extension: API response:', result);
+                                return result;
                             } else {
                                 console.log(`Extension: Failed with ${apiUrl}:`, response.status);
+                                const errorText = await response.text();
+                                console.log(`Extension: Error response:`, errorText);
                             }
                         } catch (error) {
                             console.log(`Extension: Error with ${apiUrl}:`, error.message);
+                            if (error.name === 'AbortError') {
+                                console.log(`Extension: Request to ${apiUrl} timed out`);
+                            }
                         }
                     }
                     throw new Error('All API endpoints failed');
@@ -387,7 +413,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const serviceDiv = document.getElementById('imageServiceInfo');
         const linkDiv = document.getElementById('imagePreviewLink');
         
-        if (data.image_upload_status === 'success' && data.image_url) {
+        console.log('Extension: Image status data:', {
+            image_upload_status: data.image_upload_status,
+            image_url: data.image_url,
+            image_service_used: data.image_service_used
+        });
+        
+        if ((data.image_upload_status === 'success' && data.image_url) || 
+            (data.image_url && (data.image_url.includes('catbox.moe') || data.image_url.includes('file.io') || data.image_url.includes('localhost')))) {
             // Success - show green confirmation
             statusDiv.style.backgroundColor = '#d4edda';
             statusDiv.style.border = '1px solid #c3e6cb';
@@ -396,17 +429,34 @@ document.addEventListener('DOMContentLoaded', function() {
             iconDiv.textContent = '✅ Image Upload Successful';
             iconDiv.style.color = '#155724';
             
-            textDiv.textContent = `Image uploaded to ${data.image_service_used}`;
+            // Detect service from URL if service_used field is not set correctly
+            let serviceName = data.image_service_used;
+            if (!serviceName) {
+                if (data.image_url.includes('catbox.moe')) {
+                    serviceName = 'Catbox.moe';
+                } else if (data.image_url.includes('file.io')) {
+                    serviceName = 'File.io';
+                } else if (data.image_url.includes('localhost')) {
+                    serviceName = 'Local Storage';
+                } else {
+                    serviceName = 'External Service';
+                }
+            }
             
-            if (data.image_service_used === 'File.io') {
+            textDiv.textContent = `Image uploaded to ${serviceName}`;
+            
+            if (serviceName === 'File.io' || data.image_url.includes('file.io')) {
                 serviceDiv.textContent = '📡 Hosted on File.io - temporary file hosting (expires after 14 days)';
                 linkDiv.innerHTML = `<a href="${data.image_url}" target="_blank" style="color: #007bff; text-decoration: none; font-size: 11px;">🔗 View uploaded image</a>`;
-            } else if (data.image_service_used === 'Catbox.moe') {
+            } else if (serviceName === 'Catbox.moe' || data.image_url.includes('catbox.moe')) {
                 serviceDiv.textContent = '🌐 Hosted on Catbox.moe - reliable permanent file hosting';
                 linkDiv.innerHTML = `<a href="${data.image_url}" target="_blank" style="color: #007bff; text-decoration: none; font-size: 11px;">🔗 View uploaded image</a>`;
-            } else if (data.image_service_used === 'Local Storage') {
+            } else if (serviceName === 'Local Storage' || data.image_url.includes('localhost')) {
                 serviceDiv.textContent = '💾 Saved to local storage (external services unavailable)';
                 linkDiv.innerHTML = `<span style="color: #666; font-size: 11px;">🔗 Image saved locally</span>`;
+            } else {
+                serviceDiv.textContent = '🌐 Hosted externally - image upload successful';
+                linkDiv.innerHTML = `<a href="${data.image_url}" target="_blank" style="color: #007bff; text-decoration: none; font-size: 11px;">🔗 View uploaded image</a>`;
             }
         } else {
             // Failed - show red warning

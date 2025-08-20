@@ -10,6 +10,15 @@ import { notFound } from 'next/navigation'
 import EventCard from '@/components/EventCard'
 import EventImage from '@/components/EventImage'
 import { formatEventDateSafe, formatEventTime } from '@/lib/dateUtils'
+import { 
+  generateICSFile, 
+  downloadICSFile, 
+  parseEventDateTime, 
+  shareEvent, 
+  generateSocialShareUrls,
+  generateCalendarUrls,
+  type CalendarEvent 
+} from '@/lib/eventUtils'
 
 export default function EventDetailPage() {
   const { id } = useParams()
@@ -96,6 +105,102 @@ export default function EventDetailPage() {
     return { isUpcoming: upcoming, isPast: !upcoming }
   }, [event?.date])
 
+  // Add to Calendar handler
+  const handleAddToCalendar = () => {
+    if (!event) return
+
+    try {
+      const { startDate, endDate } = parseEventDateTime(event.date, event.time || '')
+      
+      const calendarEvent: CalendarEvent = {
+        title: event.title,
+        description: event.description || '',
+        startDate,
+        endDate,
+        location: `${event.venue.name}, ${event.venue.address || ''}`,
+        url: window.location.href
+      }
+
+      // Generate ICS file
+      const icsContent = generateICSFile(calendarEvent)
+      const filename = `${event.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.ics`
+      
+      // Download the file
+      downloadICSFile(icsContent, filename)
+      
+      console.log('Calendar file downloaded successfully')
+    } catch (error) {
+      console.error('Error generating calendar file:', error)
+      
+      // Fallback: show calendar service options
+      const { startDate, endDate } = parseEventDateTime(event.date, event.time || '')
+      const calendarEvent: CalendarEvent = {
+        title: event.title,
+        description: event.description || '',
+        startDate,
+        endDate,
+        location: `${event.venue.name}, ${event.venue.address || ''}`,
+        url: window.location.href
+      }
+      
+      const urls = generateCalendarUrls(calendarEvent)
+      
+      // Open Google Calendar as fallback
+      window.open(urls.google, '_blank')
+    }
+  }
+
+  // Share Event handler
+  const handleShareEvent = async () => {
+    if (!event) return
+
+    const eventData = {
+      title: event.title,
+      description: event.description || `Join us for ${event.title} at ${event.venue.name}`,
+      url: window.location.href
+    }
+
+    try {
+      const shared = await shareEvent(eventData)
+      
+      if (!shared) {
+        // If sharing failed, show social media options
+        const socialUrls = generateSocialShareUrls(eventData)
+        
+        // Create a simple popup with sharing options
+        const shareWindow = window.open('', 'share-popup', 'width=400,height=500,scrollbars=yes')
+        if (shareWindow) {
+          shareWindow.document.write(`
+            <html>
+              <head><title>Share Event</title></head>
+              <body style="font-family: Arial, sans-serif; padding: 20px;">
+                <h3>Share this event</h3>
+                <div style="margin-bottom: 10px;">
+                  <a href="${socialUrls.facebook}" target="_blank" style="display: block; padding: 10px; margin: 5px 0; background: #1877f2; color: white; text-decoration: none; border-radius: 5px;">Share on Facebook</a>
+                </div>
+                <div style="margin-bottom: 10px;">
+                  <a href="${socialUrls.twitter}" target="_blank" style="display: block; padding: 10px; margin: 5px 0; background: #1da1f2; color: white; text-decoration: none; border-radius: 5px;">Share on Twitter</a>
+                </div>
+                <div style="margin-bottom: 10px;">
+                  <a href="${socialUrls.whatsapp}" target="_blank" style="display: block; padding: 10px; margin: 5px 0; background: #25d366; color: white; text-decoration: none; border-radius: 5px;">Share on WhatsApp</a>
+                </div>
+                <div style="margin-bottom: 10px;">
+                  <a href="${socialUrls.email}" style="display: block; padding: 10px; margin: 5px 0; background: #666; color: white; text-decoration: none; border-radius: 5px;">Share via Email</a>
+                </div>
+                <div style="margin-top: 20px;">
+                  <input type="text" value="${eventData.url}" readonly style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                  <button onclick="navigator.clipboard.writeText('${eventData.url}').then(() => alert('Link copied!'))" style="margin-top: 10px; padding: 10px; background: #007cba; color: white; border: none; border-radius: 5px; cursor: pointer;">Copy Link</button>
+                </div>
+              </body>
+            </html>
+          `)
+        }
+      }
+    } catch (error) {
+      console.error('Error sharing event:', error)
+    }
+  }
+
   if (loading) {
     return (
       <Layout>
@@ -167,7 +272,7 @@ export default function EventDetailPage() {
                 <div className="mb-6 flex justify-center items-center gap-3 flex-wrap">
                   <div className="flex justify-center items-center gap-3 flex-wrap">
                     {event.subGenres.map((subGenre) => (
-                      <span key={subGenre} className="inline-block text-white px-4 py-2 rounded-full text-sm font-medium capitalize" style={{ backgroundColor: '#4C6286' }}>
+                      <span key={subGenre} className="inline-block text-white px-4 py-2 rounded-full text-sm font-medium capitalize" style={{ backgroundColor: 'rgb(76, 98, 134)' }}>
                         {subGenre.replace('-', ' ')}
                       </span>
                     ))}
@@ -325,15 +430,21 @@ export default function EventDetailPage() {
                       rel="noopener noreferrer"
                       className="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center py-3 px-4 rounded-lg font-semibold transition-colors duration-200"
                     >
-                      Facebook Event
+                      Facebook RSVP 📘
                     </a>
                   )}
                   
-                  <button className="w-full bg-music-purple-100 hover:bg-music-purple-200 text-music-purple-700 py-3 px-4 rounded-lg font-semibold transition-colors duration-200">
+                  <button 
+                    onClick={handleAddToCalendar}
+                    className="w-full bg-music-purple-100 hover:bg-music-purple-200 text-music-purple-700 py-3 px-4 rounded-lg font-semibold transition-colors duration-200"
+                  >
                     Add to Calendar 📅
                   </button>
                   
-                  <button className="w-full bg-music-neutral-100 hover:bg-music-neutral-200 text-music-neutral-700 py-3 px-4 rounded-lg font-semibold transition-colors duration-200">
+                  <button 
+                    onClick={handleShareEvent}
+                    className="w-full bg-music-neutral-100 hover:bg-music-neutral-200 text-music-neutral-700 py-3 px-4 rounded-lg font-semibold transition-colors duration-200"
+                  >
                     Share Event 📱
                   </button>
                 </div>

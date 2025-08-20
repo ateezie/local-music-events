@@ -12,7 +12,12 @@
     "db:generate": "prisma generate",
     "db:studio": "prisma studio",
     "migrate:json": "node scripts/migrate-json-to-db.js",
-    "setup:admin": "node scripts/create-admin.js"
+    "setup:admin": "node scripts/create-admin.js",
+    "dev:full": "node scripts/dev.js",
+    "dev:playwright": "node scripts/dev.js playwright --quick-test",
+    "dev:server": "node scripts/dev.js server-only",
+    "dev:archon": "node scripts/archon-dev.js --status",
+    "dev:health": "node scripts/dev.js --health"
   },
   "keywords": [
     "music",

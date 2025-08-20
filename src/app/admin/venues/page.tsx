@@ -4,10 +4,13 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import MusicLogo from '@/components/MusicLogo'
+import AdminHeader from '@/components/AdminHeader'
+import ImageUpload from '@/components/ImageUpload'
 
 interface Venue {
   id: string
   name: string
+  slug?: string
   address: string
   city: string
   state: string
@@ -55,6 +58,7 @@ export default function VenuesPage() {
     phone: '',
     email: '',
     description: '',
+    image: '',
     facebook: '',
     instagram: '',
     twitter: ''
@@ -129,9 +133,14 @@ export default function VenuesPage() {
 
       if (response.ok) {
         loadVenues()
-        setShowForm(false)
-        setEditingVenue(null)
-        resetForm()
+        if (editingVenue) {
+          alert('Venue updated successfully!')
+          // Keep form open to preserve uploaded image preview
+        } else {
+          alert('Venue created successfully!')
+          setShowForm(false)
+          resetForm()
+        }
       } else {
         const data = await response.json()
         alert('Error: ' + data.error)
@@ -155,6 +164,7 @@ export default function VenuesPage() {
       phone: venue.phone || '',
       email: venue.email || '',
       description: venue.description || '',
+      image: venue.image || '',
       facebook: venue.facebook || '',
       instagram: venue.instagram || '',
       twitter: venue.twitter || ''
@@ -196,6 +206,7 @@ export default function VenuesPage() {
       phone: '',
       email: '',
       description: '',
+      image: '',
       facebook: '',
       instagram: '',
       twitter: ''
@@ -220,49 +231,19 @@ export default function VenuesPage() {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      {/* Header */}
-      <header className="bg-gray-800 shadow-sm border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <MusicLogo className="h-8 w-8 mr-3" />
-              <h1 className="text-xl font-bold text-white">
-                Venue Management
-              </h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Link
-                href="/admin/dashboard"
-                className="text-sm text-music-purple-600 hover:text-music-purple-700"
-              >
-                Back to Dashboard
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="text-sm bg-chang-brown-600 text-white px-3 py-1 rounded hover:bg-chang-brown-700"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <AdminHeader title="Venue Management" />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Actions */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-white">Venues</h2>
-          <button
-            onClick={() => {
-              setEditingVenue(null)
-              resetForm()
-              setShowForm(true)
-            }}
+          <Link
+            href="/admin/venues/new"
             className="bg-music-purple-600 text-white px-4 py-2 rounded-md hover:bg-music-purple-700"
           >
             Add New Venue
-          </button>
+          </Link>
         </div>
 
         {/* Add/Edit Form */}
@@ -272,6 +253,16 @@ export default function VenuesPage() {
               {editingVenue ? 'Edit Venue' : 'Add New Venue'}
             </h3>
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Venue Banner Image - Moved to Top */}
+              <div>
+                <ImageUpload
+                  currentImage={formData.image}
+                  onImageChange={(imageUrl) => setFormData({ ...formData, image: imageUrl })}
+                  label="Venue Banner Image"
+                  className="w-full"
+                />
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -409,14 +400,14 @@ export default function VenuesPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-chang-brown-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Description
                 </label>
                 <textarea
-                  rows={3}
+                  rows={6}
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-3 py-2 border border-chang-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-music-purple-500"
+                  className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-music-purple-500 bg-gray-700 text-white"
                   placeholder="Describe the venue..."
                 />
               </div>
@@ -510,12 +501,12 @@ export default function VenuesPage() {
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                        <button
-                          onClick={() => handleEdit(venue)}
+                        <Link
+                          href={`/admin/venues/${venue.slug || venue.id}/edit`}
                           className="text-music-blue-600 hover:text-music-blue-700"
                         >
                           Edit
-                        </button>
+                        </Link>
                         <button
                           onClick={() => handleDelete(venue.id)}
                           className="text-red-600 hover:text-red-700"

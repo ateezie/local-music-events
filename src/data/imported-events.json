@@ -741,5 +741,909 @@
       "ticket_url": "https://theticketing.co/e/thoughtkarns",
       "image_url": "https://files.catbox.moe/4n46bb.jpg"
     }
+  },
+  {
+    "id": "import_1755218408354_rgcc9pouo",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T00:40:08.354Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Gene Farris",
+      "event_date": "Saturday, August 16, 2025",
+      "event_time": "10 PM CDT",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Downright Entertainment",
+        "Mississippi Underground",
+        "Party Diva Productions"
+      ],
+      "genre": "multi-genre",
+      "description": "",
+      "image_url": "https://files.catbox.moe/511ob3.jpg",
+      "ticket_url": "https://theticketing.co/e/genefarris",
+      "facebook_url": "https://www.facebook.com/events/635190126263334",
+      "extracted_at": "2025-08-15T00:40:06.696Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/518211004_1337198701742780_7219909689940112791_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=75d36f&_nc_ohc=D6rFyiLFsqIQ7kNvwEPPgsm&_nc_oc=AdkFaTT2UEfI0L0KqgRR2Rm45SIeguwnwz26H7eZd8PBrmm8aahwmvqAuAv1vyGVVI-N5EqO593pq_rxHwytTuBx&_nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=xpYZsX1l9-aRnCt-wbDuOw&oh=00_AfWUedhI2LUNj4UukMUt3F9FL6yVrkj72BLYlV6pr-nZtA&oe=68A4428A"
+    },
+    "parsed_event": {
+      "title": "Gene Farris",
+      "date": "Saturday, August 16, 2025",
+      "time": "10 PM CDT",
+      "venue": "Mississippi Underground",
+      "artists": [],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Downright Entertainment",
+        "Mississippi Underground",
+        "Party Diva Productions"
+      ],
+      "ticket_url": "https://theticketing.co/e/genefarris",
+      "image_url": "https://files.catbox.moe/511ob3.jpg"
+    }
+  },
+  {
+    "id": "import_1755218992672_s56kgqsqa",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T00:49:52.672Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Gene Farris",
+      "event_date": "Saturday, August 16, 2025",
+      "event_time": "10 PM CDT",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Downright Entertainment",
+        "Mississippi Underground",
+        "Party Diva Productions"
+      ],
+      "genre": "multi-genre",
+      "description": "Downright Entertainment& Party Diva ProductionsPresent: Gene FarrisGene Farris lives and breathes house music. A bonafide Chicago legend, he’s been pushing musical boundaries for close to three decades, from spinning at underground warehouse",
+      "image_url": "https://files.catbox.moe/511ob3.jpg",
+      "ticket_url": "https://theticketing.co/e/genefarris",
+      "facebook_url": "https://www.facebook.com/events/635190126263334",
+      "extracted_at": "2025-08-15T00:49:50.304Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/518211004_1337198701742780_7219909689940112791_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=75d36f&_nc_ohc=D6rFyiLFsqIQ7kNvwEPPgsm&_nc_oc=AdkFaTT2UEfI0L0KqgRR2Rm45SIeguwnwz26H7eZd8PBrmm8aahwmvqAuAv1vyGVVI-N5EqO593pq_rxHwytTuBx&_nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=mAznniufzMrVpN4q4YoNVw&oh=00_AfV8rqIyks__a8dSGLu-AerEJxaiV97tB1kO4KbNxEJcbg&oe=68A4428A"
+    },
+    "parsed_event": {
+      "title": "Gene Farris",
+      "date": "Saturday, August 16, 2025",
+      "time": "10 PM CDT",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "Gene Farris"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Downright Entertainment",
+        "Mississippi Underground",
+        "Party Diva Productions"
+      ],
+      "ticket_url": "https://theticketing.co/e/genefarris",
+      "image_url": "https://files.catbox.moe/511ob3.jpg"
+    }
+  },
+  {
+    "id": "import_1755233106354_j5adzagop",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T04:45:06.354Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Test Event",
+      "event_date": "Saturday, August 16, 2025",
+      "event_time": "10 PM CDT",
+      "venue_name": "Test Venue",
+      "promoters": [
+        "Test Promoter"
+      ],
+      "description": "Test description",
+      "image_url": "https://example.com/test.jpg",
+      "facebook_url": "https://facebook.com/events/test"
+    },
+    "parsed_event": {
+      "title": "Test Event",
+      "date": "Saturday, August 16, 2025",
+      "time": "10 PM CDT",
+      "venue": "Test Venue",
+      "artists": [
+        "Test Event"
+      ],
+      "genre": "other",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Test Promoter"
+      ],
+      "ticket_url": "",
+      "image_url": "https://example.com/test.jpg"
+    }
+  },
+  {
+    "id": "import_1755233147192_7rf0337qu",
+    "status": "rejected",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T04:45:47.192Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Misfit",
+      "event_date": "Saturday, August 23, 2025",
+      "event_time": "8 PM – 2 AM CDT",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Monarch Events",
+        "Mississippi Underground",
+        "Joseph Jojo Marks"
+      ],
+      "genre": "multi-genre",
+      "description": "",
+      "image_url": "https://files.catbox.moe/szszvq.jpg",
+      "ticket_url": "https://theticketing.co/e/misfit",
+      "facebook_url": "https://www.facebook.com/events/1677483952910343/",
+      "extracted_at": "2025-08-15T04:45:46.047Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/524998054_693445037061917_8890100998054027363_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=75d36f&_nc_ohc=EYtPpB4uV-cQ7kNvwE8yC2C&_nc_oc=AdmPi93kRttnRBRorJ1Z0_0W-1o7WtKUErrO7yqKKV6x18yivatjTBZNtlToIHTgtBW_jvQoEDEh-1CInCAWy6Z2&_nc_zt=23&_nc_ht=scontent-ord5-1.xx&_nc_gid=8-KmQprJULaNWnDNPHbtiw&oh=00_AfXR5EaeztpTRGr4x9CafTK-BNIET934NTk46sSpZaAP6g&oe=68A47851"
+    },
+    "parsed_event": {
+      "title": "Misfit",
+      "date": "Saturday, August 23, 2025",
+      "time": "8 PM – 2 AM CDT",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "Misfit"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Monarch Events",
+        "Mississippi Underground",
+        "Joseph Jojo Marks"
+      ],
+      "ticket_url": "https://theticketing.co/e/misfit",
+      "image_url": "https://files.catbox.moe/szszvq.jpg"
+    }
+  },
+  {
+    "id": "import_1755233175912_5d8jz9olq",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T04:46:15.912Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Misfit",
+      "event_date": "Saturday, August 23, 2025",
+      "event_time": "8 PM – 2 AM CDT",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Monarch Events",
+        "Mississippi Underground",
+        "Joseph Jojo Marks"
+      ],
+      "genre": "multi-genre",
+      "description": "",
+      "image_url": "https://files.catbox.moe/szszvq.jpg",
+      "ticket_url": "https://theticketing.co/e/misfit",
+      "facebook_url": "https://www.facebook.com/events/1677483952910343/",
+      "extracted_at": "2025-08-15T04:45:46.047Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/524998054_693445037061917_8890100998054027363_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=75d36f&_nc_ohc=EYtPpB4uV-cQ7kNvwE8yC2C&_nc_oc=AdmPi93kRttnRBRorJ1Z0_0W-1o7WtKUErrO7yqKKV6x18yivatjTBZNtlToIHTgtBW_jvQoEDEh-1CInCAWy6Z2&_nc_zt=23&_nc_ht=scontent-ord5-1.xx&_nc_gid=8-KmQprJULaNWnDNPHbtiw&oh=00_AfXR5EaeztpTRGr4x9CafTK-BNIET934NTk46sSpZaAP6g&oe=68A47851"
+    },
+    "parsed_event": {
+      "title": "Misfit",
+      "date": "Saturday, August 23, 2025",
+      "time": "8 PM – 2 AM CDT",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "Misfit"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Monarch Events",
+        "Mississippi Underground",
+        "Joseph Jojo Marks"
+      ],
+      "ticket_url": "https://theticketing.co/e/misfit",
+      "image_url": "https://files.catbox.moe/szszvq.jpg"
+    }
+  },
+  {
+    "id": "import_1755233202924_aif8ohck2",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T04:46:42.924Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "*materia44",
+      "event_date": "Saturday, August 30, 2025",
+      "event_time": "9 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [],
+      "genre": "multi-genre",
+      "description": "",
+      "image_url": "https://files.catbox.moe/m9gquc.jpg",
+      "ticket_url": "https://materiastl.com/",
+      "facebook_url": "https://www.facebook.com/events/1431697544847376/",
+      "extracted_at": "2025-08-15T04:46:41.898Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/504434180_1090884093184853_46948868360334351_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=75d36f&_nc_ohc=JKN1ktbpy1AQ7kNvwHZzcix&_nc_oc=AdkKMJjtkkc4LIfLkEvjvXRvAhe_41r8UWpep5ClIY7gy2vJG4g5zzw_Od85Y1y5sMa6KZiaz93cUKuuF7dQu2C5&_nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=JF1nV3R4fqAcWoTVsy0lCg&oh=00_AfX3euaCAOnV_9-GEmGRgskEnQRLyzz1es1PvoFD7ThACw&oe=68A478C3"
+    },
+    "parsed_event": {
+      "title": "*materia44",
+      "date": "Saturday, August 30, 2025",
+      "time": "9 PM",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "*materia44"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [],
+      "ticket_url": "https://materiastl.com/",
+      "image_url": "https://files.catbox.moe/m9gquc.jpg"
+    }
+  },
+  {
+    "id": "import_1755233447870_fab33l9v9",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T04:50:47.870Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Vampa & More",
+      "event_date": "Saturday, September 6, 2025",
+      "event_time": "9 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [],
+      "genre": "multi-genre",
+      "description": "",
+      "image_url": "https://files.catbox.moe/m0zu64.jpg",
+      "ticket_url": "https://theticketing.co/e/vampamu",
+      "facebook_url": "https://www.facebook.com/events/1778086179454232/",
+      "extracted_at": "2025-08-15T04:50:46.218Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/528048892_1355448716584445_7201703348655284117_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=75d36f&_nc_ohc=kfFRO34FbXsQ7kNvwGB9t9o&_nc_oc=AdlBSEhID-RObkxglQb2BkGWbGfFeFSFsAMILLXubl8IjYaJwZ9GdnxWdP2MhrzzOYVH_O7WIMYSLJBA9phd8CFe&_nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=dro4KcFHmJxfVV98twqyRA&oh=00_AfWCDFZZkkwmTgqg4VU_xUO2Y1y4VJ51FQaBQns7yWHHgQ&oe=68A493FC"
+    },
+    "parsed_event": {
+      "title": "Vampa & More",
+      "date": "Saturday, September 6, 2025",
+      "time": "9 PM",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "Vampa & More"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [],
+      "ticket_url": "https://theticketing.co/e/vampamu",
+      "image_url": "https://files.catbox.moe/m0zu64.jpg"
+    }
+  },
+  {
+    "id": "import_1755233706283_ahg8hzbzk",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T04:55:06.283Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Vampa & More",
+      "event_date": "Saturday, September 6, 2025",
+      "event_time": "9 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Downright Entertainment",
+        "Mississippi UndergroundSt. Louis",
+        "United States"
+      ],
+      "genre": "multi-genre",
+      "description": "Your upcoming events See allAug 15 at 4 PM – Aug 17 at 6 PMTaste of",
+      "image_url": "https://files.catbox.moe/m0zu64.jpg",
+      "ticket_url": "https://theticketing.co/e/vampamu",
+      "facebook_url": "https://www.facebook.com/events/1778086179454232/",
+      "extracted_at": "2025-08-15T04:55:04.792Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/528048892_1355448716584445_7201703348655284117_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=75d36f&_nc_ohc=kfFRO34FbXsQ7kNvwGB9t9o&_nc_oc=AdlBSEhID-RObkxglQb2BkGWbGfFeFSFsAMILLXubl8IjYaJwZ9GdnxWdP2MhrzzOYVH_O7WIMYSLJBA9phd8CFe&_nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=OUfcH6fyKizfNKQTXoQXQg&oh=00_AfWIePPAFsYG5RBUI72go2mNWAW8eURAf8lCdWTucI1GGQ&oe=68A493FC"
+    },
+    "parsed_event": {
+      "title": "Vampa & More",
+      "date": "Saturday, September 6, 2025",
+      "time": "9 PM",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "Vampa & More"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Downright Entertainment",
+        "Mississippi UndergroundSt. Louis",
+        "United States"
+      ],
+      "ticket_url": "https://theticketing.co/e/vampamu",
+      "image_url": "https://files.catbox.moe/m0zu64.jpg"
+    }
+  },
+  {
+    "id": "import_1755251660653_kcr6skgpc",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T09:54:20.653Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Vampa & More",
+      "event_date": "Saturday, September 6, 2025",
+      "event_time": "9 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Downright Entertainment"
+      ],
+      "genre": "multi-genre",
+      "description": "Downright Entertainment &Mississippi UndergroundPresent: VampaVampa has quickly become a standout voice in dubstep, riddim, bass house, and midtempo. Seamlessly blending gritty production with hauntingly poetic lyrics and commanding vocals, Vampa crafts an immersive experience that resonates with both festival crowds and intimate venues alike. Her recent EP, Bad Bodies, has already surpassed 750,000 plays, cementing her reputation as an artist on the rise. With the announcement of Witching Hour, a collaborative project with Jeanie, and an ambitious 25-date tour featuring multiple festival appearances, Vampa is poised to continue her upward trajectory, delivering unforgettable performances and leaving an indelible mark on electronic music.Saturday Sept. 6th | 18+Mississippi Underground1441 North 2nd Street",
+      "image_url": "https://files.catbox.moe/m0zu64.jpg",
+      "ticket_url": "https://theticketing.co/e/vampamu",
+      "facebook_url": "https://www.facebook.com/events/1778086179454232/",
+      "extracted_at": "2025-08-15T09:54:10.898Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/528048892_1355448716584445_7201703348655284117_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=75d36f&_nc_ohc=2znB0AstHF8Q7kNvwFjOlLu&_nc_oc=AdmCCT0Frgqjxulfa3ZNsYgX_OCePwcs1Ft8xXYyxREbDtBETbGWFRmqhLFei4wVjEqv5qjga4jSmkl80vRDXJvQ&_nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=e74inHBYj6bYnU0RcGwtSA&oh=00_AfUoduMLVuMYseLppqNxIs1iH0Hwq6V3Khy19BguBCUouA&oe=68A4CC3C"
+    },
+    "parsed_event": {
+      "title": "Vampa & More",
+      "date": "Saturday, September 6, 2025",
+      "time": "9 PM",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "Vampa & More"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Downright Entertainment"
+      ],
+      "ticket_url": "https://theticketing.co/e/vampamu",
+      "image_url": "https://files.catbox.moe/m0zu64.jpg"
+    }
+  },
+  {
+    "id": "import_1755252486145_l9tccgzc2",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T10:08:06.145Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Valentino Khan",
+      "event_date": "Friday, September 12, 2025",
+      "event_time": "10 PM CDT",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Downright Entertainment"
+      ],
+      "genre": "multi-genre",
+      "description": "Downright Entertainment & Mississippi Underground Present: Valentino KhanValentino Khan's exhibits limitless creativity & versatility. From performing at some of the world's largest festival stages to producing for some of the most prominent figures in the music industry, he is the quintessential example of what it means to be both an incredible producer & DJ.He’s no stranger to creating dance floor bangers either. Valentino's record 'Deep Down Low' propelled him into an entirely new stratosphere. The record was statistically the most played song in live sets for two years in a row & was coupled with an award-winning, mind-bending music video.While specializing in house & techno, Khan's musical knowledge runs beyond any single genre. His adaptability as a DJ has afforded him the ability to play in every kind of environment & connect with any crowd. Whether it's house, techno or everything in between, Khan's tracks & DJ sets always carry his signature touch. No ceilings in his world. The sky is truly the limit.Fri September 12th | 18+Mississippi Underground",
+      "image_url": "https://files.catbox.moe/0nehd7.jpg",
+      "ticket_url": "http://theticketing.co/e/vk-stl",
+      "facebook_url": "https://www.facebook.com/events/2098941140605506/",
+      "extracted_at": "2025-08-15T10:08:04.770Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/518361618_1335587901903860_274955046677169884_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=75d36f&_nc_ohc=TwHAgYOWrf8Q7kNvwHF9gjg&_nc_oc=AdkWhZvDxD2vuwLqITDPuknS-lEXDHIREyTkOCibkhFqSN5jbLNP5qdEx9_otZJ_6rtS-axO76QuUpi7fQuusNnz&_nc_zt=23&_nc_ht=scontent-ord5-1.xx&_nc_gid=-R0JWQAMCzRKoXeGODMVpw&oh=00_AfWvtD_-8cxy48JPb-HyOgp23T7ZRk8SmsMhntGxK38i4Q&oe=68A4C600"
+    },
+    "parsed_event": {
+      "title": "Valentino Khan",
+      "date": "Friday, September 12, 2025",
+      "time": "10 PM CDT",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "Valentino Khan"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Downright Entertainment"
+      ],
+      "ticket_url": "http://theticketing.co/e/vk-stl",
+      "image_url": "https://files.catbox.moe/0nehd7.jpg"
+    }
+  },
+  {
+    "id": "import_1755252532222_flf7vjw9z",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T10:08:52.222Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Downright Celebrates 9 Years w/ Caspa b2b The Widdler b2b Ternion Sound",
+      "event_date": "Friday, September 19, 2025",
+      "event_time": "9 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Mississippi Underground",
+        "The Widdler",
+        "Downright Entertainment1441 North 2nd St"
+      ],
+      "genre": "multi-genre",
+      "description": "Downright Entertainment 9-Year AnniversaryOutdoor 360° HSD Sound ExperienceWe’re celebrating 9 years of Downright Entertainment with a once-in-a-lifetime moment in Saint Louis bass music history.Join us for an unforgettable night as three titans of the underground Caspa, The Widdler & Ternion Sound go back-to-back-to-back for the first and only time ever, delivering a genre-defining set beneath the surface under the stars.This special anniversary edition will take place outdoors at Mississippi Underground, featuring a 360-degree quadraphonic HSD Sound System—the largest and most immersive setup we’ve ever deployed. Expect deep subs, forward-thinking sound design, and a community celebration like no other. This event will not happen again. No reruns. No encores. Just one iconic night. Tickets will move quickly. Secure yours now and witness history in the making.Location: Mississippi UndergroundPresented by: Downright Entertainment",
+      "image_url": "https://files.catbox.moe/oow0p4.jpg",
+      "ticket_url": "https://theticketing.co/e/downrights9year",
+      "facebook_url": "https://www.facebook.com/events/700266749216299/",
+      "extracted_at": "2025-08-15T10:08:47.524Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/499523487_1031209992485597_1260524690161355339_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=75d36f&_nc_ohc=2sCN9DN1SHQQ7kNvwEAqnKn&_nc_oc=AdmUFFH5OCVzyA9BX4UkCQSbg52x0jC0C4V0qZsztARklJceMS8GBk1ayLytsn48YYqvx9IfwxldxV-PmH6NnPXj&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=hbp3bXOa3-yjLezd4ujEew&oh=00_AfUQwDRX4kiZYRZEzDRXJlggMOj65DPKiQcuQspVZLyxfQ&oe=68A4C5C9"
+    },
+    "parsed_event": {
+      "title": "Downright Celebrates 9 Years w/ Caspa b2b The Widdler b2b Ternion Sound",
+      "date": "Friday, September 19, 2025",
+      "time": "9 PM",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "Downright Celebrates 9 Years w/ Caspa b2b The Widdler b2b Ternion Sound"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Mississippi Underground",
+        "The Widdler",
+        "Downright Entertainment1441 North 2nd St"
+      ],
+      "ticket_url": "https://theticketing.co/e/downrights9year",
+      "image_url": "https://files.catbox.moe/oow0p4.jpg"
+    }
+  },
+  {
+    "id": "import_1755252665718_b9dqgc6ux",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T10:11:05.718Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Downright Celebrates 9 Years w/ Caspa b2b The Widdler b2b Ternion Sound",
+      "event_date": "Friday, September 19, 2025",
+      "event_time": "9 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Mississippi Underground",
+        "The Widdler",
+        "Downright Entertainment1441 North 2nd St"
+      ],
+      "genre": "multi-genre",
+      "description": "Downright Entertainment 9-Year Anniversary\nOutdoor 360° HSD Sound Experience\nWe’re celebrating 9 years of Downright Entertainment with a once-in-a-lifetime moment in Saint Louis bass music history.\nJoin us for an unforgettable night as three titans of the underground Caspa, The Widdler & Ternion Sound go back-to-back-to-back for the first and only time ever, delivering a genre-defining set beneath the surface under the stars.\nThis special anniversary edition will take place outdoors at Mississippi Underground, featuring a 360-degree quadraphonic HSD Sound System—the largest and most immersive setup we’ve ever deployed. Expect deep subs, forward-thinking sound design, and a community celebration like no other.\nThis event will not happen again. No reruns. No encores. Just one iconic night.\nTickets will move quickly. Secure yours now and witness history in the making.\nLocation: Mississippi Underground\nPresented by: Downright Entertainment See less\n\nSt. Louis, Missouri",
+      "image_url": "https://files.catbox.moe/oow0p4.jpg",
+      "ticket_url": "https://theticketing.co/e/downrights9year",
+      "facebook_url": "https://www.facebook.com/events/700266749216299/",
+      "extracted_at": "2025-08-15T10:10:52.914Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/499523487_1031209992485597_1260524690161355339_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=75d36f&_nc_ohc=2sCN9DN1SHQQ7kNvwEAqnKn&_nc_oc=AdmUFFH5OCVzyA9BX4UkCQSbg52x0jC0C4V0qZsztARklJceMS8GBk1ayLytsn48YYqvx9IfwxldxV-PmH6NnPXj&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=hbp3bXOa3-yjLezd4ujEew&oh=00_AfUQwDRX4kiZYRZEzDRXJlggMOj65DPKiQcuQspVZLyxfQ&oe=68A4C5C9"
+    },
+    "parsed_event": {
+      "title": "Downright Celebrates 9 Years w/ Caspa b2b The Widdler b2b Ternion Sound",
+      "date": "Friday, September 19, 2025",
+      "time": "9 PM",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "Downright Celebrates 9 Years w/ Caspa b2b The Widdler b2b Ternion Sound"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Mississippi Underground",
+        "The Widdler",
+        "Downright Entertainment1441 North 2nd St"
+      ],
+      "ticket_url": "https://theticketing.co/e/downrights9year",
+      "image_url": "https://files.catbox.moe/oow0p4.jpg"
+    }
+  },
+  {
+    "id": "import_1755252756429_mmz5ccjoj",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T10:12:36.429Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "TEKKMEOW Tour ft. DJ DAN, DONALD GLAUDE, Mark Laplante and more",
+      "event_date": "Saturday, September 20, 2025",
+      "event_time": "9 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Mississippi Underground",
+        "Dj Narcosis"
+      ],
+      "genre": "multi-genre",
+      "description": "This is not just another event. This is a moment.\nSassafras Society, in affiliation with Secret Sounds Radio, and Mississippi Underground, proudly bring you one of the most influential and prolific figures of the Rave and House Music scene.\n________________________________________________________________________________________\nDirect from Los Angeles California and InStereo Recordings, we present to you, a true ICON!DJ DAN\nThe \"TEKKMEOW\" Album Tour\nWith a very special, and no less acclaimed guest, \"The Glaudefather,\"\nDONALD GLAUDE\n(Mixa Records- Seattle, WA.)\n________________________________________________________________________________\nWith STL's very best\nMark LaPlanteMark LewisandNarcosis\n_____________________________________________________________________\n18+/21 Drinks w/ID9pm-3am\nTicket prices very so grab them early!\nwww.theoneandonlystash.com See less\n\nSt. Louis, Missouri",
+      "image_url": "https://files.catbox.moe/j3dx7w.jpg",
+      "ticket_url": "https://theticketing.co/e/sassafras-society-tekkmeow",
+      "facebook_url": "https://www.facebook.com/events/1653290048693574/",
+      "extracted_at": "2025-08-15T10:12:35.126Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/529775135_122117418266942766_1153480927435425607_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=75d36f&_nc_ohc=z_VpvhRXz4AQ7kNvwGEwlhi&_nc_oc=AdnzH04Ai94fYKXPxNEdHtLxNqaRHslP8b6SWvgYvQUnE_OZt1nwZgk1OaxosmRS_5CYZ6-iaxlRmuICG1-yId3p&_nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=ckYkB4r8kBMdzhSu8F0Rxw&oh=00_AfWCGerpTcmU6dvC6472kBdUjVEhju_Cgk_It2HtulRpfw&oe=68A4E84E"
+    },
+    "parsed_event": {
+      "title": "TEKKMEOW Tour ft. DJ DAN, DONALD GLAUDE, Mark Laplante and more",
+      "date": "Saturday, September 20, 2025",
+      "time": "9 PM",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "TEKKMEOW Tour ft. DJ DAN, DONALD GLAUDE, Mark Laplante and more"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Mississippi Underground",
+        "Dj Narcosis"
+      ],
+      "ticket_url": "https://theticketing.co/e/sassafras-society-tekkmeow",
+      "image_url": "https://files.catbox.moe/j3dx7w.jpg"
+    }
+  },
+  {
+    "id": "import_1755252764415_vpbpse0td",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T10:12:44.415Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "DEEPFAKE: ENTER THE FAKESIDE",
+      "event_date": "Friday, September 26, 2025",
+      "event_time": "9 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Party Diva Productions",
+        "Mississippi Underground"
+      ],
+      "genre": "multi-genre",
+      "description": "ENTER THE FAKESIDE\nThe SIGNAL has reached you for a reason.\nFor the first time ever, step into the realm of the Fakeside with DEEPFAKE.\nA world beyond the veil…\nWitness the all-new audiovisual realm.\nMississippi Underground. September 2025.\nA hidden truth awaits you!\nTwo stages. One realm. No escape.\nThis is not your reality.\nThis is FAKESIDE.\nTrust your senses.\nFollow the signal.\nJoin the chosen.\nLIMITED early bird tickets available: theticketing.co/e/enterthefakeside\nKeep your frequency locked.\n#technotease #TRUSTechno #Deepfake #Fakeside #MississippiUnderground #PartyDivaProductions See less\n\nSt. Louis, Missouri",
+      "image_url": "https://files.catbox.moe/ggvvtk.jpg",
+      "ticket_url": "https://theticketing.co/e/enterthefakeside",
+      "facebook_url": "https://www.facebook.com/events/1420171762602321/",
+      "extracted_at": "2025-08-15T10:12:43.583Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/514280861_122213594168265764_1577613027190549494_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=75d36f&_nc_ohc=35l8Hg0cuBMQ7kNvwF2EuAQ&_nc_oc=AdkcMexOlWst4qYlit1ds8l0HAVtMfMlvA1pwuG1Qdq8HfcOiB2_BxAC-pv7On5oWYw_Tpg3FmXD-eZM0kUQR5e8&_nc_zt=23&_nc_ht=scontent-ord5-1.xx&_nc_gid=e-Oea_imdmwVoS2Y6Hyraw&oh=00_AfWQWm5tITP9U49CEtKCiJ13zt28zgbT1pu0rlsN2Oz2rA&oe=68A4C058"
+    },
+    "parsed_event": {
+      "title": "DEEPFAKE: ENTER THE FAKESIDE",
+      "date": "Friday, September 26, 2025",
+      "time": "9 PM",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "DEEPFAKE: ENTER THE FAKESIDE"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Party Diva Productions",
+        "Mississippi Underground"
+      ],
+      "ticket_url": "https://theticketing.co/e/enterthefakeside",
+      "image_url": "https://files.catbox.moe/ggvvtk.jpg"
+    }
+  },
+  {
+    "id": "import_1755252770807_s1lsvhg8y",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T10:12:50.807Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "JSTJR 360",
+      "event_date": "Saturday, October 4, 2025",
+      "event_time": "9 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Downright Entertainment"
+      ],
+      "genre": "multi-genre",
+      "description": "JSTJR is here with one mission: MAKE TECHNO FUN AGAIN. No gatekeeping, no judgment, no uniform - just unmatched vibes that will turn even the most suspicious raver into a techno fan. Inspired by his time throwing illegal underground warehouse parties in LA, JSTJR has becomea leading voice in the resurgence of rave-inspired techno sounds currently proliferating dancemusic around the world. His expertise in mixing and blending genres keeps fans on their toes and makes for absolute addicting live sets and music releases. When he’s not touring the globe, JSTJR runs a record label and monthly party “Group Chat” alongside Insomniac, bringing the newest and hottest sounds to Los Angeles and the rest of the world. See less\nParties\n\nSt. Louis, Missouri",
+      "image_url": "https://files.catbox.moe/iin525.jpg",
+      "ticket_url": "https://theticketing.co/e/jstjr360",
+      "facebook_url": "https://www.facebook.com/events/2980253418846818/",
+      "extracted_at": "2025-08-15T10:12:49.911Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/530219368_1358904529572197_3684042206065416427_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=75d36f&_nc_ohc=Np7RsqYgIIcQ7kNvwFr18Nh&_nc_oc=Adm8hRha2qbHXiPbqgO1-K3zxh5ZYnDBts5Cg4nJkeTKw7zDm1AvnjqEZJs8a7J0rm01IWJxijOtk5wK0yKUqX8T&_nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=gwHgGepBiJN4-DB0Gl7WdQ&oh=00_AfXxYzciEpTItTxf4UUBP5MJfVQxaNglx4v1XzZ8QdgyxQ&oe=68A4C07D"
+    },
+    "parsed_event": {
+      "title": "JSTJR 360",
+      "date": "Saturday, October 4, 2025",
+      "time": "9 PM",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "JSTJR 360"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Downright Entertainment"
+      ],
+      "ticket_url": "https://theticketing.co/e/jstjr360",
+      "image_url": "https://files.catbox.moe/iin525.jpg"
+    }
+  },
+  {
+    "id": "import_1755252777289_rnu2m8sjo",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T10:12:57.289Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "What So Not",
+      "event_date": "Friday, October 10, 2025",
+      "event_time": "9 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Downright Entertainment"
+      ],
+      "genre": "multi-genre",
+      "description": "After charting America’s #1 Dance Album for his debut \"Not All the Beautiful Things\" in 2018, Chris Emerson, widely recognized as What So Not, stepped away from the spotlight, reconnected with the dancefloor & nature, in a quest to re-establish the foundation of his craft. Surfing treacherous waves, living in Nicaragua & regional coastal towns compounding his experiences into sound, this period of self-discovery led to the creation of \"Anomaly,\" an album that mirrors his newfound confidence and zest for life.\nAn eclectic blend of genres, \"Anomaly\" showcases Emerson's artistic evolution, ranging from cinematic builds, baseline driven anthems & celestial vocals. Collaborating with artists like Oliver Tree, Killer Mike, Louis the Child, and MØ, Emerson crafted a musical masterpiece that defies trends and stands the test of time. In addition to the album, he unveiled a visually stunning Immersive live show consisting of 3D animated film, exploring themes of purpose, existence, and impact.\nAfter a groundbreaking Anomaly tour across the United States & Australia, Emerson continues to push boundaries. Captivating audiences with his timeless creativity, innovative vision, and genre pushing releases with the likes of Slumberjack, Daktyl, and many more in 2024",
+      "image_url": "https://files.catbox.moe/g44286.jpg",
+      "ticket_url": "https://theticketing.co/e/whatsonot",
+      "facebook_url": "https://www.facebook.com/events/790473856665602/",
+      "extracted_at": "2025-08-15T10:12:56.184Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/528990679_1354498556679461_4369201642144492170_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=75d36f&_nc_ohc=aNtvLfzYDW8Q7kNvwHVX2Gr&_nc_oc=Adn_QsQvSrnWh7xQ9N-l7vGdF2KH0S25oLlTjLUzhKZzWscASnxHFJiZ8XLEP1pY4z5p-3t-i3kLlc8jDIAcKEhp&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=WBywM4rBJn6PjpJuahtcqg&oh=00_AfXGuh1nc1to13Am0UIzP4Q4R5RLWPA-PJJr2ibd0kcmDQ&oe=68A4EF25"
+    },
+    "parsed_event": {
+      "title": "What So Not",
+      "date": "Friday, October 10, 2025",
+      "time": "9 PM",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "What So Not"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Downright Entertainment"
+      ],
+      "ticket_url": "https://theticketing.co/e/whatsonot",
+      "image_url": "https://files.catbox.moe/g44286.jpg"
+    }
+  },
+  {
+    "id": "import_1755252790412_rb2boo9eh",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T10:13:10.412Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Maddy O'Neal Creatures Of My Mind Tour w/ Artifakts",
+      "event_date": "Friday, October 17, 2025",
+      "event_time": "9 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Mississippi Underground1441 North 2nd St"
+      ],
+      "genre": "multi-genre",
+      "description": "Step into the surreal with Maddy O’Neal’s Creatures of My Mind Tour\nOn Friday, October 17, Mississippi Underground transforms into a kaleidoscope of sound, light, and energy as Maddy O’Neal takes you on a journey through her genre-bending world of bass-heavy grooves, soulful melodies, and mind-bending visuals. Known for her dynamic stage presence and unique blend of electronic, funk, and hip-hop influences, Maddy creates an atmosphere that’s as immersive as it is electrifying.\nSupporting the night is Artifakts, bringing his signature fusion of hip-hop beats, glitchy textures, and lush soundscapes to set the tone for an unforgettable evening.\nMississippi Underground – St. Louis, MO\nFriday, October 17\nLose yourself in the music. Find yourself in the moment. See less\n\nSt. Louis, Missouri",
+      "image_url": "https://files.catbox.moe/kr86dl.jpg",
+      "ticket_url": "https://theticketing.co/e/maddyonealmu",
+      "facebook_url": "https://www.facebook.com/events/31140770975536210/",
+      "extracted_at": "2025-08-15T10:13:09.650Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/533123300_1096164959323433_8288730517313538046_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=75d36f&_nc_ohc=OXZTBghU5KwQ7kNvwHJD7wW&_nc_oc=AdmeOlyLYCG-5Nh-_XdLAob1z8uhGpdP5yQzy098lg3z9L9WNbhBVolyN_pxgpoNNJsof6QO8lPE0wcwAoz6mKfh&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=e34CBVFBBKdngObbQWSDXw&oh=00_AfUUrB5Kh665xSXFHpIO2ygbpokzNclbtvFSfSAaVs9VDQ&oe=68A4C75A"
+    },
+    "parsed_event": {
+      "title": "Maddy O'Neal Creatures Of My Mind Tour w/ Artifakts",
+      "date": "Friday, October 17, 2025",
+      "time": "9 PM",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "Maddy O'Neal Creatures Of My Mind Tour w/ Artifakts"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Mississippi Underground1441 North 2nd St"
+      ],
+      "ticket_url": "https://theticketing.co/e/maddyonealmu",
+      "image_url": "https://files.catbox.moe/kr86dl.jpg"
+    }
+  },
+  {
+    "id": "import_1755252796419_ass36b4jm",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T10:13:16.419Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Gentlemens Club",
+      "event_date": "Friday, October 24, 2025",
+      "event_time": "9 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Downright Entertainment",
+        "Gentlemens Club"
+      ],
+      "genre": "multi-genre",
+      "description": "Downright Entertainment\n& Mississippi Underground\nPresent: Gentlemen's Club\nGentlemens Club is at the forefront of the worldwide bass music scene, leading the nextwave of low-end sounds with their genre-blurring style & groundbreaking live sets. The trio incorporates an expansive sound that explores every shade of bass, from 140 hybrids & DnB to UKG basslines & beyond. Armed with an endless stockpile of bass bombs, Gentlemens Club have cemented themselves as one of the fastest-rising acts in electronic music, certified by their international following, global tours & rapidly growing discography.\nGentlemens Club sound pushes the limits of bass music: On any given track, they can flex hard-edged subs & electrified rhythms atop intricate melodies and sophisticated sound design. It’s a boundary-breaking approach that has solidified the all-around bass act as one of the fiercest breakout newcomers in dance music of this decade.\nA different kind of sound.\nWith Support From: Babysox, Forize & Jules",
+      "image_url": "https://files.catbox.moe/my8hkp.jpg",
+      "ticket_url": "https://theticketing.co/e/gcstl",
+      "facebook_url": "https://www.facebook.com/events/615624264545609/",
+      "extracted_at": "2025-08-15T10:13:15.660Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/525736518_1349183343877649_2230961179331368857_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=75d36f&_nc_ohc=lqBm4nVyXREQ7kNvwGncOEh&_nc_oc=AdlAENPCRhyw1xIpo77ljQNoNvlhu5v0d5JAYohr1mhznX3QrEjk-f76u8O-sItcnVuUj_F-ppUzSlJMoSthVGZW&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=Eee0Y3gaqmiJknSdBL5QWA&oh=00_AfVORhjH6_tDMWUjKSE9gKC-V_mqbkuRzt9pEJkCTM_Mvw&oe=68A4C6DF"
+    },
+    "parsed_event": {
+      "title": "Gentlemens Club",
+      "date": "Friday, October 24, 2025",
+      "time": "9 PM",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "Gentlemens Club"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Downright Entertainment",
+        "Gentlemens Club"
+      ],
+      "ticket_url": "https://theticketing.co/e/gcstl",
+      "image_url": "https://files.catbox.moe/my8hkp.jpg"
+    }
+  },
+  {
+    "id": "import_1755252807996_gnigbh3b5",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T10:13:27.996Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "Malaa Vs Alter Ego 360 Tour",
+      "event_date": "Saturday, November 22, 2025",
+      "event_time": "9 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Mississippi Underground",
+        "Downright Entertainment1441 North 2nd St"
+      ],
+      "genre": "multi-genre",
+      "description": "Malaa's original sound meets their Alter Ego’s chaos, two albums, two visions, one wild ride They're not just showing you my world, they're revealing the complexity within it. All In is the Malaa you know, dark, deep, and full of energy - but Blackout? That’s where their Alter Ego takes over. It’s a world of experimental chaos, unfiltered creativity, and sound that pushes boundaries. This isn’t just a new project but a journey into the duality of who Malaa is as an artist.\nSee less\nParties\n\nSt. Louis, Missouri",
+      "image_url": "https://files.catbox.moe/e5brg0.jpg",
+      "ticket_url": "https://theticketing.co/e/malaa360",
+      "facebook_url": "https://www.facebook.com/events/1477082293336814/",
+      "extracted_at": "2025-08-15T10:13:27.231Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-3.xx.fbcdn.net/v/t39.30808-6/515502053_1346357600826890_7122983869120764169_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=75d36f&_nc_ohc=NAG-PwF-NOAQ7kNvwHLudBz&_nc_oc=Adkjqja831fgVGEgjMCOeTtUkVExypxnKhR0IkOyApGwiDg2POsIx2pvjhTlEHxY3r14IFNXq3Moq7cnuwO1Q2i0&_nc_zt=23&_nc_ht=scontent-ord5-3.xx&_nc_gid=VmkezbpN8xyQMynwi5JaqQ&oh=00_AfU85r2qmt_ggDnP-zd4ppH3pmL5rr2jjpVm6bSBmOe9cA&oe=68A4EE34"
+    },
+    "parsed_event": {
+      "title": "Malaa Vs Alter Ego 360 Tour",
+      "date": "Saturday, November 22, 2025",
+      "time": "9 PM",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "Malaa Vs Alter Ego 360 Tour"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Mississippi Underground",
+        "Downright Entertainment1441 North 2nd St"
+      ],
+      "ticket_url": "https://theticketing.co/e/malaa360",
+      "image_url": "https://files.catbox.moe/e5brg0.jpg"
+    }
+  },
+  {
+    "id": "import_1755252820185_62acovipg",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T10:13:40.185Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "The Audiosphere Tour With Mersiv & More",
+      "event_date": "Friday, November 28, 2025",
+      "event_time": "9 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Downright Entertainment"
+      ],
+      "genre": "multi-genre",
+      "description": "Mersiv is bringing The Audiosphere Tour to Mississippi Underground w/ Steller, Superave., Sneff, Diesel In The Mix and $tack$ on a 360 layout with the intimate and immersive audiospheric sound setup!\nThe audiospheric design ensures optimal target coverage for an ideal listening experience. This 8 point object based PK surround sound system is utilizing cutting edge technology. The objective for this deployment is to deliver quality wave dispersion throughout the audience.\nThis one’s gonna melt faces! See less\nParties\n\nSt. Louis, Missouri",
+      "image_url": "https://files.catbox.moe/bnr3vt.jpg",
+      "ticket_url": "https://theticketing.co/e/audiosphere",
+      "facebook_url": "https://www.facebook.com/events/763165699697999/",
+      "extracted_at": "2025-08-15T10:13:39.223Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/524980817_1348309060631744_8658096436453057327_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=75d36f&_nc_ohc=DH2R6ndcKD8Q7kNvwEDCHDA&_nc_oc=AdmLQGrBR6bsMf3BLIgx5RFM3yqEAf3scOY54Vab_sqTzy5quvUJbYkmaf0QlktZ6v3fykdWBLQ2RkO6oq5eOd5v&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=xo29yNEK1EWxeekLE8r_zA&oh=00_AfVb9uQyIW4MKFBSE9DxRc21ElRldU1OmDP3-bGQ4YDRjQ&oe=68A4D13B"
+    },
+    "parsed_event": {
+      "title": "The Audiosphere Tour With Mersiv & More",
+      "date": "Friday, November 28, 2025",
+      "time": "9 PM",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "The Audiosphere Tour With Mersiv & More"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Downright Entertainment"
+      ],
+      "ticket_url": "https://theticketing.co/e/audiosphere",
+      "image_url": "https://files.catbox.moe/bnr3vt.jpg"
+    }
+  },
+  {
+    "id": "import_1755252830495_turyje8z0",
+    "status": "approved",
+    "source": "facebook_extension",
+    "imported_at": "2025-08-15T10:13:50.495Z",
+    "raw_data": {
+      "source": "facebook_extension",
+      "event_title": "DISTINCT MOTIVE, THIS IS THE MOTIVE w/ Chef Boyarbeatz & Don Jamal",
+      "event_date": "Saturday, December 6, 2025",
+      "event_time": "9 PM",
+      "venue_name": "Mississippi Underground",
+      "promoters": [
+        "Mississippi Underground",
+        "Downright Entertainment1441 North 2nd St"
+      ],
+      "genre": "multi-genre",
+      "description": "DISTINCT MOTIVE presents: THIS IS THE MOTIVE – St. Louis\nEvent Description:\nGet ready for a night of deep bass and underground dubstep as Distinct Motive brings their \"This Is The Motive\" tour to St. Louis! Known for their heavy-hitting, minimal dubstep sound, Distinct Motive is making their way across the USA and Canada – and now it's your turn to feel the bass.\nFeaturing Support From:\nChef BoyarbeatzDon Jamal\nExpect deep vibes, massive sound, and high-energy performances all night long. This is one for the heads – don’t miss out.\nDate: Friday, December 6th, 2025\nTime: 9:00 PM – 3:00 AM\nVenue: Mississippi Underground, St. Louis, MO\nAge Restriction: 18+\nGenre: Dubstep / Bass Music\nSecure your tickets now and be part of a night that pushes sound system culture forward. This is the motive. See less\n\nSt. Louis, Missouri",
+      "image_url": "https://files.catbox.moe/7l4do6.jpg",
+      "ticket_url": "https://theticketing.co/e/distinctmotivestl",
+      "facebook_url": "https://www.facebook.com/events/3161743663978260/",
+      "extracted_at": "2025-08-15T10:13:49.625Z",
+      "image_upload_status": "success",
+      "image_service_used": "Catbox.moe",
+      "original_facebook_image": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/533196109_1096995899240339_7861844484097690812_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=75d36f&_nc_ohc=iGPjbo95c1wQ7kNvwHgoo3N&_nc_oc=Adnxhq4lF4UjGRLcsxJKM13wayRHlK0iDTAdXLqj-ozeuwSCvBhj3RtZ6CzvitX3nOw3vZC_I3Js0_xiSSnH50IG&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=bc9FW9fyVQ_IvXuwpXW9Og&oh=00_AfUHJx0VHxJOf7Qd0KMiM8yK8rHbHVtMwcao8Z_bWON36A&oe=68A4C24F"
+    },
+    "parsed_event": {
+      "title": "DISTINCT MOTIVE, THIS IS THE MOTIVE w/ Chef Boyarbeatz & Don Jamal",
+      "date": "Saturday, December 6, 2025",
+      "time": "9 PM",
+      "venue": "Mississippi Underground",
+      "artists": [
+        "DISTINCT MOTIVE, THIS IS THE MOTIVE w/ Chef Boyarbeatz & Don Jamal"
+      ],
+      "genre": "multi-genre",
+      "price": "",
+      "promoter": "",
+      "promoters": [
+        "Mississippi Underground",
+        "Downright Entertainment1441 North 2nd St"
+      ],
+      "ticket_url": "https://theticketing.co/e/distinctmotivestl",
+      "image_url": "https://files.catbox.moe/7l4do6.jpg"
+    }
   }
 ]

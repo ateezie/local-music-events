@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import MusicLogo from '@/components/MusicLogo'
+import AdminHeader from '@/components/AdminHeader'
 
 interface ImportedEvent {
   id: string
@@ -113,51 +115,37 @@ export default function ImportReviewPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-music-neutral-50 p-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-music-purple-600"></div>
-            <p className="mt-2 text-music-neutral-600">Loading imported events...</p>
-          </div>
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <MusicLogo className="h-16 w-16 mx-auto mb-4 animate-pulse" />
+          <p className="text-gray-400">Loading imported events...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-music-neutral-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b border-music-neutral-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-heading font-bold text-music-purple-950">
-                📧 Event Import Review
-              </h1>
-              <p className="text-music-neutral-600 mt-1">
-                Review events imported from Facebook, emails, and other sources
-              </p>
-            </div>
-            <Link 
-              href="/admin"
-              className="btn-secondary"
-            >
-              ← Back to Admin
-            </Link>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gray-900">
+      <AdminHeader title="Event Import Review" showLogout={false} />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-white mb-2">📧 Event Import Review</h2>
+          <p className="text-gray-400">
+            Review events imported from Facebook, emails, and other sources
+          </p>
+        </div>
+
         {/* Webhook URL Info */}
-        <div className="bg-music-purple-50 border border-music-purple-200 rounded-lg p-4 mb-6">
-          <h3 className="font-semibold text-music-purple-950 mb-2">
+        <div className="bg-gray-800 border border-gray-700 rounded-lg p-6 mb-6">
+          <h3 className="font-semibold text-white mb-3">
             🔗 Mailparser Webhook URL
           </h3>
-          <code className="text-sm bg-white px-3 py-1 rounded border">
+          <code className="text-sm bg-gray-700 text-gray-300 px-3 py-2 rounded border border-gray-600 block">
             https://your-domain.com/api/events/import-from-email
           </code>
-          <p className="text-sm text-music-purple-700 mt-2">
+          <p className="text-sm text-gray-400 mt-3">
             Configure this URL in your Mailparser inbox settings to automatically receive parsed event data.
           </p>
         </div>
@@ -171,7 +159,7 @@ export default function ImportReviewPage() {
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 filter === status
                   ? 'bg-music-purple-600 text-white'
-                  : 'bg-white text-music-neutral-700 hover:bg-music-neutral-100'
+                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
               }`}
             >
               {status.replace('_', ' ').toUpperCase()}
@@ -188,18 +176,18 @@ export default function ImportReviewPage() {
         {events.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">📭</div>
-            <h3 className="text-xl font-semibold text-music-neutral-700 mb-2">
+            <h3 className="text-xl font-semibold text-white mb-2">
               No imported events yet
             </h3>
-            <p className="text-music-neutral-600 mb-6">
+            <p className="text-gray-400 mb-6">
               Events will appear here once promoters send emails to:<br />
-              <code className="bg-music-neutral-100 px-2 py-1 rounded">
+              <code className="bg-gray-800 text-gray-300 px-2 py-1 rounded">
                 lxwupbiw@mailparser.io
               </code>
             </p>
-            <div className="bg-music-neutral-100 rounded-lg p-6 max-w-md mx-auto">
-              <h4 className="font-semibold mb-3">📝 Next Steps:</h4>
-              <ol className="text-left text-sm space-y-2">
+            <div className="bg-gray-800 rounded-lg p-6 max-w-md mx-auto">
+              <h4 className="font-semibold text-white mb-3">📝 Next Steps:</h4>
+              <ol className="text-left text-sm text-gray-300 space-y-2">
                 <li>1. Subscribe to promoter emails using the Mailparser email</li>
                 <li>2. Set up parsing rules in Mailparser dashboard</li>
                 <li>3. Configure webhook URL in Mailparser</li>
@@ -210,7 +198,7 @@ export default function ImportReviewPage() {
         ) : (
           <div className="space-y-6">
             {events.map((event) => (
-              <div key={event.id} className="bg-white rounded-lg shadow-sm border border-music-neutral-200 p-6">
+              <div key={event.id} className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">
                     <span className={`px-3 py-1 rounded-full text-sm font-medium ${
@@ -222,7 +210,7 @@ export default function ImportReviewPage() {
                     }`}>
                       {event.status.replace('_', ' ').toUpperCase()}
                     </span>
-                    <span className="text-sm text-music-neutral-500">
+                    <span className="text-sm text-gray-400">
                       {new Date(event.imported_at).toLocaleString()}
                     </span>
                   </div>
@@ -248,8 +236,8 @@ export default function ImportReviewPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Parsed Event Data */}
                     <div>
-                      <h3 className="font-semibold text-music-purple-950 mb-3">📊 Extracted Event Data</h3>
-                      <div className="space-y-2 text-sm">
+                      <h3 className="font-semibold text-white mb-3">📊 Extracted Event Data</h3>
+                      <div className="space-y-2 text-sm text-gray-300">
                         <div><strong>Title:</strong> {event.parsed_event.title || 'Not found'}</div>
                         <div><strong>Date:</strong> {event.parsed_event.date || 'Not found'}</div>
                         <div><strong>Time:</strong> {event.parsed_event.time || 'Not found'}</div>
@@ -258,8 +246,8 @@ export default function ImportReviewPage() {
                         <div><strong>Genre:</strong> 
                           <span className={`ml-2 px-2 py-1 rounded text-xs ${
                             event.parsed_event.genre !== 'other' 
-                              ? 'bg-music-purple-100 text-music-purple-800'
-                              : 'bg-music-neutral-100 text-music-neutral-800'
+                              ? 'bg-music-purple-600 text-white'
+                              : 'bg-gray-600 text-gray-200'
                           }`}>
                             {event.parsed_event.genre || 'other'}
                           </span>
@@ -274,7 +262,7 @@ export default function ImportReviewPage() {
                                 ...prev,
                                 [event.id]: e.target.value
                               }))}
-                              className="ml-2 px-2 py-1 border rounded text-sm"
+                              className="ml-2 px-2 py-1 border border-gray-600 rounded text-sm bg-gray-700 text-white"
                             >
                               {event.parsed_event.promoters.map((promoter, index) => (
                                 <option key={index} value={promoter}>
@@ -287,14 +275,14 @@ export default function ImportReviewPage() {
                           )}
                         </div>
                         {event.parsed_event.promoters && event.parsed_event.promoters.length > 1 && (
-                          <div className="text-xs text-music-neutral-600 ml-4">
+                          <div className="text-xs text-gray-400 ml-4">
                             💡 Multiple organizers detected: {event.parsed_event.promoters.join(', ')}
                           </div>
                         )}
                         {event.parsed_event.ticket_url && (
                           <div><strong>Tickets:</strong> 
                             <a href={event.parsed_event.ticket_url} target="_blank" rel="noopener noreferrer" 
-                               className="text-music-purple-600 hover:underline ml-1">
+                               className="text-blue-400 hover:underline ml-1">
                               View Link →
                             </a>
                           </div>
@@ -304,12 +292,12 @@ export default function ImportReviewPage() {
 
                     {/* Raw Source Data */}
                     <div>
-                      <h3 className="font-semibold text-music-purple-950 mb-3">
+                      <h3 className="font-semibold text-white mb-3">
                         {event.source === 'mailparser' ? '📧 Raw Email Data' : 
                          event.source === 'facebook_extension' ? '📘 Facebook Data' :
                          '📘 Facebook Bookmarklet Data'}
                       </h3>
-                      <div className="bg-music-neutral-50 p-3 rounded text-xs space-y-2 max-h-64 overflow-y-auto">
+                      <div className="bg-gray-700 p-3 rounded text-xs space-y-2 max-h-64 overflow-y-auto text-gray-300">
                         <div><strong>Source:</strong> {event.source}</div>
                         <div><strong>Extracted At:</strong> {event.raw_data.extracted_at || 'N/A'}</div>
                         
@@ -320,7 +308,7 @@ export default function ImportReviewPage() {
                             {event.raw_data.email_body && (
                               <div>
                                 <strong>Body Preview:</strong>
-                                <div className="mt-1 p-2 bg-white rounded border text-xs">
+                                <div className="mt-1 p-2 bg-gray-800 rounded border border-gray-600 text-xs">
                                   {event.raw_data.email_body.substring(0, 300)}...
                                 </div>
                               </div>
@@ -330,14 +318,14 @@ export default function ImportReviewPage() {
                           <>
                             <div><strong>Event URL:</strong> 
                               <a href={event.raw_data.ticket_url} target="_blank" rel="noopener noreferrer"
-                                 className="text-music-purple-600 hover:underline ml-1 break-all">
+                                 className="text-blue-400 hover:underline ml-1 break-all">
                                 {event.raw_data.ticket_url}
                               </a>
                             </div>
                             {event.raw_data.description && (
                               <div>
                                 <strong>Description:</strong>
-                                <div className="mt-1 p-2 bg-white rounded border text-xs">
+                                <div className="mt-1 p-2 bg-gray-800 rounded border border-gray-600 text-xs">
                                   {event.raw_data.description.substring(0, 300)}...
                                 </div>
                               </div>
@@ -348,9 +336,9 @@ export default function ImportReviewPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="bg-red-50 border border-red-200 rounded p-4">
-                    <h3 className="font-semibold text-red-800 mb-2">⚠️ Parsing Failed</h3>
-                    <p className="text-red-700 text-sm">
+                  <div className="bg-red-900 border border-red-700 rounded p-4">
+                    <h3 className="font-semibold text-red-200 mb-2">⚠️ Parsing Failed</h3>
+                    <p className="text-red-300 text-sm">
                       Could not extract event data from email. Raw data available for manual review.
                     </p>
                   </div>
@@ -359,7 +347,7 @@ export default function ImportReviewPage() {
             ))}
           </div>
         )}
-      </div>
+      </main>
     </div>
   )
 }

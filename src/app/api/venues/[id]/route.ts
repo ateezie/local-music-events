@@ -15,6 +15,7 @@ const UpdateVenueSchema = z.object({
   phone: z.union([z.string(), z.null()]).optional(),
   email: z.union([z.string().email(), z.literal(''), z.null()]).optional(),
   description: z.union([z.string(), z.null()]).optional(),
+  image: z.union([z.string(), z.null()]).optional(),
   facebook: z.union([z.string().url(), z.literal(''), z.null()]).optional(),
   instagram: z.union([z.string().url(), z.literal(''), z.null()]).optional(),
   twitter: z.union([z.string().url(), z.literal(''), z.null()]).optional()
@@ -27,8 +28,10 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const venue = await prisma.venue.findUnique({
-      where: { id },
+    
+    // Try to find by slug first, then by ID
+    let venue = await prisma.venue.findUnique({
+      where: { slug: id },
       include: {
         events: {
           include: {
@@ -56,6 +59,39 @@ export async function GET(
         }
       }
     })
+    
+    // If not found by slug, try by ID
+    if (!venue) {
+      venue = await prisma.venue.findUnique({
+        where: { id },
+        include: {
+        events: {
+          include: {
+            artists: {
+              include: {
+                artist: true
+              }
+            }
+          },
+          orderBy: {
+            date: 'asc'
+          }
+        },
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true
+          }
+        },
+        _count: {
+          select: {
+            events: true
+          }
+        }
+      }
+    })
+    }
 
     if (!venue) {
       return NextResponse.json(
@@ -122,10 +158,16 @@ export async function PUT(
 
     const { id } = await params
 
-    // Check if venue exists
-    const existingVenue = await prisma.venue.findUnique({
-      where: { id }
+    // Check if venue exists (try slug first, then ID)
+    let existingVenue = await prisma.venue.findUnique({
+      where: { slug: id }
     })
+    
+    if (!existingVenue) {
+      existingVenue = await prisma.venue.findUnique({
+        where: { id }
+      })
+    }
 
     if (!existingVenue) {
       return NextResponse.json(
@@ -155,9 +197,9 @@ export async function PUT(
 
     const validatedData = UpdateVenueSchema.parse(cleanedData)
 
-    // Update venue
+    // Update venue using the actual venue ID (not slug)
     const venue = await prisma.venue.update({
-      where: { id },
+      where: { id: existingVenue.id },
       data: {
         ...validatedData,
         updatedAt: new Date().toISOString()
@@ -239,9 +281,9 @@ export async function DELETE(
 
     const { id } = await params
 
-    // Check if venue exists
-    const existingVenue = await prisma.venue.findUnique({
-      where: { id },
+    // Check if venue exists (try slug first, then ID)
+    let existingVenue = await prisma.venue.findUnique({
+      where: { slug: id },
       include: {
         _count: {
           select: {
@@ -250,6 +292,19 @@ export async function DELETE(
         }
       }
     })
+    
+    if (!existingVenue) {
+      existingVenue = await prisma.venue.findUnique({
+        where: { id },
+        include: {
+          _count: {
+            select: {
+              events: true
+            }
+          }
+        }
+      })
+    }
 
     if (!existingVenue) {
       return NextResponse.json(
@@ -266,9 +321,9 @@ export async function DELETE(
       )
     }
 
-    // Delete venue
+    // Delete venue using actual venue ID
     await prisma.venue.delete({
-      where: { id }
+      where: { id: existingVenue.id }
     })
 
     return NextResponse.json({ success: true })

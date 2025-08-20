@@ -221,7 +221,7 @@ module.exports = {
         // Desktop heading sizes (Bebas Neue)
         'heading-h1-desktop': ['4.5rem', { lineHeight: '0.9' }],     // 72px
         'heading-h2-desktop': ['3.6875rem', { lineHeight: '1.2' }],  // 59px  
-        'heading-h3-desktop': ['2.75rem', { lineHeight: '1.2' }],    // 44px
+        'heading-h3-desktop': ['2rem', { lineHeight: '1' }],    // 32px
         'heading-h4-desktop': ['2.25rem', { lineHeight: '1.3' }],    // 36px
         'heading-h5-desktop': ['1.75rem', { lineHeight: '1' }],    // 28px
         'heading-h6-desktop': ['1.375rem', { lineHeight: '1.4' }],   // 22px
@@ -229,7 +229,7 @@ module.exports = {
         // Mobile heading sizes (Bebas Neue)
         'heading-h1-mobile': ['2.75rem', { lineHeight: '0.9' }],     // 44px
         'heading-h2-mobile': ['2.5rem', { lineHeight: '1.2' }],      // 40px
-        'heading-h3-mobile': ['2rem', { lineHeight: '1.2' }],        // 32px
+        'heading-h3-mobile': ['2rem', { lineHeight: '1' }],        // 32px
         'heading-h4-mobile': ['1.5rem', { lineHeight: '1.3' }],      // 24px
         'heading-h5-mobile': ['1.25rem', { lineHeight: '1.4' }],     // 20px
         'heading-h6-mobile': ['1.125rem', { lineHeight: '1.4' }],    // 18px
@@ -360,15 +360,42 @@ module.exports = {
           },
         },
         '.heading-h3': {
-          fontSize: theme('fontSize.heading-h3-desktop[0]'),
-          lineHeight: theme('fontSize.heading-h3-desktop[1].lineHeight'),
+          fontSize: '2rem',
+          lineHeight: '1',
           fontFamily: theme('fontFamily.heading'),
           fontWeight: '400',
           textTransform: 'uppercase',
           letterSpacing: '0.025em',
           '@media (max-width: 768px)': {
-            fontSize: theme('fontSize.heading-h3-mobile[0]'),
-            lineHeight: theme('fontSize.heading-h3-mobile[1].lineHeight'),
+            fontSize: '2rem',
+            lineHeight: '1',
+          },
+        },
+        'h3.heading-h3': {
+          fontSize: '2rem',
+          lineHeight: '1',
+          fontFamily: theme('fontFamily.heading'),
+          fontWeight: '400',
+          textTransform: 'uppercase',
+          letterSpacing: '0.025em',
+          '@media (max-width: 768px)': {
+            fontSize: '2rem',
+            lineHeight: '1',
+          },
+        },
+        // Override text size utilities by using layer priorities
+        '@layer utilities': {
+          'h3.heading-h3.text-neutral-900.mb-2.group-hover\\:text-resolution-600.transition-colors.duration-200': {
+            fontSize: '2rem',
+            lineHeight: '1',
+            fontFamily: theme('fontFamily.heading'),
+            fontWeight: '400',
+            textTransform: 'uppercase',
+            letterSpacing: '0.025em',
+            '@media (max-width: 768px)': {
+              fontSize: '2rem',
+              lineHeight: '1',
+            },
           },
         },
         '.heading-h4': {

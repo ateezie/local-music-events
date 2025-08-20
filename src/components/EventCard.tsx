@@ -4,40 +4,11 @@ import EventImage from './EventImage'
 import { formatEventDateSafe, formatEventTime } from '@/lib/dateUtils'
 
 function GenreBadge({ genre }: { genre: string }) {
-  const genreColors: Record<string, string> = {
-    rock: 'bg-orange-100 text-orange-700',
-    'indie-rock': 'bg-pink-100 text-pink-700',
-    punk: 'bg-red-100 text-red-700',
-    metal: 'bg-gray-100 text-gray-800',
-    alternative: 'bg-pink-100 text-pink-700',
-    pop: 'bg-pink-100 text-pink-600',
-    'hip-hop': 'bg-purple-100 text-purple-700',
-    rap: 'bg-purple-100 text-purple-700',
-    'r-b': 'bg-purple-100 text-purple-600',
-    jazz: 'bg-yellow-100 text-yellow-700',
-    blues: 'bg-blue-100 text-blue-700',
-    country: 'bg-amber-100 text-amber-700',
-    folk: 'bg-amber-100 text-amber-600',
-    acoustic: 'bg-green-100 text-green-700',
-    electronic: 'bg-cyan-100 text-cyan-700',
-    edm: 'bg-cyan-100 text-cyan-600',
-    house: 'bg-teal-100 text-teal-700',
-    techno: 'bg-blue-100 text-blue-600',
-    reggae: 'bg-green-100 text-green-600',
-    ska: 'bg-lime-100 text-lime-700',
-    classical: 'bg-purple-100 text-purple-600',
-    experimental: 'bg-orange-100 text-orange-600',
-    indie: 'bg-pink-100 text-pink-600',
-    'singer-songwriter': 'bg-purple-100 text-purple-600',
-    covers: 'bg-gray-100 text-gray-600',
-    tribute: 'bg-blue-100 text-blue-600',
-    'multi-genre': 'bg-yellow-100 text-yellow-700',
-  }
-
-  const colorClass = genreColors[genre] || 'bg-neutral-100 text-neutral-700'
-
   return (
-    <span className={`px-2 py-1 rounded-full text-xs font-medium ${colorClass}`}>
+    <span 
+      className="px-2 py-1 rounded-full text-xs font-medium text-white"
+      style={{ backgroundColor: 'rgb(76, 98, 134)' }}
+    >
       {genre.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
     </span>
   )
@@ -86,8 +57,6 @@ export default function EventCard({ event, className = '', featured = false }: E
     ? `event-card ${className} transform hover:scale-[1.02]`
     : `event-card ${className}`
 
-  const primaryArtist = event.artists && event.artists.length > 0 ? event.artists[0] : null
-  const additionalArtistCount = event.artists ? event.artists.length - 1 : 0
 
   // Use slug if available, otherwise fall back to ID
   const eventUrl = event.slug ? `/events/${event.slug}` : `/events/${event.id}`
@@ -151,15 +120,11 @@ export default function EventCard({ event, className = '', featured = false }: E
       {/* Event Content */}
       <div className={featured ? 'p-8' : 'p-6'}>
         <h3 
-          className={`${featured ? 'heading-h4' : 'heading-h5'} text-neutral-900 mb-2 group-hover:text-resolution-600 transition-colors duration-200`}
-          style={featured ? { fontSize: '2rem', lineHeight: '1' } : {}}
+          className={`${featured ? 'heading-h3' : 'heading-h4'} text-neutral-900 mb-2 group-hover:text-resolution-600 transition-colors duration-200`}
         >
           {event.title}
         </h3>
         
-        <p className={`text-neutral-600 mb-4 line-clamp-2 leading-relaxed ${featured ? 'text-regular' : 'text-small'}`}>
-          {event.description}
-        </p>
 
         {/* Event Metadata - Date and Time on one line */}
         <div className="flex items-center text-tiny text-neutral-500 mb-3">
@@ -183,26 +148,23 @@ export default function EventCard({ event, className = '', featured = false }: E
           <div className="mb-3">
             {/* Venue Info */}
             <div className="flex items-center text-tiny text-neutral-500 mb-1">
-              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 mr-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
               <span>{event.venue.name}</span>
             </div>
             
-            {/* Artist Info - Only show if not TBA */}
-            {primaryArtist && (
+            {/* Promoter Info */}
+            {(event.promoter || (event.promoters && event.promoters.length > 0)) && (
               <div className="flex items-center text-tiny text-neutral-500">
-                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                <svg className="w-4 h-4 mr-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
                 <span>
-                  {primaryArtist.name}
-                  {additionalArtistCount > 0 && (
-                    <span className="text-neutral-400">
-                      {` + ${additionalArtistCount} more`}
-                    </span>
-                  )}
+                  {event.promoters && event.promoters.length > 0 
+                    ? event.promoters.join(', ') 
+                    : event.promoter}
                 </span>
               </div>
             )}

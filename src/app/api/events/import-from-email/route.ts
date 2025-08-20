@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { generateEventSlug } from '@/lib/slug'
 
 // Interface for Mailparser webhook payload
 interface MailparserEventData {
@@ -271,12 +272,35 @@ async function saveApprovedEventToDatabase(importedEvent: ImportedEvent) {
         artistIds.push(artist.id)
       }
       
-      // Create event in database
+      // Create event in database with unique slug
+      let eventSlug = generateEventSlug(parsedEvent.title, parsedEvent.date, parsedEvent.venue)
+      
+      // Check if slug already exists and append number if needed
+      let slugSuffix = 1;
+      let uniqueSlug = eventSlug;
+      while (true) {
+        const existingEvent = await prisma.event.findUnique({
+          where: { slug: uniqueSlug }
+        });
+        
+        if (!existingEvent) {
+          eventSlug = uniqueSlug;
+          break;
+        }
+        
+        uniqueSlug = `${eventSlug}-${slugSuffix}`;
+        slugSuffix++;
+      }
+      
+      console.log('saveApprovedEventToDatabase: Using unique slug:', eventSlug);
+      
       const dbEvent = await prisma.event.create({
         data: {
           id: `db-${Date.now()}`,
           title: parsedEvent.title,
-          description: rawData?.description || parsedEvent.description || `Live music event featuring ${parsedEvent.promoter}`,
+          slug: eventSlug,
+          description: rawData?.description || parsedEvent.description || 
+            `Join us for an exciting live music event at ${parsedEvent.venue}. ${parsedEvent.artists && parsedEvent.artists.length > 0 ? `Featuring performances by ${parsedEvent.artists.join(', ')}.` : ''} Organized by ${parsedEvent.promoters && parsedEvent.promoters.length > 0 ? parsedEvent.promoters.join(', ') : parsedEvent.promoter}.`,
           date: convertDateFormat(parsedEvent.date),
           time: convertTimeFormat(parsedEvent.time),
           endTime: null,
@@ -286,7 +310,7 @@ async function saveApprovedEventToDatabase(importedEvent: ImportedEvent) {
             ? parsedEvent.promoters.join(', ') 
             : (parsedEvent.promoter || ''),
           ticketUrl: parsedEvent.ticket_url || '',
-          facebookEvent: '',
+          facebookEvent: rawData?.facebook_url || '',
           instagramPost: '',
           flyer: finalImageUrl || '',
           price: parsedEvent.price || '',
@@ -416,7 +440,7 @@ function parseEventData(data: any) {
         date: data.event_date || '',
         time: data.event_time || '',
         venue: data.venue_name || '',
-        artists: data.artists ? parseArtists(data.artists) : [],
+        artists: data.artists ? parseArtists(data.artists) : [data.event_title || 'Unknown Artist'],
         genre: data.genre || 'other',
         price: data.price || '',
         promoter: data.promoter || '',

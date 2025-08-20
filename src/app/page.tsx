@@ -62,11 +62,21 @@ export default function HomePage() {
   const [allEvents, setAllEvents] = useState<Event[]>([])
   const [loading, setLoading] = useState(true)
   
-  // Calculate genres from loaded events
+  // Define all target genres regardless of events
+  const targetGenres = [
+    { id: 'house', name: 'House', description: 'Deep house and progressive' },
+    { id: 'drum-and-bass', name: 'Drum & Bass', description: 'High-energy drum and bass' },
+    { id: 'ukg', name: 'UK Garage', description: '2-step and speed garage' },
+    { id: 'dubstep', name: 'Dubstep', description: 'Heavy bass dubstep' },
+    { id: 'trance', name: 'Trance', description: 'Uplifting trance music' },
+    { id: 'techno', name: 'Techno', description: 'Electronic techno music' },
+    { id: 'multi-genre', name: 'Multi-Genre', description: 'Mixed music styles' },
+    { id: 'other', name: 'Other', description: 'Various music genres' }
+  ]
+
+  // Calculate event counts for each genre
   const genres = React.useMemo(() => {
     const combinedEvents = [...featuredEvents, ...allEvents]
-    if (combinedEvents.length === 0) return []
-    
     const genreCounts = new Map<string, number>()
     
     combinedEvents.forEach(event => {
@@ -75,13 +85,9 @@ export default function HomePage() {
       }
     })
     
-    return Array.from(genreCounts.entries()).map(([genre, count]) => ({
-      id: genre,
-      name: genre.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-      color: getGenreColor(genre),
-      icon: '🎵',
-      count: count,
-      description: getGenreDescription(genre)
+    return targetGenres.map(genre => ({
+      ...genre,
+      count: genreCounts.get(genre.id) || 0
     }))
   }, [featuredEvents, allEvents])
   
@@ -163,11 +169,11 @@ export default function HomePage() {
       <section className="px-[5%] py-16 md:py-24 lg:py-28 bg-neutral-100">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="heading-h2 text-black mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-black mb-6 uppercase">
               Featured Events
             </h2>
             <p className="text-medium text-gray-700 max-w-2xl mx-auto">
-              Don&apos;t miss these hand-picked live music experiences happening in your city this week.
+              Here&apos;s what&apos;s coming up in St. Louis this month!
             </p>
           </div>
 
@@ -201,36 +207,40 @@ export default function HomePage() {
       <section className="px-[5%] py-16 md:py-24 lg:py-28 bg-gradient-to-r from-music-purple-50 to-music-purple-100">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="heading-h2 text-black mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-black mb-6 uppercase">
               Browse by Genre
             </h2>
-            <p className="text-medium text-gray-700 max-w-2xl mx-auto">
-              Discover live music events that match your taste. From indie rock to jazz, electronic to acoustic.
-            </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
             {genres.map((genre) => (
               <Link
                 key={genre.id}
                 href={`/events?genre=${genre.id}`}
-                className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transform transition-all duration-200 text-center group hover:scale-105"
+                className="bg-white rounded-xl shadow-sm hover:shadow-lg hover:-translate-y-2 transition-all duration-300 text-center group overflow-hidden focus:outline-none focus:ring-2 focus:ring-[#4C6286] focus:ring-offset-2"
+                aria-label={`Browse ${genre.count} ${genre.name} events`}
               >
+                {/* Color accent bar */}
                 <div 
-                  className="w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center text-white font-bold text-xl group-hover:scale-110 transition-transform duration-200"
-                  style={{ backgroundColor: genre.color }}
-                >
-                  🎵
+                  className="w-full h-1 bg-gradient-to-r from-[#4C6286] to-music-purple-600"
+                />
+                
+                {/* Content area with improved spacing */}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-black mb-4 group-hover:text-[#4C6286] transition-colors duration-200 uppercase leading-tight">
+                    {genre.name}
+                  </h3>
+                  
+                  {/* Prominent event count */}
+                  <div className={`${genre.count === 0 ? 'opacity-60' : ''}`}>
+                    <div className={`text-2xl font-bold mb-1 ${genre.count === 0 ? 'text-gray-400' : 'text-[#4C6286]'}`}>
+                      {genre.count}
+                    </div>
+                    <div className="text-xs text-gray-500 uppercase tracking-wide font-medium">
+                      {genre.count === 0 ? 'No Events' : 'Events →'}
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-lg font-bold text-black mb-2 group-hover:text-blue-900 transition-colors duration-200 uppercase">
-                  {genre.name}
-                </h3>
-                <p className="text-gray-700 text-sm mb-3">
-                  {genre.description}
-                </p>
-                <span className="text-black font-semibold text-sm">
-                  {genre.count} events →
-                </span>
               </Link>
             ))}
           </div>
@@ -253,7 +263,7 @@ export default function HomePage() {
       <section className="px-[5%] py-16 md:py-24 lg:py-28 bg-prussian-900">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="heading-h2 text-white mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 uppercase">
               Upcoming Events
             </h2>
             <p className="text-medium text-neutral-300 max-w-4xl mx-auto">

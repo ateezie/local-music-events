@@ -106,7 +106,7 @@ export default function Header() {
                 value={searchQuery}
                 onChange={setSearchQuery}
                 onSubmit={handleSearch}
-                placeholder="Search events, venues, artists..."
+                placeholder="Search"
               />
             </div>
             <button 
@@ -159,7 +159,7 @@ export default function Header() {
                     value={mobileSearchQuery}
                     onChange={setMobileSearchQuery}
                     onSubmit={handleMobileSearch}
-                    placeholder="Search events, venues, artists..."
+                    placeholder="Search"
                     autoFocus
                   />
                 </div>
@@ -199,7 +199,7 @@ export default function Header() {
                     handleSearch(query)
                     closeMenu()
                   }}
-                  placeholder="Search events, venues, artists..."
+                  placeholder="Search"
                 />
               </div>
             </nav>

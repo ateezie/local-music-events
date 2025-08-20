@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 import { verifyToken } from '@/lib/auth'
+import { generateVenueSlug } from '@/lib/eventUtils'
 
 // Validation schema for creating venues
 const CreateVenueSchema = z.object({
@@ -168,14 +169,24 @@ export async function POST(request: NextRequest) {
 
     const validatedData = CreateVenueSchema.parse(cleanedData)
 
-    // Generate venue ID
+    // Generate venue ID and slug
     const venueId = `venue-${Date.now()}`
+    let baseSlug = generateVenueSlug(validatedData.name, validatedData.city || undefined)
+    
+    // Ensure slug is unique
+    let slug = baseSlug
+    let counter = 1
+    while (await prisma.venue.findUnique({ where: { slug } })) {
+      slug = `${baseSlug}-${counter}`
+      counter++
+    }
 
     // Create venue
     const venue = await prisma.venue.create({
       data: {
         id: venueId,
         name: validatedData.name,
+        slug,
         address: validatedData.address || '',
         city: validatedData.city || '',
         state: validatedData.state || '',

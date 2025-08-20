@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import Image from 'next/image'
 
 interface ImageUploadProps {
   currentImage?: string
@@ -90,6 +89,14 @@ export default function ImageUpload({
     }
   }
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (!uploading && fileInputRef.current) {
+      fileInputRef.current.click()
+    }
+  }
+
   const handleRemoveImage = () => {
     onImageChange('')
     if (fileInputRef.current) {
@@ -99,7 +106,7 @@ export default function ImageUpload({
 
   return (
     <div className={className}>
-      <label className="block text-sm font-medium text-chang-brown-700 mb-2">
+      <label className="block text-sm font-medium text-gray-300 mb-2">
         {label}
       </label>
       
@@ -107,12 +114,10 @@ export default function ImageUpload({
         <div className="space-y-4">
           {/* Current Image Preview */}
           <div className="relative">
-            <Image
+            <img
               src={currentImage}
               alt="Event banner"
-              width={400}
-              height={200}
-              className="w-full h-48 object-cover rounded-lg border border-chang-neutral-300"
+              className="w-full h-72 object-cover rounded-lg border border-chang-neutral-300"
             />
             <button
               type="button"
@@ -128,9 +133,9 @@ export default function ImageUpload({
           {/* Replace Image Button */}
           <button
             type="button"
-            onClick={() => fileInputRef.current?.click()}
+            onClick={handleClick}
             disabled={uploading}
-            className="w-full py-2 px-4 border border-chang-neutral-300 rounded-md text-sm font-medium text-chang-brown-700 bg-white hover:bg-chang-neutral-50 disabled:opacity-50"
+            className="w-full py-2 px-4 border border-gray-600 rounded-md text-sm font-medium text-gray-300 bg-gray-700 hover:bg-gray-600 disabled:opacity-50"
           >
             {uploading ? 'Uploading...' : 'Replace Image'}
           </button>
@@ -144,22 +149,22 @@ export default function ImageUpload({
           className={`
             border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors
             ${dragOver 
-              ? 'border-music-blue-600 bg-music-blue-50' 
-              : 'border-chang-neutral-300 hover:border-music-blue-600 hover:bg-chang-neutral-50'
+              ? 'border-music-blue-600 bg-gray-600' 
+              : 'border-gray-600 hover:border-music-blue-600 hover:bg-gray-600'
             }
             ${uploading ? 'opacity-50 cursor-not-allowed' : ''}
           `}
-          onClick={() => !uploading && fileInputRef.current?.click()}
+          onClick={handleClick}
         >
           {uploading ? (
             <div className="space-y-2">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-music-blue-600 mx-auto"></div>
-              <p className="text-sm text-chang-brown-600">Uploading...</p>
+              <p className="text-sm text-gray-300">Uploading...</p>
             </div>
           ) : (
             <div className="space-y-2">
               <svg
-                className="mx-auto h-12 w-12 text-chang-neutral-400"
+                className="mx-auto h-12 w-12 text-gray-400"
                 stroke="currentColor"
                 fill="none"
                 viewBox="0 0 48 48"
@@ -171,7 +176,7 @@ export default function ImageUpload({
                   strokeLinejoin="round"
                 />
               </svg>
-              <div className="text-sm text-chang-brown-600">
+              <div className="text-sm text-gray-300">
                 <p className="font-medium">Drop image here or click to upload</p>
                 <p className="text-xs">PNG, JPG, WebP up to 5MB</p>
               </div>

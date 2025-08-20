@@ -32,6 +32,7 @@ model User {
 model Venue {
   id          String  @id
   name        String
+  slug        String? @unique // URL-friendly version of name, e.g., "mississippi-underground"
   address     String
   city        String
   state       String

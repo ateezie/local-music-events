@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import MusicLogo from '@/components/MusicLogo'
+import AdminHeader from '@/components/AdminHeader'
 import { Event } from '@/types/event'
 
 // Helper function to format time to 12-hour format
@@ -273,36 +274,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      {/* Header */}
-      <header className="bg-gray-800 shadow-sm border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <MusicLogo className="h-8 w-8 mr-3" />
-            </div>
-            <div className="flex items-center space-x-4">
-              <Link
-                href="/admin/venues"
-                className="text-sm text-music-purple-600 hover:text-music-purple-700"
-              >
-                Manage Venues
-              </Link>
-              <Link 
-                href="/"
-                className="text-sm text-music-purple-600 hover:text-music-purple-700"
-              >
-                View Site
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="text-sm bg-chang-brown-600 text-white px-3 py-1 rounded hover:bg-chang-brown-700"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <AdminHeader title="Admin Dashboard" />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -362,17 +334,14 @@ export default function AdminDashboard() {
               <table className="min-w-full divide-y divide-gray-700">
                 <thead className="bg-gray-700">
                   <tr>
+                    <th className="px-3 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      ⭐
+                    </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                      Event
+                      Event Details
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                       Date & Time
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                      Genre
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                      Featured
                     </th>
                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">
                       Actions
@@ -382,32 +351,55 @@ export default function AdminDashboard() {
                 <tbody className="bg-gray-800">
                   {events.map((event) => (
                     <tr key={event.id} className="hover:bg-gray-700">
+                      <td className="px-3 py-4 text-center">
+                        <button
+                          onClick={() => toggleFeatured(event)}
+                          className={`text-lg ${
+                            event.featured 
+                              ? 'text-chang-orange-600 hover:text-chang-orange-700'
+                              : 'text-gray-400 hover:text-chang-orange-600'
+                          } transition-colors`}
+                        >
+                          {event.featured ? '⭐' : '☆'}
+                        </button>
+                      </td>
                       <td className="px-6 py-4">
-                        <div className="flex items-center">
+                        <div className="w-full">
+                          {/* Event Title - Full Width */}
+                          <div className="text-sm font-medium text-white mb-2">
+                            {(event as any)._source === 'database' ? (
+                              <Link
+                                href={`/admin/events/${event.slug || event.id}/edit`}
+                                className="text-white hover:underline"
+                              >
+                                {event.title}
+                              </Link>
+                            ) : (
+                              <span>{event.title}</span>
+                            )}
+                          </div>
+                          
+                          {/* Venue - Full Width */}
+                          <div className="text-sm text-gray-400 mb-3">
+                            {event.venue?.id || event.venueId ? (
+                              <Link
+                                href={`/admin/venues/${event.venue?.id || event.venueId}/edit`}
+                                className="text-gray-400 hover:underline"
+                              >
+                                {event.venue?.name || 'TBA'}
+                              </Link>
+                            ) : (
+                              <span>{event.venue?.name || 'TBA'}</span>
+                            )}
+                          </div>
+                          
+                          {/* Promoter */}
                           <div>
-                            <div className="text-sm font-medium text-white">
-                              {(event as any)._source === 'database' ? (
-                                <Link
-                                  href={`/admin/events/${event.id}/edit`}
-                                  className="text-white hover:underline"
-                                >
-                                  {event.title}
-                                </Link>
-                              ) : (
-                                <span>{event.title}</span>
-                              )}
-                            </div>
-                            <div className="text-sm text-gray-400">
-                              {event.venue?.id || event.venueId ? (
-                                <Link
-                                  href={`/admin/venues/${event.venue?.id || event.venueId}/edit`}
-                                  className="text-gray-400 hover:underline"
-                                >
-                                  {event.venue?.name || 'TBA'}
-                                </Link>
-                              ) : (
-                                <span>{event.venue?.name || 'TBA'}</span>
-                              )}
+                            <div className="text-xs text-gray-500 mb-1">Promoter</div>
+                            <div className="text-xs text-gray-300">
+                              {event.promoters && event.promoters.length > 0 
+                                ? event.promoters.join(', ') 
+                                : event.promoter || 'TBA'}
                             </div>
                           </div>
                         </div>
@@ -415,23 +407,6 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                         <div>{event.date}</div>
                         <div className="text-xs text-gray-400">{formatTime(event.time)}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-music-purple-100 text-music-purple-800">
-                          {event.genre}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <button
-                          onClick={() => toggleFeatured(event)}
-                          className={`text-sm font-medium ${
-                            event.featured 
-                              ? 'text-chang-orange-600 hover:text-chang-orange-700'
-                              : 'text-chang-brown-400 hover:text-chang-brown-600'
-                          }`}
-                        >
-                          {event.featured ? '⭐ Featured' : '☆ Feature'}
-                        </button>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                         {/* All events are now JSON-based, show tickets link if available */}
@@ -458,7 +433,7 @@ export default function AdminDashboard() {
                         {/* Show appropriate button based on event source */}
                         {(event as any)._source === 'database' ? (
                           <Link
-                            href={`/admin/events/${event.id}/edit`}
+                            href={`/admin/events/${event.slug || event.id}/edit`}
                             className="text-music-blue-600 hover:text-music-blue-700"
                           >
                             Edit
@@ -493,7 +468,7 @@ export default function AdminDashboard() {
       {/* Event Info Modal */}
       {selectedEvent && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+          <div className="bg-gray-800 rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-start mb-4">
                 <h3 className="text-xl font-bold text-white">Event Details</h3>
@@ -510,7 +485,7 @@ export default function AdminDashboard() {
                   <label className="block text-sm font-medium text-gray-300 mb-1">Event Title</label>
                   {(selectedEvent as any)._source === 'database' ? (
                     <Link
-                      href={`/admin/events/${selectedEvent.id}/edit`}
+                      href={`/admin/events/${selectedEvent.slug || selectedEvent.id}/edit`}
                       className="text-music-blue-600 hover:text-music-blue-700 hover:underline font-medium"
                       onClick={() => setSelectedEvent(null)}
                     >

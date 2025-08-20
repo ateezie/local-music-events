@@ -3,8 +3,65 @@
 
 console.log('🔥 CLEAN CONTENT SCRIPT LOADED - VERSION 3.0 🔥', new Date().toISOString());
 
+function checkTimeout(phaseStartTime, phaseName, maxMs = 5000) {
+    const elapsed = Date.now() - phaseStartTime;
+    if (elapsed > maxMs) {
+        console.warn(`Facebook Event Extractor: ${phaseName} phase taking too long (${elapsed}ms), moving on...`);
+        return true;
+    }
+    return false;
+}
+
+// Function to extract formatted text while preserving emojis and paragraph breaks
+function extractFormattedText(element) {
+    if (!element) return '';
+    
+    // Clone the element to avoid modifying the original
+    const clone = element.cloneNode(true);
+    
+    // Replace <br> tags with newlines
+    const brTags = clone.querySelectorAll('br');
+    brTags.forEach(br => {
+        br.replaceWith('\n');
+    });
+    
+    // Replace <p> tags with double newlines (paragraph breaks)
+    const pTags = clone.querySelectorAll('p');
+    pTags.forEach((p, index) => {
+        if (index > 0) {
+            p.insertAdjacentText('beforebegin', '\n\n');
+        }
+    });
+    
+    // Replace <div> tags with single newlines if they contain substantial content
+    const divTags = clone.querySelectorAll('div');
+    divTags.forEach((div, index) => {
+        const text = div.textContent?.trim();
+        if (text && text.length > 10 && index > 0) {
+            div.insertAdjacentText('beforebegin', '\n');
+        }
+    });
+    
+    // Get the text content which now includes our newlines
+    let text = clone.textContent || '';
+    
+    // Clean up excessive whitespace while preserving intentional breaks
+    text = text
+        .replace(/\n\s*\n\s*\n/g, '\n\n') // Max 2 consecutive newlines
+        .replace(/[ \t]+/g, ' ')           // Multiple spaces/tabs to single space
+        .replace(/\n /g, '\n')             // Remove spaces at start of lines
+        .replace(/ \n/g, '\n')             // Remove spaces at end of lines
+        .trim();
+    
+    return text;
+}
+
 async function extractEventData() {
     console.log('Facebook Event Extractor: Starting extraction on', window.location.href);
+    const startTime = Date.now();
+    
+    // Add individual timeouts for different extraction phases
+    let phaseStartTime = Date.now();
     
     // Check if we're actually on an event page
     const isEventPage = window.location.href.includes('/events/') && 
@@ -39,6 +96,7 @@ async function extractEventData() {
     try {
         // Extract title - improved targeting for main event heading
         console.log('Facebook Event Extractor: Looking for event title...');
+        phaseStartTime = Date.now();
         
         const titleSelectors = [
             'h1[data-testid="event-permalink-event-name"]',
@@ -73,8 +131,9 @@ async function extractEventData() {
         // If still no title found, look for specific expected title
         if (!eventData.title) {
             console.log('Facebook Event Extractor: Looking for specific expected title...');
-            const allElements = document.querySelectorAll('h1, h2, div, span');
-            for (const element of allElements) {
+            const allElements = Array.from(document.querySelectorAll('h1, h2, div, span')).slice(0, 300);
+            for (let i = 0; i < allElements.length && i < 100; i++) {
+                const element = allElements[i];
                 const text = element.textContent.trim();
                 if (text.includes('Wicked Warehouse') && text.includes('Troyboi')) {
                     eventData.title = text;
@@ -136,8 +195,9 @@ async function extractEventData() {
         // If we have the full date-time string but didn't parse it above, try again
         if (!eventData.date && !eventData.time) {
             console.log('Facebook Event Extractor: Looking for specific expected date-time...');
-            const allElements = document.querySelectorAll('time, span, div');
-            for (const element of allElements) {
+            const allElements = Array.from(document.querySelectorAll('time, span, div')).slice(0, 300);
+            for (let i = 0; i < allElements.length && i < 100; i++) {
+                const element = allElements[i];
                 const text = element.textContent.trim();
                 if (text.includes('Friday, October 31, 2025') && text.includes('8 PM')) {
                     const atIndex = text.indexOf(' at ');
@@ -188,8 +248,9 @@ async function extractEventData() {
         if (!eventData.venue) {
             console.log('Facebook Event Extractor: Fallback venue search for Mississippi Underground...');
             
-            const allElements = document.querySelectorAll('a, span, div');
-            for (const element of allElements) {
+            const allElements = Array.from(document.querySelectorAll('a, span, div')).slice(0, 300);
+            for (let i = 0; i < allElements.length && i < 100; i++) {
+                const element = allElements[i];
                 const text = element.textContent.trim();
                 
                 // Look specifically for "Mississippi Underground" venue name
@@ -235,167 +296,164 @@ async function extractEventData() {
             }
         }
 
-        // Extract description - target the specific location under "Public" and above tags
-        console.log('Facebook Event Extractor: Looking for description...');
+        // Extract description - Target specific Details section elements based on fbevent.png reference
+        console.log('Facebook Event Extractor: Looking for description in Details section (based on design reference)...');
         
-        // Strategy 1: Look for description in the main event content area
-        const mainDescSelectors = [
-            '[data-testid="event-permalink-description"]',
-            '[data-testid="event-description"]',
-            'div[role="main"] div[data-testid*="description"]'
-        ];
-        
-        for (const selector of mainDescSelectors) {
-            const descElement = document.querySelector(selector);
-            if (descElement && descElement.textContent.trim()) {
-                const text = descElement.textContent.trim();
-                console.log('Facebook Event Extractor: Found description with main selector:', text.substring(0, 100) + '...');
-                eventData.description = text.substring(0, 500);
+        // First, try to click "See more" if it exists to expand full description
+        const seeMoreButtons = document.querySelectorAll('[role="button"]');
+        for (const button of seeMoreButtons) {
+            const text = button.textContent.trim();
+            if (text === 'See more' && button.click) {
+                console.log('Facebook Event Extractor: Clicking "See more" button to expand description...');
+                button.click();
+                await new Promise(resolve => setTimeout(resolve, 500));
                 break;
             }
         }
         
-        // Strategy 2: Look for description right under "Public" text and handle "See more"
-        if (!eventData.description) {
-            console.log('Facebook Event Extractor: Looking for description right under "Public" text...');
+        // Strategy: Find the Details section and extract description that appears after "Public · Anyone on or off Facebook"
+        // Based on the design reference, this appears in the main content area below the Details heading
+        
+        console.log('Facebook Event Extractor: Searching for Details section with "Public · Anyone on or off Facebook"...');
+        
+        // Look for elements containing "Public · Anyone on or off Facebook" - this is our anchor
+        const allElements = Array.from(document.querySelectorAll('*'));
+        let descriptionFound = false;
+        
+        for (let i = 0; i < allElements.length && !descriptionFound; i++) {
+            const element = allElements[i];
+            const text = element.textContent?.trim() || '';
             
-            // First, try to click "See more" if it exists to expand full description
-            const seeMoreLinks = document.querySelectorAll('div, span, a');
-            for (const link of seeMoreLinks) {
-                const text = link.textContent.trim();
-                if (text === 'See more' && link.click) {
-                    console.log('Facebook Event Extractor: Clicking "See more" to expand description...');
-                    link.click();
-                    // Wait a moment for content to expand
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                    break;
-                }
-            }
-            
-            // Find the "Public" element
-            const allElements = document.querySelectorAll('div, span, p');
-            
-            for (const element of allElements) {
-                const text = element.textContent.trim();
+            // Found the "Public · Anyone on or off Facebook" element
+            if (text.includes('Public') && text.includes('Anyone on or off Facebook') && text.length < 150) {
+                console.log('Facebook Event Extractor: ✅ Found Public element:', text);
                 
-                // Find "Public · Anyone on or off Facebook" text
-                if (text.includes('Public') && text.includes('Anyone')) {
-                    console.log('Facebook Event Extractor: Found Public element, looking for description immediately after...');
+                // Look at the parent container to ensure we're in the main Details section, not sidebar
+                let parentElement = element.parentElement;
+                let isInMainContent = false;
+                
+                // Check if we're in the main content area by looking for Details section indicators
+                for (let j = 0; j < 5 && parentElement; j++) {
+                    const parentText = parentElement.textContent || '';
                     
-                    // Look at the next sibling elements and their children
-                    let nextElement = element.parentElement?.nextElementSibling;
-                    while (nextElement) {
-                        const descText = nextElement.textContent.trim();
-                        
-                        // Skip empty or very short text
-                        if (descText && descText.length > 30) {
-                            // Skip navigation text and other UI elements
-                            if (!descText.includes('Event by') &&
-                                !descText.includes('people responded') &&
-                                !descText.includes('Discussion') &&
-                                !descText.includes('Details') &&
-                                !descText.includes('About') &&
-                                !descText.includes('Host')) {
-                                
-                                // Clean up the description by removing "See more/less" and similar fragments
-                                let cleanDesc = descText
-                                    .replace(/See more\s*/gi, '') // Case insensitive
-                                    .replace(/See less.*$/gi, '') // Remove "See less" and everything after (case insensitive)
-                                    .replace(/\s*P$/, '') // Remove trailing "P"
-                                    .replace(/\s*…$/, '') // Remove trailing ellipsis
-                                    .replace(/\s*Parties.*$/gi, '') // Remove "PartiesSt. Louis, Missouri" fragments
-                                    .replace(/\s*St\.\s*Louis.*$/gi, '') // Remove location fragments
-                                    .trim();
-                                
-                                if (cleanDesc.length > 30) {
-                                    eventData.description = cleanDesc.substring(0, 800); // Allow longer descriptions
-                                    console.log('Facebook Event Extractor: ✅ Found and cleaned description under Public:', eventData.description.substring(0, 100) + '...');
-                                    break;
-                                }
-                            }
-                        }
-                        
-                        nextElement = nextElement.nextElementSibling;
+                    // Main content indicators: contains Details, Event by, Tickets, and substantial content
+                    if ((parentText.includes('Details') || parentText.includes('Event by') || parentText.includes('Tickets')) 
+                        && parentText.length > 500) {
+                        isInMainContent = true;
+                        console.log('Facebook Event Extractor: Confirmed we are in main Details section');
+                        break;
                     }
-                    break;
+                    parentElement = parentElement.parentElement;
                 }
+                
+                if (!isInMainContent) {
+                    console.log('Facebook Event Extractor: This Public element appears to be in sidebar, skipping...');
+                    continue;
+                }
+                
+                // Now look for the description content that appears immediately after this Public element
+                // Check siblings and subsequent elements in the DOM
+                let searchElements = [];
+                
+                // Check next siblings of the parent
+                if (element.parentElement) {
+                    let nextSibling = element.parentElement.nextElementSibling;
+                    while (nextSibling && searchElements.length < 10) {
+                        searchElements.push(nextSibling);
+                        nextSibling = nextSibling.nextElementSibling;
+                    }
+                }
+                
+                // Also check elements that come after in the main DOM
+                for (let j = i + 1; j < Math.min(i + 20, allElements.length); j++) {
+                    const nextElement = allElements[j];
+                    const nextText = nextElement.textContent?.trim() || '';
+                    
+                    // Only consider elements that have meaningful content
+                    if (nextText.length >= 30 && nextText.length < 3000) {
+                        searchElements.push(nextElement);
+                    }
+                }
+                
+                console.log('Facebook Event Extractor: Checking', searchElements.length, 'elements for description after Public...');
+                
+                // Look through potential description elements
+                for (const descElement of searchElements) {
+                    // Use a custom function to preserve formatting while extracting text
+                    const descText = extractFormattedText(descElement);
+                    
+                    // Skip empty or very short content
+                    if (!descText || descText.length < 30) continue;
+                    
+                    // Skip obvious UI elements and navigation, including the Public text itself
+                    if (descText.includes('Going') ||
+                        descText.includes('Interested') ||
+                        descText.includes('Share') ||
+                        descText.includes('Invite friends') ||
+                        descText.includes('Copy link') ||
+                        descText.includes('More') ||
+                        descText.includes('See all') ||
+                        descText.includes('Discussion') ||
+                        descText.includes('About') ||
+                        descText.includes('Photos') ||
+                        descText.match(/^\d+ people/) ||
+                        descText.match(/^\d+ going/) ||
+                        descText.match(/^\d+ interested/) ||
+                        descText.includes('Create') ||
+                        descText.includes('Recent activity') ||
+                        descText === 'SLAM Underground—CELESTIAL' ||
+                        descText.match(/^[A-Z\s]+—[A-Z\s]+$/) ||
+                        // CRITICAL: Skip the Public text itself - we only want content AFTER it
+                        descText.includes('Public') ||
+                        descText.includes('Anyone on or off Facebook') ||
+                        descText.includes('Private')) {
+                        continue;
+                    }
+                    
+                    console.log('Facebook Event Extractor: Checking description candidate:', descText.substring(0, 100) + '...');
+                    
+                    // Look for content that matches the expected description format from the design
+                    // Should contain organizer information and event details
+                    if (descText.length >= 30 && descText.length < 3000) {
+                        // This should be the event description from the Details section
+                        let cleanDesc = descText
+                            .replace(/See more\s*$/gi, '')
+                            .replace(/See less.*$/gi, '')
+                            .replace(/\s*\.{3,}\s*See more$/gi, '')
+                            .replace(/\s*…\s*See more$/gi, '')
+                            .replace(/\s*\.{3,}\s*$/gi, '')
+                            .replace(/\s*…\s*$/gi, '')
+                            .trim();
+                        
+                        if (cleanDesc.length >= 30) {
+                            eventData.description = cleanDesc;
+                            console.log('Facebook Event Extractor: ✅ Found description in Details section:', cleanDesc);
+                            descriptionFound = true;
+                            break;
+                        }
+                    }
+                }
+                
+                // If we found a description, stop searching
+                if (descriptionFound) break;
             }
         }
         
-        // Strategy 3: Look for the specific expected description text directly
         if (!eventData.description) {
-            console.log('Facebook Event Extractor: Looking for specific description text directly...');
-            
-            const allTextElements = document.querySelectorAll('div, p, span');
-            for (const element of allTextElements) {
-                const text = element.textContent.trim();
-                
-                // Look specifically for the Halloween description
-                if (text.includes("We're taking over Halloween night") && 
-                    text.includes("TROYBOI")) {
-                    eventData.description = text.substring(0, 500);
-                    console.log('Facebook Event Extractor: ✅ Found specific Halloween description:', eventData.description.substring(0, 100) + '...');
-                    break;
-                }
-            }
+            console.log('Facebook Event Extractor: No description found in Details section');
         }
         
-        // Strategy 4: Clean fallback - strict filtering to avoid UI text
-        if (!eventData.description) {
-            console.log('Facebook Event Extractor: Using strict fallback description detection...');
-            
-            const allElements = document.querySelectorAll('div, p');
-            for (const element of allElements) {
-                const text = element.textContent.trim();
-                
-                // Must be substantial event description text
-                if (text.length < 30 || text.length > 800) continue;
-                
-                // Skip obvious non-description content with stricter filtering
-                if (text.includes('Event by') || text.includes('people responded')) continue;
-                if (text.includes('Tickets') || text.includes('Public')) continue;
-                if (text.includes('Details') || text.includes('Discussion')) continue;
-                if (text.includes('EventsHome') || text.includes('Your Events')) continue;
-                if (text.includes('Notifications') || text === 'Events') continue;
-                if (text.includes('See all') || text.includes('Taste of')) continue;
-                if (text.includes('Your upcoming') || text.includes('Aug ')) continue;
-                if (text.match(/^(Home|Events|Parties|St\.|MO)$/)) continue;
-                if (text.includes('at') && text.includes('PM') && text.includes('–')) continue; // Date ranges
-                
-                // Look for actual event description content - more specific patterns
-                if ((text.includes('Halloween') && text.includes('takeover')) ||
-                    (text.includes('warehouse') && text.includes('featuring')) ||
-                    (text.includes('massive') && text.includes('beats'))) {
-                    eventData.description = text.substring(0, 500);
-                    console.log('Facebook Event Extractor: ✅ Found description with strict fallback:', eventData.description.substring(0, 100) + '...');
-                    break;
-                }
-            }
-        }
-        
-        // FINAL CLEANUP: Clean any remaining "See less" or similar fragments from description
+        // Final cleanup of description if found
         if (eventData.description) {
             const originalDesc = eventData.description;
             eventData.description = eventData.description
                 .replace(/See less.*$/gi, '') // Remove "See less" and everything after
                 .replace(/See more.*$/gi, '') // Remove "See more" and everything after
-                .replace(/\s*Parties.*$/gi, '') // Remove "PartiesSt. Louis" fragments
-                .replace(/\s*St\.\s*Louis.*$/gi, '') // Remove location fragments
-                .replace(/\s*P$/, '') // Remove trailing "P"
-                .replace(/\s*…$/, '') // Remove trailing ellipsis
                 .trim();
                 
-            if (originalDesc !== eventData.description) {
-                console.log('Facebook Event Extractor: Cleaned description fragments');
-                console.log('Facebook Event Extractor: Before:', originalDesc.substring(0, 100) + '...');
-                console.log('Facebook Event Extractor: After:', eventData.description.substring(0, 100) + '...');
-            }
-        }
-        
-        // If still no description or contains UI text, leave empty 
-        if (!eventData.description || eventData.description.includes('EventsHome')) {
-            eventData.description = '';
-            console.log('Facebook Event Extractor: Could not find clean description, leaving empty');
+            console.log('Facebook Event Extractor: Final description:', eventData.description);
+        } else {
+            console.log('Facebook Event Extractor: No description found with any method');
         }
 
         // Extract image with enhanced detection
@@ -491,10 +549,15 @@ async function extractEventData() {
             date: eventData.date,
             time: eventData.time
         });
+        
+        const endTime = Date.now();
+        console.log(`Facebook Event Extractor: Extraction completed in ${endTime - startTime}ms`);
         return eventData;
         
     } catch (error) {
         console.error('Facebook Event Extractor: Error extracting data:', error);
+        const endTime = Date.now();
+        console.log(`Facebook Event Extractor: Extraction failed after ${endTime - startTime}ms`);
         return eventData;
     }
 }
@@ -505,16 +568,62 @@ function detectGenre(eventData) {
     return 'multi-genre';
 }
 
-// Function to download image via server-side proxy
+// Function to discover active Next.js dev server port
+async function discoverActivePort() {
+    const commonPorts = [3004, 3000, 3001, 3002, 3003, 3005, 8000, 8080];
+    
+    for (const port of commonPorts) {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 2000); // Quick 2-second check
+            
+            const response = await fetch(`http://localhost:${port}/api/events`, {
+                method: 'GET',
+                signal: controller.signal
+            });
+            
+            clearTimeout(timeoutId);
+            
+            if (response.ok) {
+                console.log(`Facebook Event Extractor: Discovered active Next.js server on port ${port}`);
+                return port;
+            }
+        } catch (error) {
+            // Port not active or timeout, continue to next
+            continue;
+        }
+    }
+    
+    console.log('Facebook Event Extractor: Could not discover active Next.js server port');
+    return null;
+}
+
+// Function to download image via server-side proxy with enhanced timeout handling
 async function downloadAndUploadImage(imageUrl) {
     try {
         console.log('Facebook Event Extractor: Using server-side proxy for image:', imageUrl);
         
-        // Try different localhost ports automatically
-        const ports = [3002, 3000, 3001, 3003, 5000, 8000];
+        // First try to discover the active port
+        const discoveredPort = await discoverActivePort();
+        let ports = [3004, 3002, 3001, 3000, 3003]; // Default fallback ports
+        
+        if (discoveredPort) {
+            // Put discovered port first, remove it from fallback list if it exists
+            ports = [discoveredPort, ...ports.filter(p => p !== discoveredPort)];
+            console.log(`Facebook Event Extractor: Using discovered port ${discoveredPort} first`);
+        }
         
         for (const port of ports) {
             try {
+                console.log(`Facebook Event Extractor: Trying port ${port} for image upload...`);
+                
+                // Create abort controller for this specific request
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => {
+                    console.log(`Facebook Event Extractor: Port ${port} timeout after 4 seconds`);
+                    controller.abort();
+                }, 4000); // Shorter 4-second timeout per port
+                
                 const response = await fetch(`http://localhost:${port}/api/proxy-image`, {
                     method: 'POST',
                     headers: {
@@ -522,8 +631,11 @@ async function downloadAndUploadImage(imageUrl) {
                     },
                     body: JSON.stringify({
                         imageUrl: imageUrl
-                    })
+                    }),
+                    signal: controller.signal
                 });
+                
+                clearTimeout(timeoutId);
                 
                 if (response.ok) {
                     const result = await response.json();
@@ -536,24 +648,39 @@ async function downloadAndUploadImage(imageUrl) {
                         if (result.service === 'fileio' || result.service === 'catbox') {
                             console.log('Facebook Event Extractor: Using external hosted URL:', result.url);
                             return result.url; // Direct external URL
-                        } else {
+                        } else if (result.service === 'local') {
                             // Local fallback - construct localhost URL
                             const fullUrl = `http://localhost:${port}${result.url}`;
                             console.log('Facebook Event Extractor: Using local fallback URL:', fullUrl);
                             return fullUrl;
+                        } else {
+                            // Fallback - assume it's a local path if it starts with /
+                            if (result.url.startsWith('/')) {
+                                const fullUrl = `http://localhost:${port}${result.url}`;
+                                console.log('Facebook Event Extractor: Using local URL fallback:', fullUrl);
+                                return fullUrl;
+                            } else {
+                                console.log('Facebook Event Extractor: Using direct URL:', result.url);
+                                return result.url;
+                            }
                         }
                     }
                 }
             } catch (portError) {
-                console.log(`Facebook Event Extractor: Port ${port} failed, trying next...`);
+                if (portError.name === 'AbortError') {
+                    console.log(`Facebook Event Extractor: Port ${port} timed out, trying next...`);
+                } else {
+                    console.log(`Facebook Event Extractor: Port ${port} failed: ${portError.message}`);
+                }
                 continue;
             }
         }
         
-        throw new Error('All localhost ports failed');
+        console.log('Facebook Event Extractor: All localhost ports failed, proceeding without image');
+        return '';
         
     } catch (error) {
-        console.error('Facebook Event Extractor: Proxy method failed:', error);
+        console.error('Facebook Event Extractor: Image processing failed:', error);
         return '';
     }
 }
@@ -565,7 +692,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'extractEventData') {
         (async () => {
             try {
-                const eventData = await extractEventData();
+                console.log('Facebook Event Extractor: Starting data extraction...');
+                
+                // Add timeout to prevent hanging
+                const extractionPromise = extractEventData();
+                const timeoutPromise = new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Extraction timeout after 15 seconds')), 15000)
+                );
+                
+                const eventData = await Promise.race([extractionPromise, timeoutPromise]);
+                console.log('Facebook Event Extractor: Data extraction completed:', eventData);
                 const detectedGenre = detectGenre(eventData);
                 
                 let processedImageUrl = '';
@@ -574,11 +710,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 if (eventData.image) {
                     console.log('Facebook Event Extractor: Starting image processing...');
                     try {
-                        processedImageUrl = await downloadAndUploadImage(eventData.image);
+                        // Add timeout specifically for image processing phase
+                        const imageProcessingPromise = downloadAndUploadImage(eventData.image);
+                        const imageTimeoutPromise = new Promise((_, reject) => 
+                            setTimeout(() => reject(new Error('Image processing timeout after 8 seconds')), 8000)
+                        );
+                        
+                        processedImageUrl = await Promise.race([imageProcessingPromise, imageTimeoutPromise]);
                         console.log('Facebook Event Extractor: Image processed successfully!');
                         console.log('Facebook Event Extractor: Processed image URL:', processedImageUrl);
                     } catch (error) {
                         console.error('Facebook Event Extractor: Image processing failed:', error);
+                        console.log('Facebook Event Extractor: Proceeding without image to avoid timeout');
                         processedImageUrl = '';
                     }
                 } else {
@@ -630,25 +773,29 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 let promoters = [];
                 const relevantElements = document.querySelectorAll('div, span, p');
                 
+                console.log('Facebook Event Extractor: Searching for "Event by" text in', relevantElements.length, 'elements');
+                
                 for (const element of relevantElements) {
                     const text = element.textContent;
-                    if (text && text.includes('Event by') && text.includes(',')) {
+                    if (text && text.includes('Event by')) {
                         console.log('Facebook Event Extractor: Found "Event by" text:', text);
                         
-                        // Look for the exact pattern: "Event by Name, Name and Name"
-                        const eventByMatch = text.match(/Event by\s+([^\.]+?)(?=\s*(?:Public|Private|·|$))/i);
+                        // Look for the exact pattern: "Event by Name" or "Event by Name, Name and Name"
+                        const eventByMatch = text.match(/Event by\s+([^·\n]+?)(?=\s*(?:Public|Private|·|$|\n))/i);
                         if (eventByMatch) {
                             const afterEventBy = eventByMatch[1].trim();
+                            console.log('Facebook Event Extractor: Promoter text after "Event by":', afterEventBy);
                             
-                            // Split by commas and "and"
-                            let parts = afterEventBy.split(/,|\sand\s/);
+                            // Split by commas and "and" - handle both single and multiple promoters
+                            let parts = afterEventBy.split(/,|\sand\s|\s+and\s+/);
                             
                             // Clean up each part with stricter filtering
                             promoters = parts
                                 .map(part => part.trim())
                                 .filter(part => {
                                     if (!part || part.length < 2 || part.length > 50) return false;
-                                    // Filter out common non-promoter text
+                                    
+                                    // Filter out common non-promoter text and location information
                                     const lowercasePart = part.toLowerCase();
                                     if (lowercasePart.includes('what to expect') || 
                                         lowercasePart.includes('see more') ||
@@ -658,7 +805,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                                         lowercasePart.match(/^(mo|st\.|louis)$/i) ||
                                         lowercasePart.includes('aug ') ||
                                         lowercasePart.includes('pm') ||
-                                        lowercasePart.includes('see all')) {
+                                        lowercasePart.includes('see all') ||
+                                        lowercasePart.includes('public') ||
+                                        lowercasePart.includes('private') ||
+                                        lowercasePart.includes('anyone on or off facebook') ||
+                                        // Filter out location information
+                                        lowercasePart.includes('st. louis') ||
+                                        lowercasePart.includes('united states') ||
+                                        lowercasePart.includes('missouri') ||
+                                        lowercasePart.includes('mo,') ||
+                                        lowercasePart.match(/^\d{5}$/) || // ZIP codes
+                                        lowercasePart.match(/^[a-z]{2}$/) || // State abbreviations like "mo"
+                                        lowercasePart.match(/^(city|state|country|address|location)$/i)) {
                                         return false;
                                     }
                                     return true;
@@ -666,7 +824,69 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                                 .slice(0, 3); // Limit to 3 promoters max for cleaner results
                             
                             console.log('Facebook Event Extractor: Extracted promoters:', promoters);
-                            break;
+                            if (promoters.length > 0) {
+                                break; // Found promoters, stop searching
+                            }
+                        }
+                    }
+                }
+                
+                // If no promoters found with the first method, try a more aggressive search
+                if (promoters.length === 0) {
+                    console.log('Facebook Event Extractor: No promoters found with main method, trying broader search...');
+                    
+                    // Look for any element containing "Event by" even if it doesn't match the exact pattern
+                    for (const element of relevantElements) {
+                        const text = element.textContent;
+                        if (text && text.includes('Event by')) {
+                            console.log('Facebook Event Extractor: Broader search found "Event by":', text.substring(0, 100));
+                            
+                            // Extract everything after "Event by" until we hit common stop words
+                            const eventByIndex = text.indexOf('Event by');
+                            if (eventByIndex !== -1) {
+                                const afterEventBy = text.substring(eventByIndex + 8).trim(); // 8 = length of "Event by"
+                                
+                                // Take the first line or sentence
+                                const firstLine = afterEventBy.split(/\n|\.|\s+Public\s+|·/)[0].trim();
+                                
+                                if (firstLine && firstLine.length > 2 && firstLine.length < 100) {
+                                    // Split into potential promoter names
+                                    const parts = firstLine.split(/,|\sand\s|\s+and\s+|\+/);
+                                    
+                                    promoters = parts
+                                        .map(part => part.trim())
+                                        .filter(part => {
+                                            if (!part || part.length < 2 || part.length > 50) return false;
+                                            
+                                            const lowercasePart = part.toLowerCase();
+                                            // More restrictive filtering for broader search
+                                            if (lowercasePart.includes('anyone') ||
+                                                lowercasePart.includes('public') ||
+                                                lowercasePart.includes('private') ||
+                                                lowercasePart.includes('facebook') ||
+                                                lowercasePart.includes('follow') ||
+                                                lowercasePart.includes('like') ||
+                                                lowercasePart.includes('share') ||
+                                                // Filter out location information
+                                                lowercasePart.includes('st. louis') ||
+                                                lowercasePart.includes('united states') ||
+                                                lowercasePart.includes('missouri') ||
+                                                lowercasePart.includes('mo,') ||
+                                                lowercasePart.match(/^\d{5}$/) || // ZIP codes
+                                                lowercasePart.match(/^[a-z]{2}$/) || // State abbreviations
+                                                lowercasePart.match(/^(city|state|country|address|location)$/i)) {
+                                                return false;
+                                            }
+                                            return true;
+                                        })
+                                        .slice(0, 3);
+                                    
+                                    console.log('Facebook Event Extractor: Broader search extracted promoters:', promoters);
+                                    if (promoters.length > 0) {
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -689,7 +909,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     image_upload_status: processedImageUrl ? 'success' : 'failed',
                     image_service_used: processedImageUrl.includes('file.io') ? 'File.io' :
                                        processedImageUrl.includes('catbox.moe') ? 'Catbox.moe' :
-                                       processedImageUrl.includes('localhost') ? 'Local Storage' : 'Unknown',
+                                       processedImageUrl.includes('localhost') ? 'Local Storage' : 
+                                       processedImageUrl.includes('/images/uploads/') ? 'Local Storage' : 'Unknown',
                     original_facebook_image: eventData.image
                 };
                 

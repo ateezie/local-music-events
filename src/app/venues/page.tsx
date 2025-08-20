@@ -212,7 +212,7 @@ export default function VenuesPage() {
                 {/* Venue Info */}
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-xl font-bold text-music-purple-950">{venue.name}</h3>
+                    <h3 className="heading-h4 text-music-purple-950">{venue.name}</h3>
                     {venue.capacity && (
                       <span className="text-sm text-music-neutral-500 bg-music-neutral-100 px-2 py-1 rounded">
                         {venue.capacity} cap

@@ -108,7 +108,7 @@ export async function GET(request: NextRequest) {
       artists: event.artists.map(ea => ea.artist)
     }))
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       events: transformedEvents,
       pagination: {
         page,
@@ -117,6 +117,13 @@ export async function GET(request: NextRequest) {
         totalPages: Math.ceil(total / limit)
       }
     })
+
+    // Add CORS headers to allow requests from browser extensions
+    response.headers.set('Access-Control-Allow-Origin', '*')
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+
+    return response
 
   } catch (error) {
     console.error('Get events error:', error)
@@ -244,4 +251,17 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
+}
+
+// Handle preflight requests for CORS
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Max-Age': '86400',
+    },
+  })
 }

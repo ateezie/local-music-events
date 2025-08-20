@@ -128,7 +128,7 @@ saveApprovedEventToDatabase: Event saved with flyer: https://freeimage.host/i/ab
 ## 🛠 **Files Modified**
 
 ### **Chrome Extension**:
-- ✅ `content.js` - Aggressive image detection + upload system
+- ✅ `content-fixed.js` - Aggressive image detection + upload system
 - ✅ `popup.js` - Manual image input handling
 - ✅ `popup.html` - Manual image input field
 - ✅ `manifest.json` - Permissions for image hosting services
