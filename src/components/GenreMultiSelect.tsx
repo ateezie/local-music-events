@@ -9,14 +9,20 @@ interface GenreMultiSelectProps {
   className?: string
 }
 
-// Genre list matching footer navigation
+// Genre list matching artist form options
 const AVAILABLE_GENRES = [
   'house',
-  'drum-and-bass',
-  'ukg', // UK Garage
-  'dubstep',
-  'trance',
   'techno',
+  'trance',
+  'drum-and-bass',
+  'dubstep',
+  'ukg', // UK Garage
+  'hip-hop',
+  'rock',
+  'indie-rock',
+  'jazz',
+  'folk',
+  'acoustic',
   'other'
 ]
 

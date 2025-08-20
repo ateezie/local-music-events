@@ -9,6 +9,7 @@ import AdminHeader from '@/components/AdminHeader'
 interface Artist {
   id: string
   name: string
+  slug?: string
   genre: string
   bio?: string
   image?: string
@@ -277,7 +278,7 @@ export default function AdminArtists() {
                       Genre & Info
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                      Spotify Status
+                      Sync Status
                     </th>
                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">
                       Actions
@@ -304,7 +305,7 @@ export default function AdminArtists() {
                           <div className="flex-1 min-w-0">
                             <div className="text-sm font-medium text-white mb-1">
                               <Link
-                                href={`/admin/artists/${artist.id}/edit`}
+                                href={`/admin/artists/${artist.slug || artist.id}/edit`}
                                 className="text-white hover:text-music-purple-600 hover:underline"
                               >
                                 {artist.name}
@@ -379,12 +380,12 @@ export default function AdminArtists() {
                               onClick={() => syncSpotifyData(artist)}
                               className="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium text-green-600 hover:text-green-700 hover:bg-green-50 transition-colors"
                             >
-                              🔄 Sync Spotify
+                              🔄 Sync
                             </button>
                           ) : null}
                           
                           <Link
-                            href={`/admin/artists/${artist.id}/edit`}
+                            href={`/admin/artists/${artist.slug || artist.id}/edit`}
                             className="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 transition-colors"
                           >
                             ✏️ Edit

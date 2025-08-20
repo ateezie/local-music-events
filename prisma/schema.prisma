@@ -73,7 +73,9 @@ model Venue {
 model Artist {
   id       String  @id
   name     String
+  slug     String? @unique // URL-friendly version of name, e.g., "gene-farris"
   genre    String  // primary genre
+  genres   String? // JSON array of additional genres
   bio      String?
   image    String?
   website  String?
@@ -99,6 +101,18 @@ model Artist {
   spotifyTopTracks  String? // JSON array of top track data
   spotifyAlbums     String? // JSON array of album data
   lastSpotifySync   DateTime? // Last time Spotify data was fetched
+  
+  // Last.fm integration fields
+  lastfmBio         String? // Artist biography from Last.fm
+  lastfmListeners   Int? // Number of listeners on Last.fm
+  lastfmPlaycount   Int? // Total play count on Last.fm
+  lastfmTags        String? // JSON array of Last.fm tags
+  lastfmSync        DateTime? // Last time Last.fm data was fetched
+  
+  // MusicBrainz integration fields
+  musicbrainzId     String? // MusicBrainz artist MBID
+  musicbrainzUrls   String? // JSON array of social media URLs from MusicBrainz
+  musicbrainzSync   DateTime? // Last time MusicBrainz data was fetched
   
   // Band members (stored as JSON array)
   members String? // JSON array of member names

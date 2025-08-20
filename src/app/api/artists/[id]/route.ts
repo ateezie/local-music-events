@@ -21,7 +21,8 @@ const UpdateArtistSchema = z.object({
   bandcamp: z.string().url().optional().or(z.literal('')),
   soundcloud: z.string().url().optional().or(z.literal('')),
   members: z.array(z.string()).optional(),
-  tags: z.array(z.string()).optional()
+  tags: z.array(z.string()).optional(),
+  genres: z.array(z.string()).optional()
 })
 
 // GET /api/artists/[id] - Get single artist
@@ -31,8 +32,15 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const artist = await prisma.artist.findUnique({
-      where: { id },
+    
+    // Support both ID and slug lookups
+    const artist = await prisma.artist.findFirst({
+      where: {
+        OR: [
+          { id },
+          { slug: id }
+        ]
+      },
       include: {
         events: {
           include: {
@@ -75,6 +83,7 @@ export async function GET(
       ...artist,
       members: artist.members ? JSON.parse(artist.members) : [],
       tags: artist.tags ? JSON.parse(artist.tags) : [],
+      genres: artist.genres ? JSON.parse(artist.genres) : [],
       socialMedia: {
         facebook: artist.facebook,
         instagram: artist.instagram,
@@ -135,9 +144,14 @@ export async function PUT(
       )
     }
 
-    // Check if artist exists
-    const existingArtist = await prisma.artist.findUnique({
-      where: { id }
+    // Check if artist exists (support both ID and slug)
+    const existingArtist = await prisma.artist.findFirst({
+      where: {
+        OR: [
+          { id },
+          { slug: id }
+        ]
+      }
     })
 
     if (!existingArtist) {
@@ -154,11 +168,12 @@ export async function PUT(
     const updateData: any = {
       ...validatedData,
       members: validatedData.members ? JSON.stringify(validatedData.members) : undefined,
-      tags: validatedData.tags ? JSON.stringify(validatedData.tags) : undefined
+      tags: validatedData.tags ? JSON.stringify(validatedData.tags) : undefined,
+      genres: validatedData.genres ? JSON.stringify(validatedData.genres) : undefined
     }
 
     const artist = await prisma.artist.update({
-      where: { id },
+      where: { id: existingArtist.id },
       data: updateData,
       include: {
         author: {
@@ -181,6 +196,7 @@ export async function PUT(
       ...artist,
       members: artist.members ? JSON.parse(artist.members) : [],
       tags: artist.tags ? JSON.parse(artist.tags) : [],
+      genres: artist.genres ? JSON.parse(artist.genres) : [],
       socialMedia: {
         facebook: artist.facebook,
         instagram: artist.instagram,
@@ -245,9 +261,14 @@ export async function DELETE(
       )
     }
 
-    // Check if artist exists
-    const existingArtist = await prisma.artist.findUnique({
-      where: { id }
+    // Check if artist exists (support both ID and slug)
+    const existingArtist = await prisma.artist.findFirst({
+      where: {
+        OR: [
+          { id },
+          { slug: id }
+        ]
+      }
     })
 
     if (!existingArtist) {
@@ -259,7 +280,7 @@ export async function DELETE(
 
     // Check if artist has events
     const eventCount = await prisma.eventArtist.count({
-      where: { artistId: id }
+      where: { artistId: existingArtist.id }
     })
 
     if (eventCount > 0) {
@@ -271,7 +292,7 @@ export async function DELETE(
 
     // Delete artist
     await prisma.artist.delete({
-      where: { id }
+      where: { id: existingArtist.id }
     })
 
     return NextResponse.json(
