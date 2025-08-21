@@ -182,11 +182,13 @@ async function getMusicBrainzArtistUrls(mbid: string) {
     const socialUrls: any[] = []
     if (data.relations) {
       data.relations.forEach((relation: any) => {
+        // Include various social media and relevant URL types
         if (relation.type === 'social network' || 
             relation.type === 'youtube' ||
             relation.type === 'bandcamp' ||
             relation.type === 'soundcloud' ||
-            relation.type === 'official homepage') {
+            relation.type === 'official homepage' ||
+            relation.type === 'myspace') {
           socialUrls.push({
             type: relation.type,
             url: relation.url.resource,
@@ -196,12 +198,12 @@ async function getMusicBrainzArtistUrls(mbid: string) {
       })
     }
     
-    // Extract area/location information
+    // Extract area/location information - prioritize begin-area (birth place) over area (current location)
     let hometown = ''
-    if (data.area) {
-      hometown = data.area.name
-    } else if (data['begin-area']) {
+    if (data['begin-area']) {
       hometown = data['begin-area'].name
+    } else if (data.area) {
+      hometown = data.area.name
     }
     
     return {
@@ -424,18 +426,17 @@ export async function POST(
         updateData.bio = lastfmBio
       }
     } else if (!artist.bio && spotifyArtist.genres && spotifyArtist.genres.length > 0) {
-        // Fallback to enhanced Spotify-generated bio
-        const popularityText = spotifyArtist.popularity > 70 ? 'highly popular' : 
-                              spotifyArtist.popularity > 50 ? 'well-known' : 
-                              spotifyArtist.popularity > 30 ? 'emerging' : 'rising'
-        
-        const followerCount = spotifyArtist.followers.total.toLocaleString()
-        const genreText = spotifyArtist.genres.length > 1 ? 
-          `${spotifyArtist.genres.slice(0, -1).join(', ')} and ${spotifyArtist.genres.slice(-1)[0]}` :
-          spotifyArtist.genres[0]
-        
-        updateData.bio = `${artist.name} is a ${popularityText} artist in the ${genreText} scene. With ${followerCount} followers on Spotify and a popularity score of ${spotifyArtist.popularity}%, they have established themselves as a notable presence in the electronic music community.`
-      }
+      // Fallback to enhanced Spotify-generated bio
+      const popularityText = spotifyArtist.popularity > 70 ? 'highly popular' : 
+                            spotifyArtist.popularity > 50 ? 'well-known' : 
+                            spotifyArtist.popularity > 30 ? 'emerging' : 'rising'
+      
+      const followerCount = spotifyArtist.followers.total.toLocaleString()
+      const genreText = spotifyArtist.genres.length > 1 ? 
+        `${spotifyArtist.genres.slice(0, -1).join(', ')} and ${spotifyArtist.genres.slice(-1)[0]}` :
+        spotifyArtist.genres[0]
+      
+      updateData.bio = `${artist.name} is a ${popularityText} artist in the ${genreText} scene. With ${followerCount} followers on Spotify and a popularity score of ${spotifyArtist.popularity}%, they have established themselves as a notable presence in the electronic music community.`
     }
 
     // Update image if it's empty and Spotify has images
@@ -488,7 +489,7 @@ export async function POST(
   } catch (error) {
     console.error('Spotify sync error:', error)
     return NextResponse.json(
-      { error: 'Failed to sync Spotify data: ' + error.message },
+      { error: 'Failed to sync Spotify data: ' + (error instanceof Error ? error.message : 'Unknown error') },
       { status: 500 }
     )
   }

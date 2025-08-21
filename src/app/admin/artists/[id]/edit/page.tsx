@@ -10,7 +10,7 @@ import GenreMultiSelect from '@/components/GenreMultiSelect'
 interface EditArtist {
   id: string
   name: string
-  genre: string
+  genre?: string // Make optional since we'll only use genres array
   genres?: string[]
   bio?: string
   image?: string
@@ -119,8 +119,9 @@ export default function EditArtistPage() {
         },
         body: JSON.stringify({
           ...artist,
-          // Ensure genres is sent as array
-          genres: artist.genres || []
+          // Ensure genres is sent as array and set genre to first genre if not set
+          genres: artist.genres || [],
+          genre: artist.genre || (artist.genres && artist.genres.length > 0 ? artist.genres[0] : 'other')
         })
       })
 
@@ -230,11 +231,16 @@ export default function EditArtistPage() {
         if (processedArtist.lastfmBio) {
           syncDetails.push(`Last.fm biography added`)
         }
+        if (processedArtist.musicbrainzId) {
+          syncDetails.push(`MusicBrainz ID found: ${processedArtist.musicbrainzId}`)
+        }
         if (processedArtist.musicbrainzUrls?.length > 0) {
           syncDetails.push(`${processedArtist.musicbrainzUrls.length} MusicBrainz social links found`)
+        } else if (processedArtist.musicbrainzId) {
+          syncDetails.push(`No social links found in MusicBrainz for this artist`)
         }
         if (processedArtist.hometown) {
-          syncDetails.push(`Hometown populated from MusicBrainz`)
+          syncDetails.push(`Hometown: ${processedArtist.hometown} (from MusicBrainz)`)
         }
         
         // Auto-populate form fields with synced data
@@ -258,9 +264,8 @@ export default function EditArtistPage() {
           updatedArtist.image = processedArtist.image
         }
         
-        // Update genre from Spotify genres
+        // Update genres from Spotify genres (now we only use genres array, no primary genre)
         if (processedArtist.spotifyGenres?.length > 0) {
-          const primaryGenre = processedArtist.spotifyGenres[0]
           // Map Spotify genres to our genre options
           const genreMapping: { [key: string]: string } = {
             'tech house': 'house',
@@ -283,19 +288,20 @@ export default function EditArtistPage() {
             'acoustic': 'acoustic'
           }
           
-          const mappedGenre = genreMapping[primaryGenre.toLowerCase()]
-          if (mappedGenre && (updatedArtist.genre === 'multi-genre' || updatedArtist.genre === 'other')) {
-            updatedArtist.genre = mappedGenre
-          }
-          
-          // Set additional genres from Spotify genres (excluding the primary one)
-          const additionalGenres = processedArtist.spotifyGenres.slice(1).map((g: string) => {
+          // Map all Spotify genres to our genre options
+          const mappedGenres = processedArtist.spotifyGenres.map((g: string) => {
             const mapped = genreMapping[g.toLowerCase()]
             return mapped || g.toLowerCase().replace(/\s+/g, '-')
           }).filter(Boolean)
           
-          if (additionalGenres.length > 0) {
-            updatedArtist.genres = [...new Set([...(updatedArtist.genres || []), ...additionalGenres])]
+          if (mappedGenres.length > 0) {
+            // Replace existing genres with mapped Spotify genres if we don't have any, or merge them
+            const existingGenres = updatedArtist.genres || []
+            if (existingGenres.length === 0) {
+              updatedArtist.genres = [...new Set(mappedGenres)]
+            } else {
+              updatedArtist.genres = [...new Set([...existingGenres, ...mappedGenres])]
+            }
           }
         }
         
@@ -303,15 +309,15 @@ export default function EditArtistPage() {
         if (processedArtist.musicbrainzUrls?.length > 0) {
           processedArtist.musicbrainzUrls.forEach((link: any) => {
             const url = link.url
-            if (link.type === 'social network') {
-              if (url.includes('facebook.com') && !updatedArtist.facebook) {
-                updatedArtist.facebook = url
-              } else if (url.includes('instagram.com') && !updatedArtist.instagram) {
-                updatedArtist.instagram = url
-              } else if (url.includes('twitter.com') && !updatedArtist.twitter) {
-                updatedArtist.twitter = url
-              }
-            } else if (link.type === 'soundcloud' && url.includes('soundcloud.com') && !updatedArtist.soundcloud) {
+            
+            // Check URL content for platform detection
+            if (url.includes('facebook.com') && !updatedArtist.facebook) {
+              updatedArtist.facebook = url
+            } else if (url.includes('instagram.com') && !updatedArtist.instagram) {
+              updatedArtist.instagram = url
+            } else if (url.includes('twitter.com') && !updatedArtist.twitter) {
+              updatedArtist.twitter = url
+            } else if (url.includes('soundcloud.com') && !updatedArtist.soundcloud) {
               updatedArtist.soundcloud = url
             } else if (link.type === 'official homepage' && !updatedArtist.website) {
               updatedArtist.website = url
@@ -444,29 +450,14 @@ export default function EditArtistPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Primary Genre
+                    Genre(s)
                   </label>
-                  <select
-                    value={artist.genre}
-                    onChange={(e) => updateArtist('genre', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-music-purple-500 bg-gray-700 text-white"
-                    required
-                  >
-                    <option value="house">House</option>
-                    <option value="techno">Techno</option>
-                    <option value="trance">Trance</option>
-                    <option value="drum-and-bass">Drum & Bass</option>
-                    <option value="dubstep">Dubstep</option>
-                    <option value="ukg">UK Garage</option>
-                    <option value="hip-hop">Hip-Hop</option>
-                    <option value="rock">Rock</option>
-                    <option value="indie-rock">Indie Rock</option>
-                    <option value="jazz">Jazz</option>
-                    <option value="folk">Folk</option>
-                    <option value="acoustic">Acoustic</option>
-                    <option value="multi-genre">Multi-Genre</option>
-                    <option value="other">Other</option>
-                  </select>
+                  <GenreMultiSelect
+                    selectedGenres={artist.genres || []}
+                    onChange={(genres) => updateArtist('genres', genres)}
+                    placeholder="Select genres..."
+                    className=""
+                  />
                 </div>
               </div>
 
@@ -486,13 +477,14 @@ export default function EditArtistPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Additional Genres
+                    Hometown
                   </label>
-                  <GenreMultiSelect
-                    selectedGenres={artist.genres || []}
-                    onChange={(genres) => updateArtist('genres', genres)}
-                    placeholder="Select additional genres..."
-                    className=""
+                  <input
+                    type="text"
+                    value={artist.hometown || ''}
+                    onChange={(e) => updateArtist('hometown', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-music-purple-500 bg-gray-700 text-white"
+                    placeholder="e.g., Chicago, IL"
                   />
                 </div>
               </div>
