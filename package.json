@@ -46,6 +46,7 @@
     "mcp-unsplash": "^1.0.0",
     "multer": "^2.0.2",
     "next": "^15.4.6",
+    "playwright": "^1.55.0",
     "prisma": "^6.13.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

@@ -11,6 +11,7 @@ interface Artist {
   name: string
   slug?: string
   genre: string
+  genres?: string[]
   bio?: string
   image?: string
   website?: string
@@ -49,6 +50,9 @@ export default function AdminArtists() {
   const [artistsLoading, setArtistsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [filterGenre, setFilterGenre] = useState<string>('all')
+  const [batchSyncLoading, setBatchSyncLoading] = useState(false)
+  const [selectedArtists, setSelectedArtists] = useState<string[]>([])
+  const [showBatchSyncModal, setShowBatchSyncModal] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -88,6 +92,7 @@ export default function AdminArtists() {
 
       if (response.ok) {
         const data = await response.json()
+        // Artists data is already properly transformed by the API
         setArtists(data.artists || [])
       } else {
         console.error('Failed to load artists')
@@ -148,8 +153,99 @@ export default function AdminArtists() {
     }
   }
 
-  // Get unique genres for filter
-  const genres = Array.from(new Set(artists.map(artist => artist.genre))).filter(Boolean)
+  const handleBatchSync = async () => {
+    if (selectedArtists.length === 0 && !confirm('This will sync ALL artists. Are you sure? This may take several minutes.')) {
+      return
+    }
+
+    if (selectedArtists.length > 0 && !confirm(`This will sync ${selectedArtists.length} selected artists. Are you sure?`)) {
+      return
+    }
+
+    setBatchSyncLoading(true)
+    setShowBatchSyncModal(false)
+
+    try {
+      const token = localStorage.getItem('admin_token')
+      const body = selectedArtists.length > 0 ? { artistIds: selectedArtists } : {}
+      
+      const response = await fetch('/api/artists/batch-sync', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        const { statistics, failedArtists } = data
+        
+        let message = `✅ Batch sync completed!\n\n`
+        message += `📊 Statistics:\n`
+        message += `• Total: ${statistics.total} artists\n`
+        message += `• Successful: ${statistics.successful}\n`
+        message += `• Failed: ${statistics.failed}\n`
+        message += `• Spotify matches: ${statistics.spotifyMatches}\n`
+        message += `• Last.fm matches: ${statistics.lastfmMatches}\n`
+        message += `• MusicBrainz matches: ${statistics.musicbrainzMatches}\n`
+        
+        if (failedArtists.length > 0) {
+          message += `\n❌ Failed artists:\n`
+          failedArtists.forEach((artist: any) => {
+            message += `• ${artist.name}: ${artist.error}\n`
+          })
+        }
+        
+        alert(message)
+        setSelectedArtists([])
+        loadArtists() // Reload artists to see updated data
+      } else {
+        const errorData = await response.json()
+        alert('Error during batch sync: ' + errorData.error)
+      }
+    } catch (error) {
+      console.error('Batch sync error:', error)
+      alert('Error during batch sync: ' + error.message)
+    } finally {
+      setBatchSyncLoading(false)
+    }
+  }
+
+  const handleSelectArtist = (artistId: string) => {
+    setSelectedArtists(prev => 
+      prev.includes(artistId) 
+        ? prev.filter(id => id !== artistId)
+        : [...prev, artistId]
+    )
+  }
+
+  const handleSelectAll = () => {
+    if (selectedArtists.length === filteredArtists.length) {
+      setSelectedArtists([])
+    } else {
+      setSelectedArtists(filteredArtists.map(artist => artist.id))
+    }
+  }
+
+  const openBatchSyncModal = () => {
+    setShowBatchSyncModal(true)
+  }
+
+  // Get unique genres for filter (from both genre and genres fields)
+  const allGenres = new Set<string>()
+  artists.forEach(artist => {
+    // Add primary genre
+    if (artist.genre) {
+      allGenres.add(artist.genre)
+    }
+    // Add all genres from genres array
+    if (artist.genres && artist.genres.length > 0) {
+      artist.genres.forEach(genre => allGenres.add(genre))
+    }
+  })
+  const genres = Array.from(allGenres).filter(Boolean)
 
   // Filter artists based on search term and genre
   const filteredArtists = artists.filter(artist => {
@@ -158,7 +254,9 @@ export default function AdminArtists() {
       artist.hometown?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       artist.bio?.toLowerCase().includes(searchTerm.toLowerCase())
 
-    const matchesGenre = filterGenre === 'all' || artist.genre === filterGenre
+    const matchesGenre = filterGenre === 'all' || 
+      artist.genre === filterGenre ||
+      (artist.genres && artist.genres.includes(filterGenre))
 
     return matchesSearch && matchesGenre
   })
@@ -194,6 +292,17 @@ export default function AdminArtists() {
             >
               ➕ Add Artist
             </Link>
+            <button
+              onClick={openBatchSyncModal}
+              disabled={batchSyncLoading}
+              className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-center"
+            >
+              {batchSyncLoading ? (
+                <>🔄 Syncing...</>
+              ) : (
+                <>🔄 Batch Sync{selectedArtists.length > 0 ? ` (${selectedArtists.length})` : ' All'}</>
+              )}
+            </button>
           </div>
         </div>
 
@@ -234,11 +343,28 @@ export default function AdminArtists() {
             </div>
           </div>
           
-          {filteredArtists.length !== artists.length && (
-            <div className="mt-4 text-sm text-gray-400">
-              Showing {filteredArtists.length} of {artists.length} artists
-            </div>
-          )}
+          <div className="mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center">
+            {filteredArtists.length !== artists.length && (
+              <div className="text-sm text-gray-400 mb-2 sm:mb-0">
+                Showing {filteredArtists.length} of {artists.length} artists
+              </div>
+            )}
+            {filteredArtists.length > 0 && (
+              <div className="flex items-center space-x-4">
+                <button
+                  onClick={handleSelectAll}
+                  className="text-sm text-music-purple-600 hover:text-music-purple-700"
+                >
+                  {selectedArtists.length === filteredArtists.length ? 'Deselect All' : 'Select All'}
+                </button>
+                {selectedArtists.length > 0 && (
+                  <span className="text-sm text-gray-400">
+                    {selectedArtists.length} selected
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Artists Table */}
@@ -272,6 +398,14 @@ export default function AdminArtists() {
                 <thead className="bg-gray-700">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      <input
+                        type="checkbox"
+                        checked={selectedArtists.length === filteredArtists.length && filteredArtists.length > 0}
+                        onChange={handleSelectAll}
+                        className="rounded border-gray-300 text-music-purple-600 focus:ring-music-purple-600"
+                      />
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                       Artist Details
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
@@ -288,6 +422,14 @@ export default function AdminArtists() {
                 <tbody className="bg-gray-800">
                   {filteredArtists.map((artist) => (
                     <tr key={artist.id} className="hover:bg-gray-700 border-b border-gray-700">
+                      <td className="px-6 py-4">
+                        <input
+                          type="checkbox"
+                          checked={selectedArtists.includes(artist.id)}
+                          onChange={() => handleSelectArtist(artist.id)}
+                          className="rounded border-gray-300 text-music-purple-600 focus:ring-music-purple-600"
+                        />
+                      </td>
                       <td className="px-6 py-4">
                         <div className="flex items-start">
                           {/* Artist Image */}
@@ -333,9 +475,22 @@ export default function AdminArtists() {
                       
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                         <div className="font-medium mb-1">
-                          <span className="bg-music-purple-600 text-white px-2 py-1 rounded text-xs">
-                            {artist.genre.charAt(0).toUpperCase() + artist.genre.slice(1)}
-                          </span>
+                          {artist.genres && artist.genres.length > 0 ? (
+                            <div className="flex flex-wrap gap-1">
+                              {artist.genres.slice(0, 3).map((genre, index) => (
+                                <span key={index} className="bg-music-purple-600 text-white px-2 py-1 rounded text-xs">
+                                  {genre.charAt(0).toUpperCase() + genre.slice(1)}
+                                </span>
+                              ))}
+                              {artist.genres.length > 3 && (
+                                <span className="text-gray-400 text-xs">+{artist.genres.length - 3} more</span>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="bg-music-purple-600 text-white px-2 py-1 rounded text-xs">
+                              {artist.genre.charAt(0).toUpperCase() + artist.genre.slice(1)}
+                            </span>
+                          )}
                         </div>
                         {artist.members && Array.isArray(artist.members) && artist.members.length > 0 && (
                           <div className="text-xs text-gray-400">
@@ -414,6 +569,67 @@ export default function AdminArtists() {
             </div>
           )}
         </div>
+
+        {/* Batch Sync Modal */}
+        {showBatchSyncModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+              <h3 className="text-lg font-bold text-white mb-4">Batch Sync Artists</h3>
+              
+              {selectedArtists.length > 0 ? (
+                <div>
+                  <p className="text-gray-300 mb-4">
+                    You are about to sync <strong>{selectedArtists.length} selected artists</strong> with Spotify, Last.fm, and MusicBrainz APIs.
+                  </p>
+                  <div className="bg-gray-700 rounded p-3 mb-4 max-h-32 overflow-y-auto">
+                    <h4 className="text-sm font-medium text-gray-300 mb-2">Selected Artists:</h4>
+                    <ul className="text-sm text-gray-400 space-y-1">
+                      {filteredArtists
+                        .filter(artist => selectedArtists.includes(artist.id))
+                        .map(artist => (
+                          <li key={artist.id}>• {artist.name}</li>
+                        ))
+                      }
+                    </ul>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <p className="text-gray-300 mb-4">
+                    You are about to sync <strong>all {artists.length} artists</strong> with Spotify, Last.fm, and MusicBrainz APIs.
+                  </p>
+                </div>
+              )}
+              
+              <div className="bg-yellow-900/30 border border-yellow-600/50 rounded p-3 mb-4">
+                <p className="text-yellow-300 text-sm">
+                  ⚠️ <strong>Warning:</strong> This operation may take several minutes and will update artist information including:
+                </p>
+                <ul className="text-yellow-300 text-sm mt-2 ml-4">
+                  <li>• Spotify data (popularity, followers, genres, top tracks)</li>
+                  <li>• Last.fm data (biography, listeners, tags)</li>
+                  <li>• MusicBrainz data (social media links, hometown)</li>
+                  <li>• Profile images and biographical information</li>
+                </ul>
+              </div>
+
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => setShowBatchSyncModal(false)}
+                  className="flex-1 bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleBatchSync}
+                  className="flex-1 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
+                >
+                  Start Sync
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   )

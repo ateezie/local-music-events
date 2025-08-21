@@ -1,0 +1,1 @@
+SELECT id, name, slug, spotifyId, lastSpotifySync, hometown, facebook, instagram, twitter, spotify FROM "Artist" ORDER BY name;

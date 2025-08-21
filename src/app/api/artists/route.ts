@@ -107,33 +107,50 @@ export async function GET(request: NextRequest) {
     ])
 
     // Transform the data to match frontend expectations
-    const transformedArtists = artists.map(artist => ({
-      ...artist,
-      members: artist.members ? JSON.parse(artist.members) : [],
-      tags: artist.tags ? JSON.parse(artist.tags) : [],
-      socialMedia: {
-        facebook: artist.facebook,
-        instagram: artist.instagram,
-        twitter: artist.twitter,
-        tiktok: artist.tiktok,
-        youtube: artist.youtube,
-        spotify: artist.spotify,
-        bandcamp: artist.bandcamp,
-        soundcloud: artist.soundcloud,
-        website: artist.website
-      },
-      mediaLinks: {
-        spotify: artist.spotify,
-        youtube: artist.youtube,
-        bandcamp: artist.bandcamp,
-        soundcloud: artist.soundcloud
-      },
-      upcomingEvents: artist.events.map(ea => ({
-        ...ea.event,
-        tags: ea.event.tags ? JSON.parse(ea.event.tags) : []
-      })),
-      totalEventsCount: artist._count.events
-    }))
+    const transformedArtists = artists.map(artist => {
+      // Safe JSON parsing function
+      const safeJsonParse = (jsonString: string | null): any[] => {
+        if (!jsonString) return []
+        try {
+          const parsed = JSON.parse(jsonString)
+          return Array.isArray(parsed) ? parsed : []
+        } catch {
+          return []
+        }
+      }
+
+      return {
+        ...artist,
+        members: safeJsonParse(artist.members),
+        tags: safeJsonParse(artist.tags),
+        genres: safeJsonParse(artist.genres),
+        subgenres: safeJsonParse(artist.subgenres),
+        spotifyGenres: safeJsonParse(artist.spotifyGenres),
+        lastfmTags: safeJsonParse(artist.lastfmTags),
+        socialMedia: {
+          facebook: artist.facebook,
+          instagram: artist.instagram,
+          twitter: artist.twitter,
+          tiktok: artist.tiktok,
+          youtube: artist.youtube,
+          spotify: artist.spotify,
+          bandcamp: artist.bandcamp,
+          soundcloud: artist.soundcloud,
+          website: artist.website
+        },
+        mediaLinks: {
+          spotify: artist.spotify,
+          youtube: artist.youtube,
+          bandcamp: artist.bandcamp,
+          soundcloud: artist.soundcloud
+        },
+        upcomingEvents: artist.events.map(ea => ({
+          ...ea.event,
+          tags: safeJsonParse(ea.event.tags)
+        })),
+        totalEventsCount: artist._count.events
+      }
+    })
 
     return NextResponse.json({
       artists: transformedArtists,
@@ -229,10 +246,24 @@ export async function POST(request: NextRequest) {
     })
 
     // Transform response
+    const safeJsonParse = (jsonString: string | null): any[] => {
+      if (!jsonString) return []
+      try {
+        const parsed = JSON.parse(jsonString)
+        return Array.isArray(parsed) ? parsed : []
+      } catch {
+        return []
+      }
+    }
+
     const transformedArtist = {
       ...artist,
-      members: artist.members ? JSON.parse(artist.members) : [],
-      tags: artist.tags ? JSON.parse(artist.tags) : [],
+      members: safeJsonParse(artist.members),
+      tags: safeJsonParse(artist.tags),
+      genres: safeJsonParse(artist.genres),
+      subgenres: safeJsonParse(artist.subgenres),
+      spotifyGenres: safeJsonParse(artist.spotifyGenres),
+      lastfmTags: safeJsonParse(artist.lastfmTags),
       socialMedia: {
         facebook: artist.facebook,
         instagram: artist.instagram,

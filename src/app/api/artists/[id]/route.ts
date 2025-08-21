@@ -6,23 +6,25 @@ import { verifyToken } from '@/lib/auth'
 // Validation schema for updating artists
 const UpdateArtistSchema = z.object({
   name: z.string().min(1, 'Name is required').optional(),
+  slug: z.string().min(1, 'Slug is required').optional(),
   genre: z.string().min(1, 'Genre is required').optional(),
-  bio: z.string().optional(),
-  image: z.string().optional(),
-  website: z.string().url().optional().or(z.literal('')),
-  hometown: z.string().optional(),
-  formed: z.string().optional(),
-  facebook: z.string().url().optional().or(z.literal('')),
-  instagram: z.string().url().optional().or(z.literal('')),
-  twitter: z.string().url().optional().or(z.literal('')),
-  tiktok: z.string().url().optional().or(z.literal('')),
-  youtube: z.string().url().optional().or(z.literal('')),
-  spotify: z.string().url().optional().or(z.literal('')),
-  bandcamp: z.string().url().optional().or(z.literal('')),
-  soundcloud: z.string().url().optional().or(z.literal('')),
+  bio: z.string().optional().or(z.null()),
+  image: z.string().optional().or(z.null()),
+  website: z.string().url().optional().or(z.literal('')).or(z.null()),
+  hometown: z.string().optional().or(z.null()),
+  formed: z.string().optional().or(z.null()),
+  facebook: z.string().url().optional().or(z.literal('')).or(z.null()),
+  instagram: z.string().url().optional().or(z.literal('')).or(z.null()),
+  twitter: z.string().url().optional().or(z.literal('')).or(z.null()),
+  tiktok: z.string().url().optional().or(z.literal('')).or(z.null()),
+  youtube: z.string().url().optional().or(z.literal('')).or(z.null()),
+  spotify: z.string().url().optional().or(z.literal('')).or(z.null()),
+  bandcamp: z.string().url().optional().or(z.literal('')).or(z.null()),
+  soundcloud: z.string().url().optional().or(z.literal('')).or(z.null()),
   members: z.array(z.string()).optional(),
   tags: z.array(z.string()).optional(),
-  genres: z.array(z.string()).optional()
+  genres: z.array(z.string()).optional(),
+  subgenres: z.array(z.string()).optional()
 })
 
 // GET /api/artists/[id] - Get single artist
@@ -84,6 +86,7 @@ export async function GET(
       members: artist.members ? JSON.parse(artist.members) : [],
       tags: artist.tags ? JSON.parse(artist.tags) : [],
       genres: artist.genres ? JSON.parse(artist.genres) : [],
+      subgenres: artist.subgenres ? JSON.parse(artist.subgenres) : [],
       socialMedia: {
         facebook: artist.facebook,
         instagram: artist.instagram,
@@ -169,7 +172,8 @@ export async function PUT(
       ...validatedData,
       members: validatedData.members ? JSON.stringify(validatedData.members) : undefined,
       tags: validatedData.tags ? JSON.stringify(validatedData.tags) : undefined,
-      genres: validatedData.genres ? JSON.stringify(validatedData.genres) : undefined
+      genres: validatedData.genres ? JSON.stringify(validatedData.genres) : undefined,
+      subgenres: validatedData.subgenres ? JSON.stringify(validatedData.subgenres) : undefined
     }
 
     const artist = await prisma.artist.update({
@@ -197,6 +201,7 @@ export async function PUT(
       members: artist.members ? JSON.parse(artist.members) : [],
       tags: artist.tags ? JSON.parse(artist.tags) : [],
       genres: artist.genres ? JSON.parse(artist.genres) : [],
+      subgenres: artist.subgenres ? JSON.parse(artist.subgenres) : [],
       socialMedia: {
         facebook: artist.facebook,
         instagram: artist.instagram,

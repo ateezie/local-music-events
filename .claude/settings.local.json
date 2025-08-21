@@ -91,7 +91,11 @@
       "Bash(DATABASE_URL=\"postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\" npx prisma db execute --file ./check-gene-farris.sql)",
       "Bash(DATABASE_URL=\"postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\" npx prisma db execute --file ./check-gene-farris.sql --schema ./prisma/schema.prisma)",
       "Bash(git commit:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "mcp__playwright__browser_tab_list",
+      "Bash(npx playwright:*)",
+      "Bash(DATABASE_URL=\"postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\" npx prisma db execute --file ./check-artists.sql --schema ./prisma/schema.prisma)",
+      "mcp__playwright__browser_tab_select"
     ],
     "deny": [],
     "defaultMode": "acceptEdits"

@@ -75,7 +75,8 @@ model Artist {
   name     String
   slug     String? @unique // URL-friendly version of name, e.g., "gene-farris"
   genre    String  // primary genre
-  genres   String? // JSON array of additional genres
+  genres   String? // JSON array of additional genres  
+  subgenres String? // JSON array of subgenres
   bio      String?
   image    String?
   website  String?
