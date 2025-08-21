@@ -4,37 +4,52 @@ import { useState, useEffect, useMemo } from 'react'
 import { useParams } from 'next/navigation'
 import Layout from '@/components/Layout'
 import EventCard from '@/components/EventCard'
-import { getArtistById, getEventsByArtist } from '@/lib/events'
-import { Artist, Event } from '@/types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 export default function ArtistDetailPage() {
   const { id } = useParams()
-  const [artist, setArtist] = useState<Artist | null>(null)
-  const [events, setEvents] = useState<Event[]>([])
+  const [artist, setArtist] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (id) {
+    const fetchArtist = async () => {
+      if (!id) return
+      
       try {
-        const artistData = getArtistById(id as string)
-        if (!artistData) {
-          notFound()
-          return
+        setLoading(true)
+        const response = await fetch(`/api/artists/${id}`)
+        
+        if (!response.ok) {
+          if (response.status === 404) {
+            notFound()
+            return
+          }
+          throw new Error(`Failed to fetch artist: ${response.statusText}`)
         }
         
+        const artistData = await response.json()
         setArtist(artistData)
-        setEvents(getEventsByArtist(id as string))
-      } catch (error) {
-        console.error('Error loading artist:', error)
-        notFound()
+      } catch (err) {
+        console.error('Error loading artist:', err)
+        setError(err instanceof Error ? err.message : 'Failed to load artist')
       } finally {
         setLoading(false)
       }
     }
+
+    fetchArtist()
   }, [id])
+
+  const { upcomingEvents, pastEvents } = useMemo(() => {
+    if (!artist?.events) return { upcomingEvents: [], pastEvents: [] }
+    const now = new Date()
+    const upcoming = artist.events.filter((event: any) => new Date(event.date) > now)
+    const past = artist.events.filter((event: any) => new Date(event.date) <= now)
+    return { upcomingEvents: upcoming, pastEvents: past }
+  }, [artist?.events])
 
   if (loading) {
     return (
@@ -55,16 +70,23 @@ export default function ArtistDetailPage() {
     )
   }
 
+  if (error) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-music-neutral-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-6xl mb-4">❌</div>
+            <h1 className="text-2xl font-bold text-music-purple-950 mb-2">Error Loading Artist</h1>
+            <p className="text-music-neutral-600">{error}</p>
+          </div>
+        </div>
+      </Layout>
+    )
+  }
+
   if (!artist) {
     notFound()
   }
-
-  const { upcomingEvents, pastEvents } = useMemo(() => {
-    const now = new Date()
-    const upcoming = events.filter(event => new Date(event.date) > now)
-    const past = events.filter(event => new Date(event.date) <= now)
-    return { upcomingEvents: upcoming, pastEvents: past }
-  }, [events])
 
   return (
     <Layout>
@@ -84,9 +106,45 @@ export default function ArtistDetailPage() {
           <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="text-center">
               <div className="mb-4">
-                <span className="inline-block bg-music-accent-600 text-white px-4 py-2 rounded-full text-sm font-medium capitalize">
-                  {artist.genre.replace('-', ' ')}
-                </span>
+                {(() => {
+                  let displayGenres = [];
+                  
+                  // First try to get genres from Spotify data
+                  if (artist.spotifyGenres) {
+                    try {
+                      const spotifyGenres = JSON.parse(artist.spotifyGenres);
+                      if (Array.isArray(spotifyGenres) && spotifyGenres.length > 0) {
+                        displayGenres = spotifyGenres;
+                      }
+                    } catch (e) {
+                      // If parsing fails, continue with other sources
+                    }
+                  }
+                  
+                  // Fallback to regular genres array
+                  if (displayGenres.length === 0 && artist.genres && artist.genres.length > 0) {
+                    displayGenres = artist.genres;
+                  }
+                  
+                  // Final fallback to single genre field
+                  if (displayGenres.length === 0 && artist.genre) {
+                    displayGenres = [artist.genre];
+                  }
+                  
+                  if (displayGenres.length > 0) {
+                    return (
+                      <div className="flex flex-wrap gap-2 justify-center">
+                        {displayGenres.slice(0, 3).map((genre: string, index: number) => (
+                          <span key={index} className="inline-block bg-music-accent-600 text-white px-4 py-2 rounded-full text-sm font-medium capitalize">
+                            {genre.replace('-', ' ')}
+                          </span>
+                        ))}
+                      </div>
+                    );
+                  }
+                  
+                  return null;
+                })()}
               </div>
 
               <h1 className="text-4xl sm:text-5xl font-bold mb-6">{artist.name}</h1>
@@ -140,7 +198,20 @@ export default function ArtistDetailPage() {
                   </div>
                 ) : (
                   <p className="text-music-neutral-600 mb-8">
-                    {artist.name} is a talented {artist.genre.replace('-', ' ')} artist
+                    {artist.name} is a talented {(() => {
+                      // First try Spotify genres
+                      if (artist.spotifyGenres) {
+                        try {
+                          const spotifyGenres = JSON.parse(artist.spotifyGenres);
+                          if (Array.isArray(spotifyGenres) && spotifyGenres.length > 0) {
+                            return spotifyGenres[0].replace('-', ' ');
+                          }
+                        } catch (e) {}
+                      }
+                      // Fallback to other genre sources
+                      return (artist.genres && artist.genres[0]) ? artist.genres[0].replace('-', ' ') : 
+                             (artist.genre ? artist.genre.replace('-', ' ') : 'music');
+                    })()} artist
                     {artist.hometown && ` from ${artist.hometown}`}.
                   </p>
                 )}
@@ -159,6 +230,57 @@ export default function ArtistDetailPage() {
                     </div>
                   </div>
                 )}
+
+                {/* Top Tracks from Spotify */}
+                {artist.spotifyTopTracks && (() => {
+                  try {
+                    const tracks = JSON.parse(artist.spotifyTopTracks);
+                    if (Array.isArray(tracks) && tracks.length > 0) {
+                      return (
+                        <div className="border-t border-music-neutral-200 pt-6 mt-6">
+                          <h3 className="font-semibold text-music-purple-900 mb-4">Popular Tracks</h3>
+                          <div className="space-y-3">
+                            {tracks.slice(0, 5).map((track: any, index: number) => (
+                              <div key={track.id} className="flex items-center space-x-4 p-3 bg-music-neutral-50 rounded-lg hover:bg-music-neutral-100 transition-colors">
+                                <div className="flex-shrink-0 w-8 h-8 bg-music-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                  {index + 1}
+                                </div>
+                                {track.album?.images?.[2] && (
+                                  <div className="flex-shrink-0">
+                                    <Image
+                                      src={track.album.images[2].url}
+                                      alt={track.album.name}
+                                      width={40}
+                                      height={40}
+                                      className="rounded"
+                                    />
+                                  </div>
+                                )}
+                                <div className="flex-1 min-w-0">
+                                  <div className="font-medium text-music-purple-950 truncate">{track.name}</div>
+                                  <div className="text-sm text-music-neutral-600">{track.album?.name}</div>
+                                </div>
+                                <div className="flex-shrink-0">
+                                  <a
+                                    href={track.external_urls?.spotify}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-green-600 hover:text-green-700 text-sm font-medium"
+                                  >
+                                    Play ▶️
+                                  </a>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    }
+                  } catch (e) {
+                    return null;
+                  }
+                  return null;
+                })()}
 
                 {/* Tags */}
                 {artist.tags && artist.tags.length > 0 && (
@@ -197,9 +319,13 @@ export default function ArtistDetailPage() {
                                 })} at {event.time}
                               </div>
                               <div className="text-sm text-music-neutral-600">
-                                📍 <Link href={`/venues/${event.venue.id}`} className="text-music-blue-600 hover:text-music-blue-800">
-                                  {event.venue.name}, {event.venue.city}
-                                </Link>
+                                📍 {event.venue ? (
+                                  <Link href={`/venues/${event.venue.id}`} className="text-music-blue-600 hover:text-music-blue-800">
+                                    {event.venue.name}, {event.venue.city}
+                                  </Link>
+                                ) : (
+                                  <span>Venue TBA</span>
+                                )}
                               </div>
                             </Link>
                           </div>
@@ -256,7 +382,7 @@ export default function ArtistDetailPage() {
               )}
 
               {/* No Shows */}
-              {events.length === 0 && (
+              {(!artist.events || artist.events.length === 0) && (
                 <div className="bg-white rounded-lg shadow-md p-8 text-center">
                   <div className="text-6xl mb-4">🎤</div>
                   <h3 className="text-xl font-bold text-music-purple-950 mb-2">No Shows Scheduled</h3>
@@ -290,7 +416,22 @@ export default function ArtistDetailPage() {
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
                     <span className="text-music-neutral-600">Genre:</span>
-                    <span className="font-medium capitalize">{artist.genre.replace('-', ' ')}</span>
+                    <span className="font-medium capitalize">
+                      {(() => {
+                        // First try Spotify genres
+                        if (artist.spotifyGenres) {
+                          try {
+                            const spotifyGenres = JSON.parse(artist.spotifyGenres);
+                            if (Array.isArray(spotifyGenres) && spotifyGenres.length > 0) {
+                              return spotifyGenres[0].replace('-', ' ');
+                            }
+                          } catch (e) {}
+                        }
+                        // Fallback to other genre sources
+                        return (artist.genres && artist.genres.length > 0) ? artist.genres[0].replace('-', ' ') : 
+                               (artist.genre ? artist.genre.replace('-', ' ') : 'Music');
+                      })()}
+                    </span>
                   </div>
                   {artist.hometown && (
                     <div className="flex justify-between">
@@ -306,12 +447,24 @@ export default function ArtistDetailPage() {
                   )}
                   <div className="flex justify-between">
                     <span className="text-music-neutral-600">Total Shows:</span>
-                    <span className="font-medium">{events.length}</span>
+                    <span className="font-medium">{artist.totalEventsCount || 0}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-music-neutral-600">Upcoming:</span>
                     <span className="font-medium">{upcomingEvents.length}</span>
                   </div>
+                  {artist.spotifyFollowers && (
+                    <div className="flex justify-between">
+                      <span className="text-music-neutral-600">Spotify Followers:</span>
+                      <span className="font-medium">{artist.spotifyFollowers.toLocaleString()}</span>
+                    </div>
+                  )}
+                  {artist.lastfmListeners && (
+                    <div className="flex justify-between">
+                      <span className="text-music-neutral-600">Last.fm Listeners:</span>
+                      <span className="font-medium">{artist.lastfmListeners.toLocaleString()}</span>
+                    </div>
+                  )}
                 </div>
               </div>
 

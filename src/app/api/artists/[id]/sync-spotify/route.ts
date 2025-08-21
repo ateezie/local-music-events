@@ -188,7 +188,10 @@ async function getMusicBrainzArtistUrls(mbid: string) {
             relation.type === 'bandcamp' ||
             relation.type === 'soundcloud' ||
             relation.type === 'official homepage' ||
-            relation.type === 'myspace') {
+            relation.type === 'myspace' ||
+            relation.type === 'free streaming' ||
+            relation.type === 'streaming' ||
+            relation.type === 'other databases') {
           socialUrls.push({
             type: relation.type,
             url: relation.url.resource,
@@ -412,6 +415,9 @@ export async function POST(
       musicbrainzUrls: JSON.stringify(musicbrainzUrls),
       musicbrainzSync: musicbrainzArtist ? new Date() : null
     }
+    
+    console.log('DEBUG: MusicBrainz artist found:', musicbrainzArtist?.id, musicbrainzHometown)
+    console.log('DEBUG: MusicBrainz URLs found:', musicbrainzUrls.length, musicbrainzUrls)
 
     // Bio generation priority: Last.fm > Enhanced Spotify > None
     const updateData: any = { ...enhancedData }
@@ -444,10 +450,46 @@ export async function POST(
       updateData.image = spotifyArtist.images[0].url
     }
     
-    // Update hometown from MusicBrainz if available and current is empty
-    if (!artist.hometown && musicbrainzHometown) {
+    // Update hometown from MusicBrainz if available (force update with latest data)
+    if (musicbrainzHometown) {
       updateData.hometown = musicbrainzHometown
+      console.log('DEBUG: Setting hometown to:', musicbrainzHometown)
     }
+    
+    // Update social media fields from MusicBrainz URLs
+    if (musicbrainzUrls?.length > 0) {
+      musicbrainzUrls.forEach((link: any) => {
+        const url = link.url
+        console.log('DEBUG: Processing MusicBrainz URL:', link.type, url)
+        
+        // Check URL content for platform detection (force update with latest data)
+        if (url.includes('facebook.com')) {
+          updateData.facebook = url
+          console.log('DEBUG: Setting facebook to:', url)
+        } else if (url.includes('instagram.com')) {
+          updateData.instagram = url
+          console.log('DEBUG: Setting instagram to:', url)
+        } else if (url.includes('twitter.com')) {
+          updateData.twitter = url
+          console.log('DEBUG: Setting twitter to:', url)
+        } else if (url.includes('soundcloud.com')) {
+          updateData.soundcloud = url
+          console.log('DEBUG: Setting soundcloud to:', url)
+        } else if (url.includes('spotify.com/artist/')) {
+          updateData.spotify = url
+          console.log('DEBUG: Setting spotify to:', url)
+        } else if (link.type === 'official homepage' && !artist.website) {
+          updateData.website = url
+          console.log('DEBUG: Setting website to:', url)
+        } else if (link.type === 'other databases' && url.includes('ra.co') && !artist.website) {
+          // Use Resident Advisor as website if no official homepage
+          updateData.website = url
+          console.log('DEBUG: Setting website (RA) to:', url)
+        }
+      })
+    }
+    
+    console.log('DEBUG: Final updateData being saved to database:', updateData)
 
     // Add genres to update data if enhanced
     if (updateData.genres && Array.isArray(updateData.genres)) {

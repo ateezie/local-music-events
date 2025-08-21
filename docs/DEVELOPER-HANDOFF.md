@@ -88,6 +88,8 @@ npm run dev:archon
 - **Styling**: Tailwind CSS 3.4.17 with music-themed colors
 - **Database**: PostgreSQL via Neon
 - **Development**: Streamlined automation scripts
+- **Music APIs**: Spotify, Last.fm, MusicBrainz integration
+- **Browser Testing**: Playwright automation
 
 ### Key Directories
 ```
@@ -215,6 +217,67 @@ npx prisma studio
 ### Session History
 - **[SESSION-LOGS.md](SESSION-LOGS.md)** - Detailed development history and decisions
 
+## 🎵 Artist Pages & Music API Integration
+
+### Artist Page Features (NEW)
+**Complete artist profiles with rich data integration:**
+
+- **Dynamic Route**: `/artists/[id]` or `/artists/[slug]`
+- **API Endpoint**: `/api/artists/[id]` with comprehensive data
+- **Data Sources**: Spotify, Last.fm, MusicBrainz integration
+- **Admin Management**: Full CRUD interface at `/admin/artists`
+
+### Key Artist Page Components
+```
+Artist Page Structure:
+├── Hero Section (with genres and stats)
+├── Biography (Last.fm integration)
+├── Popular Tracks (Spotify integration)
+├── Upcoming/Past Events
+├── Artist Info Sidebar
+└── Social Media Links
+```
+
+### Music API Integration
+**Spotify Integration:**
+- Artist profiles and images
+- Top tracks with album artwork
+- Follower counts and popularity
+- Genre classifications
+
+**Last.fm Integration:**
+- Comprehensive artist biographies
+- Listener statistics and play counts
+- Additional metadata and tags
+
+**MusicBrainz Integration:**
+- Social media URL discovery
+- Artist hometown and formation data
+- Cross-platform link verification
+
+### Image Configuration
+**Required CDN Domains in `next.config.js`:**
+```javascript
+remotePatterns: [
+  {
+    protocol: 'https',
+    hostname: 'i.scdn.co',  // Spotify images
+    pathname: '/**',
+  },
+  // ... other domains
+]
+```
+
+### Artist API Sync
+**Trigger data sync for artists:**
+```bash
+# Via API endpoint
+POST /api/artists/[id]/sync-spotify
+
+# Admin interface provides sync buttons
+# Navigate to: /admin/artists/[id]/edit
+```
+
 ## 🔧 Customization & Extension
 
 ### Adding New Development Scripts
@@ -254,6 +317,9 @@ npm run start               # Start production server
 - [ ] Confirm all environment variables set
 - [ ] Validate image upload system
 - [ ] Test Facebook event import (Chrome extension)
+- [ ] Verify Spotify API integration for artist data
+- [ ] Test artist page functionality at `/artists/[id]`
+- [ ] Confirm image CDN domains in next.config.js
 
 ## 🎉 Success Indicators
 

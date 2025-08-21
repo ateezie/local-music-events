@@ -89,7 +89,9 @@
       "WebFetch(domain:musicbrainz.org)",
       "Bash(DATABASE_URL=\"postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\" node scripts/add-artist-slugs.js)",
       "Bash(DATABASE_URL=\"postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\" npx prisma db execute --file ./check-gene-farris.sql)",
-      "Bash(DATABASE_URL=\"postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\" npx prisma db execute --file ./check-gene-farris.sql --schema ./prisma/schema.prisma)"
+      "Bash(DATABASE_URL=\"postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require\" npx prisma db execute --file ./check-gene-farris.sql --schema ./prisma/schema.prisma)",
+      "Bash(git commit:*)",
+      "Bash(npx tsc:*)"
     ],
     "deny": [],
     "defaultMode": "acceptEdits"

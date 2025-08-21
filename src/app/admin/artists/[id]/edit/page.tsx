@@ -19,7 +19,11 @@ interface EditArtist {
   facebook?: string
   instagram?: string
   twitter?: string
+  tiktok?: string
+  youtube?: string
   spotify?: string
+  bandcamp?: string
+  soundcloud?: string
   spotifyId?: string
   spotifyUrl?: string
   spotifyPopularity?: number
@@ -121,7 +125,11 @@ export default function EditArtistPage() {
           ...artist,
           // Ensure genres is sent as array and set genre to first genre if not set
           genres: artist.genres || [],
-          genre: artist.genre || (artist.genres && artist.genres.length > 0 ? artist.genres[0] : 'other')
+          genre: artist.genre || (artist.genres && artist.genres.length > 0 ? artist.genres[0] : 'other'),
+          // Convert null values to empty strings for URL fields
+          tiktok: artist.tiktok || '',
+          youtube: artist.youtube || '',
+          bandcamp: artist.bandcamp || ''
         })
       })
 
@@ -199,6 +207,7 @@ export default function EditArtistPage() {
 
       if (response.ok) {
         const data = await response.json()
+        console.log('Sync API response:', data) // Debug log
         
         // Process the returned artist data
         const processedArtist = {
@@ -210,9 +219,13 @@ export default function EditArtistPage() {
           musicbrainzUrls: safeJsonParse(data.artist.musicbrainzUrls),
           members: safeJsonParse(data.artist.members),
           tags: safeJsonParse(data.artist.tags),
-          genres: safeJsonParse(data.artist.spotifyGenres) // Use Spotify genres as additional genres
+          genres: safeJsonParse(data.artist.genres) // Use the actual genres field from API
         }
-        setArtist(processedArtist)
+        
+        console.log('Processed artist before setting state:', processedArtist) // Debug log
+        
+        // Reload the artist data from database to get the latest synced data
+        await loadArtist()
         
         // Show success with details
         const syncDetails = []
@@ -243,123 +256,27 @@ export default function EditArtistPage() {
           syncDetails.push(`Hometown: ${processedArtist.hometown} (from MusicBrainz)`)
         }
         
-        // Auto-populate form fields with synced data
-        const updatedArtist = { ...processedArtist }
-        
-        // Update biography from Last.fm (always populate if Last.fm has better content)
-        if (processedArtist.lastfmBio) {
-          // Use Last.fm bio if it's longer than current bio or current bio is generic/short
-          const currentBioLength = (updatedArtist.bio || '').length
-          const lastfmBioLength = processedArtist.lastfmBio.length
-          
-          if (!updatedArtist.bio || 
-              lastfmBioLength > currentBioLength + 50 || 
-              (currentBioLength < 200 && lastfmBioLength > 100)) {
-            updatedArtist.bio = processedArtist.lastfmBio
-          }
-        }
-        
-        // Update image from Spotify if not set
-        if (!updatedArtist.image && processedArtist.image) {
-          updatedArtist.image = processedArtist.image
-        }
-        
-        // Update genres from Spotify genres (now we only use genres array, no primary genre)
-        if (processedArtist.spotifyGenres?.length > 0) {
-          // Map Spotify genres to our genre options
-          const genreMapping: { [key: string]: string } = {
-            'tech house': 'house',
-            'chicago house': 'house',
-            'deep house': 'house',
-            'house': 'house',
-            'techno': 'techno',
-            'electronic': 'house',
-            'dance': 'house',
-            'trance': 'trance',
-            'drum and bass': 'drum-and-bass',
-            'dubstep': 'dubstep',
-            'uk garage': 'ukg',
-            'garage': 'ukg',
-            'hip hop': 'hip-hop',
-            'rock': 'rock',
-            'indie rock': 'indie-rock',
-            'jazz': 'jazz',
-            'folk': 'folk',
-            'acoustic': 'acoustic'
-          }
-          
-          // Map all Spotify genres to our genre options
-          const mappedGenres = processedArtist.spotifyGenres.map((g: string) => {
-            const mapped = genreMapping[g.toLowerCase()]
-            return mapped || g.toLowerCase().replace(/\s+/g, '-')
-          }).filter(Boolean)
-          
-          if (mappedGenres.length > 0) {
-            // Replace existing genres with mapped Spotify genres if we don't have any, or merge them
-            const existingGenres = updatedArtist.genres || []
-            if (existingGenres.length === 0) {
-              updatedArtist.genres = [...new Set(mappedGenres)]
-            } else {
-              updatedArtist.genres = [...new Set([...existingGenres, ...mappedGenres])]
-            }
-          }
-        }
-        
-        // Update social media fields from MusicBrainz
-        if (processedArtist.musicbrainzUrls?.length > 0) {
-          processedArtist.musicbrainzUrls.forEach((link: any) => {
-            const url = link.url
-            
-            // Check URL content for platform detection
-            if (url.includes('facebook.com') && !updatedArtist.facebook) {
-              updatedArtist.facebook = url
-            } else if (url.includes('instagram.com') && !updatedArtist.instagram) {
-              updatedArtist.instagram = url
-            } else if (url.includes('twitter.com') && !updatedArtist.twitter) {
-              updatedArtist.twitter = url
-            } else if (url.includes('soundcloud.com') && !updatedArtist.soundcloud) {
-              updatedArtist.soundcloud = url
-            } else if (link.type === 'official homepage' && !updatedArtist.website) {
-              updatedArtist.website = url
-            }
-          })
-        }
-        
-        // Extract hometown from MusicBrainz area data (if available in future)
-        // Note: MusicBrainz area data needs to be fetched separately with area includes
-        
-        // Update Spotify URL from synced data
-        if (processedArtist.spotifyUrl && !updatedArtist.spotify) {
-          updatedArtist.spotify = processedArtist.spotifyUrl
-        }
-        
-        // Merge Last.fm tags with existing tags
-        if (processedArtist.lastfmTags?.length > 0) {
-          const existingTags = updatedArtist.tags || []
-          const newTags = processedArtist.lastfmTags.filter((tag: string) => 
-            !existingTags.includes(tag.toLowerCase())
-          ).slice(0, 5) // Limit to 5 new tags
-          if (newTags.length > 0) {
-            updatedArtist.tags = [...existingTags, ...newTags.map((t: string) => t.toLowerCase())]
-          }
-        }
-        
-        setArtist(updatedArtist)
-        
         const detailsText = syncDetails.length > 0 ? `\n\nSynced data:\n• ${syncDetails.join('\n• ')}` : ''
         alert(`✅ Music data synced successfully!${detailsText}`)
       } else {
         const errorData = await response.json()
         let errorMessage = errorData.error || 'Unknown error occurred'
         
+        console.log('Sync API error:', response.status, errorData) // Debug log
+        
         // Provide helpful error messages
-        if (errorMessage.includes('credentials not configured')) {
+        if (response.status === 401) {
+          errorMessage = 'Authentication failed. Please reload the page and try again.'
+          // Clear invalid token
+          localStorage.removeItem('admin_token')
+          setTimeout(() => router.push('/admin'), 2000)
+        } else if (errorMessage.includes('credentials not configured')) {
           errorMessage += '\n\n💡 Setup Guide:\n1. Visit https://developer.spotify.com/dashboard\n2. Create a new app\n3. Add SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET to .env.local\n4. Restart the development server'
         } else if (errorMessage.includes('not found on Spotify')) {
           errorMessage += '\n\n💡 Try:\n• Adding the Spotify URL manually\n• Checking the artist name spelling\n• Searching for alternative artist names'
         }
         
-        setError(`Spotify sync failed: ${errorMessage}`)
+        setError(`Sync failed: ${errorMessage}`)
       }
     } catch (error) {
       console.error('Spotify sync error:', error)
@@ -477,14 +394,14 @@ export default function EditArtistPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Hometown
+                    Artist Image URL
                   </label>
                   <input
-                    type="text"
-                    value={artist.hometown || ''}
-                    onChange={(e) => updateArtist('hometown', e.target.value)}
+                    type="url"
+                    value={artist.image || ''}
+                    onChange={(e) => updateArtist('image', e.target.value)}
                     className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-music-purple-500 bg-gray-700 text-white"
-                    placeholder="e.g., Chicago, IL"
+                    placeholder="https://..."
                   />
                 </div>
               </div>
@@ -494,24 +411,11 @@ export default function EditArtistPage() {
                   Biography
                 </label>
                 <textarea
-                  rows={4}
+                  rows={8}
                   value={artist.bio || ''}
                   onChange={(e) => updateArtist('bio', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-music-purple-500 bg-gray-700 text-white"
                   placeholder="Tell us about this artist..."
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Artist Image URL
-                </label>
-                <input
-                  type="url"
-                  value={artist.image || ''}
-                  onChange={(e) => updateArtist('image', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-music-purple-500 bg-gray-700 text-white"
-                  placeholder="https://..."
                 />
               </div>
             </div>
@@ -585,11 +489,66 @@ export default function EditArtistPage() {
                   placeholder="https://twitter.com/..."
                 />
               </div>
-            </div>
 
-            {/* Music Integration Status */}
-            {(artist.spotifyId || artist.lastfmBio || artist.musicbrainzId) && (
-              <div className="mt-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  SoundCloud
+                </label>
+                <input
+                  type="url"
+                  value={artist.soundcloud || ''}
+                  onChange={(e) => updateArtist('soundcloud', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-music-purple-500 bg-gray-700 text-white"
+                  placeholder="https://soundcloud.com/..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  TikTok
+                </label>
+                <input
+                  type="url"
+                  value={artist.tiktok || ''}
+                  onChange={(e) => updateArtist('tiktok', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-music-purple-500 bg-gray-700 text-white"
+                  placeholder="https://tiktok.com/@..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  YouTube
+                </label>
+                <input
+                  type="url"
+                  value={artist.youtube || ''}
+                  onChange={(e) => updateArtist('youtube', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-music-purple-500 bg-gray-700 text-white"
+                  placeholder="https://youtube.com/@..."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Bandcamp
+                </label>
+                <input
+                  type="url"
+                  value={artist.bandcamp || ''}
+                  onChange={(e) => updateArtist('bandcamp', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-music-purple-500 bg-gray-700 text-white"
+                  placeholder="https://artist.bandcamp.com"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Music Integration Status */}
+          {(artist.spotifyId || artist.lastfmBio || artist.musicbrainzId) && (
+            <div className="bg-gray-800 rounded-lg shadow p-6">
+              <h3 className="text-lg font-medium text-white mb-6">Music Integration Status</h3>
+              <div className="space-y-4">
                 {/* Spotify Integration */}
                 {artist.spotifyId && (
                   <div className="p-4 bg-green-900 border border-green-700 rounded-md">
@@ -664,8 +623,8 @@ export default function EditArtistPage() {
                   </div>
                 )}
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Band Members */}
           <div className="bg-gray-800 rounded-lg shadow p-6">
