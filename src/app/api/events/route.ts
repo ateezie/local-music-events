@@ -44,9 +44,8 @@ export async function GET(request: NextRequest) {
     // Build where clause
     const where: any = {}
     
-    if (genre && genre !== 'all') {
-      where.genre = genre
-    }
+    // Remove complex genre filtering from database query
+    // We'll filter in JavaScript after fetching data since JSON path queries are complex
     
     if (category && category !== 'all') {
       where.category = category
@@ -91,6 +90,7 @@ export async function GET(request: NextRequest) {
           }
         },
         orderBy: [
+          { hero: 'desc' },
           { featured: 'desc' },
           { date: 'asc' }
         ],
@@ -101,20 +101,59 @@ export async function GET(request: NextRequest) {
     ])
 
     // Transform the data to match frontend expectations
-    const transformedEvents = events.map(event => ({
+    let transformedEvents = events.map(event => ({
       ...event,
       tags: event.tags ? JSON.parse(event.tags) : [],
       subGenres: event.subGenres ? JSON.parse(event.subGenres) : [],
-      artists: event.artists.map(ea => ea.artist)
+      artists: event.artists.map(ea => ({
+        ...ea.artist,
+        // Parse JSON strings to arrays for frontend
+        genres: ea.artist.genres ? JSON.parse(ea.artist.genres) : [],
+        subgenres: ea.artist.subgenres ? JSON.parse(ea.artist.subgenres) : []
+      }))
     }))
 
+    // Apply genre filtering in JavaScript (after data transformation)
+    if (genre && genre !== 'all') {
+      transformedEvents = transformedEvents.filter(event => {
+        if (event.artists && event.artists.length > 0) {
+          return event.artists.some(artist => {
+            // Get primary genre: use first genre from genres array, fallback to genre field
+            let primaryGenre = null
+            if (artist.genres && Array.isArray(artist.genres) && artist.genres.length > 0) {
+              primaryGenre = artist.genres[0]
+            } else if (artist.genre && artist.genre !== 'multi-genre') {
+              primaryGenre = artist.genre
+            }
+            
+            if (!primaryGenre) return false
+            
+            // Check if primary genre matches our target genre
+            if (['house', 'techno', 'dubstep', 'trap', 'drum-and-bass', 'breakbeat', 'trance', 'uk-garage'].includes(primaryGenre)) {
+              return primaryGenre === genre
+            } else if (genre === 'other') {
+              // If target is 'other', match any unrecognized genres
+              return true
+            }
+            
+            return false
+          })
+        }
+        return false
+      })
+    }
+
+    // Update pagination based on filtered results
+    const filteredTotal = transformedEvents.length
+    const paginatedEvents = transformedEvents.slice(skip, skip + limit)
+
     const response = NextResponse.json({
-      events: transformedEvents,
+      events: paginatedEvents,
       pagination: {
         page,
         limit,
-        total,
-        totalPages: Math.ceil(total / limit)
+        total: filteredTotal,
+        totalPages: Math.ceil(filteredTotal / limit)
       }
     })
 

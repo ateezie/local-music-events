@@ -41,6 +41,10 @@ npm run dev:health        # Health check all components
 
 # Legacy command (still works)
 npm run dev               # Basic Next.js development server
+
+# Troubleshooting commands
+npm run cleanup:playwright # Clean up Playwright processes and files
+npm run fix:playwright     # Full Playwright reset and restart
 ```
 
 **🛠️ Development Scripts Features:**
@@ -69,7 +73,8 @@ DATABASE_URL="postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-p
 📖 **For detailed session logs and development history, see:** [`docs/SESSION-LOGS.md`](docs/SESSION-LOGS.md)
 
 ### Recent Updates Summary
-- ✅ **August 21, 2025 (Latest):** Admin enhancements with event assignment system, subgenres management, and genre display fixes
+- ✅ **August 25, 2025 (Latest):** Hero event API ordering fix, events page genre label corrections, and React hydration debugging
+- ✅ **August 21, 2025:** Admin enhancements with event assignment system, subgenres management, and genre display fixes
 - ✅ **August 21, 2025:** Complete artist page frontend implementation with comprehensive music API integration
 - ✅ **August 20, 2025:** Enhanced triple-API sync system with comprehensive field auto-population
 - ✅ **August 18, 2025:** Complete promoters management system with CRUD interface and API endpoints
@@ -77,5 +82,5 @@ DATABASE_URL="postgresql://neondb_owner:npg_PXLi0N4RnYqf@ep-late-dust-aea8s1uw-p
 - ✅ **August 14, 2025:** Design system refinements, Relume integration, color consistency
 - ✅ **Complete Production System:** Facebook integration, PostgreSQL database, slug URLs, admin interface
 
-**Last Updated:** August 21, 2025  
-**Status:** ✅ **ADMIN SYSTEM ENHANCED** - Event assignment system, subgenres management, and comprehensive artist-event relationship management
+**Last Updated:** August 25, 2025  
+**Status:** ✅ **HERO EVENT SYSTEM FIXED** - API correctly prioritizes hero events, genre labels corrected, homepage hydration issue identified

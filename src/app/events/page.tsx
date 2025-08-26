@@ -87,28 +87,35 @@ export default function EventsPage() {
         
         // Create genre info array
         const genreColors: { [key: string]: string } = {
-          'rock': '#FF6B35',
-          'jazz': '#FFD700', 
-          'electronic': '#00FFFF',
-          'hip-hop': '#9370DB',
-          'indie-rock': '#E83F6F',
-          'punk': '#FF1493',
-          'blues': '#4169E1',
-          'folk': '#CD853F',
-          'acoustic': '#8FBC8F',
-          'house': '#FF8C00',
+          'house': '#FF4500',
+          'techno': '#00FFFF',
+          'dubstep': '#DC143C',
+          'trap': '#9370DB',
           'drum-and-bass': '#32CD32',
-          'techno': '#FF69B4',
-          'trance': '#8A2BE2',
-          'dubstep': '#00CED1',
-          'ukg': '#FFB6C1',
+          'breakbeat': '#FF8C00',
+          'trance': '#4169E1',
+          'uk-garage': '#32CD32',
           'multi-genre': '#8b4aff',
           'other': '#808080'
         }
         
+        // Helper function to format genre names properly
+        const formatGenreName = (genreId: string) => {
+          switch (genreId) {
+            case 'drum-and-bass':
+              return 'Drum & Bass'
+            case 'uk-garage':
+              return 'UK Garage'
+            case 'multi-genre':
+              return 'Multi Genre'
+            default:
+              return genreId.charAt(0).toUpperCase() + genreId.slice(1).replace('-', ' ')
+          }
+        }
+        
         const genreData: GenreInfo[] = Array.from(genreMap.entries()).map(([id, count]) => ({
           id,
-          name: id.charAt(0).toUpperCase() + id.slice(1).replace('-', ' & '),
+          name: formatGenreName(id),
           count,
           color: genreColors[id] || '#808080'
         })).sort((a, b) => b.count - a.count)

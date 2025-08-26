@@ -360,6 +360,45 @@ lsof -i :3000                   # Check port usage
 
 ---
 
+## 🚨 **URGENT: Current Issue Status (August 25, 2025)**
+
+### **PRIORITY FIX NEEDED: Homepage Loading Issue** ⚠️
+
+**Problem**: Homepage stuck in loading state despite API working correctly.
+
+**Status**:
+- ✅ **API Layer**: COMPLETELY FIXED - Hero events return first as expected
+- ✅ **Database**: All data correct, hero event properly flagged
+- ❌ **Frontend**: React hydration/state update issue preventing data display
+
+**Evidence**:
+```bash
+# API works perfectly
+curl -s "localhost:3000/api/events?limit=2" | jq '.events[0].hero'
+# Returns: true (Wicked Warehouse event)
+
+# But homepage shows "Loading events..." indefinitely
+```
+
+**Investigation Done**:
+- Confirmed API returns correct data with hero events first
+- Database verified - "Wicked Warehouse Ft. Troyboi" has `hero: true`
+- Server logs show successful API calls but client shows "0 events"
+- Issue isolated to React client-side rendering
+
+**Next Developer Action Required**:
+1. Fix React state management in `/src/app/page.tsx:158-202`
+2. Check why `setFeaturedEvents()` and `setAllEvents()` don't update state
+3. Verify `useEffect` and API call completion on client-side
+4. Remove debug logging once fixed
+
+**Files Modified This Session**:
+- ✅ `/src/app/api/events/route.ts` - Hero event ordering fixed
+- ✅ `/src/app/events/page.tsx` - Genre label formatting fixed  
+- ⚠️ `/src/app/page.tsx` - Debugging added, needs state fix
+
+---
+
 ## 🎯 Ready to Develop!
 
 **Start with:** `npm run dev:full`

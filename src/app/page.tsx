@@ -11,23 +11,15 @@ import { getAllGenres } from '@/lib/events'
 // Helper functions for genre processing (extracted from events.ts)
 function getGenreColor(genre: string): string {
   const genreColors: { [key: string]: string } = {
-    rock: '#FF6B35',
-    jazz: '#FFD700',
-    'indie-rock': '#E83F6F',
-    electronic: '#00FFFF',
-    punk: '#FF1493',
-    'hip-hop': '#9370DB',
-    blues: '#4169E1',
-    folk: '#CD853F',
-    acoustic: '#8FBC8F',
     house: '#FF4500',
-    'drum-and-bass': '#32CD32',
-    'multi-genre': '#8b4aff',
-    dubstep: '#FF4500',
-    trap: '#9370DB',
     techno: '#00FFFF',
+    dubstep: '#DC143C',
+    trap: '#9370DB',
+    'drum-and-bass': '#32CD32',
+    breakbeat: '#FF8C00',
     trance: '#4169E1',
-    'ukg': '#32CD32',
+    'uk-garage': '#32CD32',
+    'multi-genre': '#8b4aff',
     other: '#8b4aff'
   }
   return genreColors[genre] || '#8b4aff'
@@ -35,23 +27,15 @@ function getGenreColor(genre: string): string {
 
 function getGenreDescription(genre: string): string {
   const genreDescriptions: { [key: string]: string } = {
-    rock: 'Classic and modern rock music',
-    jazz: 'Smooth jazz and improvisation',
-    'indie-rock': 'Independent rock artists',
-    electronic: 'Electronic dance music',
-    punk: 'Raw and energetic punk rock',
-    'hip-hop': 'Hip hop and rap music',
-    blues: 'Traditional and modern blues',
-    folk: 'Acoustic folk music',
-    acoustic: 'Unplugged acoustic sets',
-    house: 'Deep house and progressive',
-    'drum-and-bass': 'High-energy drum and bass',
-    'multi-genre': 'Multiple music genres',
+    house: 'House music and subgenres',
+    techno: 'Techno and electronic beats',
     dubstep: 'Heavy bass dubstep',
-    trap: 'Trap and hip-hop beats',
-    techno: 'Electronic techno music',
+    trap: 'Electronic trap beats',
+    'drum-and-bass': 'High-energy drum and bass',
+    breakbeat: 'Funky breakbeat rhythms',
     trance: 'Uplifting trance music',
-    'ukg': 'UK Garage sounds',
+    'uk-garage': 'UK garage sounds',
+    'multi-genre': 'Multiple music genres',
     other: 'Various music styles'
   }
   return genreDescriptions[genre] || 'Live music events'
@@ -60,91 +44,183 @@ function getGenreDescription(genre: string): string {
 export default function HomePage() {
   const [featuredEvents, setFeaturedEvents] = useState<Event[]>([])
   const [allEvents, setAllEvents] = useState<Event[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true) // Start with loading state
+  const [mounted, setMounted] = useState(false)
   
   // Define all target genres regardless of events
   const targetGenres = [
-    { id: 'house', name: 'House', description: 'Deep house and progressive' },
-    { id: 'drum-and-bass', name: 'Drum & Bass', description: 'High-energy drum and bass' },
-    { id: 'ukg', name: 'UK Garage', description: '2-step and speed garage' },
+    { id: 'house', name: 'House', description: 'House music and subgenres' },
+    { id: 'techno', name: 'Techno', description: 'Techno and electronic beats' },
     { id: 'dubstep', name: 'Dubstep', description: 'Heavy bass dubstep' },
+    { id: 'trap', name: 'Trap', description: 'Electronic trap beats' },
+    { id: 'drum-and-bass', name: 'Drum & Bass', description: 'High-energy drum and bass' },
+    { id: 'breakbeat', name: 'Breakbeats', description: 'Funky breakbeat rhythms' },
     { id: 'trance', name: 'Trance', description: 'Uplifting trance music' },
-    { id: 'techno', name: 'Techno', description: 'Electronic techno music' },
-    { id: 'multi-genre', name: 'Multi-Genre', description: 'Mixed music styles' },
+    { id: 'uk-garage', name: 'UK Garage', description: 'UK garage sounds' },
     { id: 'other', name: 'Other', description: 'Various music genres' }
   ]
 
-  // Calculate event counts for each genre
+  // Calculate event counts for each genre based on artist genres assigned to events
   const genres = React.useMemo(() => {
     const combinedEvents = [...featuredEvents, ...allEvents]
+    console.log('genres useMemo: Calculating genres for', combinedEvents.length, 'events')
     const genreCounts = new Map<string, number>()
     
-    combinedEvents.forEach(event => {
-      if (event.genre) {
-        genreCounts.set(event.genre, (genreCounts.get(event.genre) || 0) + 1)
+    combinedEvents.forEach((event, index) => {
+      // Track which genres are represented by artists in this event
+      const eventGenres = new Set<string>()
+      
+      // ONLY look at artist genres - completely disregard event genres
+      if (event.artists && event.artists.length > 0) {
+        console.log(`Event ${index + 1} (${event.title}): ${event.artists.length} artists`)
+        event.artists.forEach((artist, artistIndex) => {
+          // Get primary genre: use first genre from genres array, fallback to genre field
+          let primaryGenre = null
+          if (artist.genres && Array.isArray(artist.genres) && artist.genres.length > 0) {
+            primaryGenre = artist.genres[0]
+          } else if (artist.genre && artist.genre !== 'multi-genre') {
+            primaryGenre = artist.genre
+          }
+          
+          console.log(`  Artist ${artistIndex + 1}: ${artist.name} - Primary genre: ${primaryGenre} (from genres: ${JSON.stringify(artist.genres)} or fallback: ${artist.genre})`)
+          
+          if (primaryGenre) {
+            // Only add genres that match our 9-genre system
+            if (['house', 'techno', 'dubstep', 'trap', 'drum-and-bass', 'breakbeat', 'trance', 'uk-garage'].includes(primaryGenre)) {
+              eventGenres.add(primaryGenre)
+              console.log(`    -> Mapped to: ${primaryGenre}`)
+            } else {
+              // Map any unrecognized genres to 'other'
+              eventGenres.add('other')
+              console.log(`    -> Mapped to: other (unrecognized genre: ${primaryGenre})`)
+            }
+          }
+        })
+      } else {
+        console.log(`Event ${index + 1} (${event.title}): NO ARTISTS`)
       }
+      
+      // Count this event for each genre represented by its artists
+      // Only count events that have artists with valid genre assignments
+      eventGenres.forEach(genre => {
+        genreCounts.set(genre, (genreCounts.get(genre) || 0) + 1)
+      })
     })
     
-    return targetGenres.map(genre => ({
-      ...genre,
-      count: genreCounts.get(genre.id) || 0
-    }))
+    console.log('Genre counts:', Array.from(genreCounts.entries()))
+    
+    const finalGenres = targetGenres
+      .map(genre => ({
+        ...genre,
+        count: genreCounts.get(genre.id) || 0
+      }))
+      .filter(genre => genre.count > 0) // Only show genres with events
+    
+    console.log('Final genres to display:', finalGenres.length, finalGenres)
+    return finalGenres
   }, [featuredEvents, allEvents])
   
-  // Get the hero event (event with hero: true), fallback to first featured event
-  const heroFeaturedEvent = [...featuredEvents, ...allEvents].find(event => event.hero) || featuredEvents[0] || allEvents[0]
-
-  useEffect(() => {
-    loadEvents()
-  }, [])
-
+  // Define loadEvents function before useEffect
   const loadEvents = async () => {
     try {
-      let combinedEvents: Event[] = []
-      
-      // Load JSON events
-      try {
-        const jsonResponse = await fetch('/api/events/json')
-        if (jsonResponse.ok) {
-          const jsonData = await jsonResponse.json()
-          const jsonEvents = (jsonData.events || []).map((event: any) => ({
-            ...event,
-            _source: 'json'
-          }))
-          combinedEvents.push(...jsonEvents)
+      console.log('Loading events from API...')
+      const response = await fetch('/api/events?limit=100')
+      console.log('API response status:', response.status)
+      if (response.ok) {
+        const data = await response.json()
+        const events = data.events || []
+        console.log('Received events:', events.length, 'events')
+        if (events.length > 0) {
+          console.log('First event:', events[0].title, 'Hero:', events[0].hero)
         }
-      } catch (error) {
-        console.error('Error loading JSON events:', error)
+        
+        // Sort by date
+        events.sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime())
+        
+        // Filter featured events
+        const featured = events.filter((event: any) => event.featured).slice(0, 4)
+        console.log('Featured events:', featured.length)
+        
+        setFeaturedEvents(featured)
+        setAllEvents(events.slice(0, 8))
+        console.log('State updated with featured:', featured.length, 'all:', events.slice(0, 8).length)
       }
-      
-      // Load database events  
-      try {
-        const dbResponse = await fetch('/api/events?limit=100')
-        if (dbResponse.ok) {
-          const dbData = await dbResponse.json()
-          const dbEvents = (dbData.events || []).map((event: any) => ({
-            ...event,
-            _source: 'database'
-          }))
-          combinedEvents.push(...dbEvents)
-        }
-      } catch (error) {
-        console.error('Error loading database events:', error)
-      }
-      
-      // Sort by date
-      combinedEvents.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-      
-      // Filter featured events
-      const featured = combinedEvents.filter(event => event.featured).slice(0, 4)
-      setFeaturedEvents(featured)
-      setAllEvents(combinedEvents.slice(0, 8))
-      
     } catch (error) {
       console.error('Error loading events:', error)
     } finally {
       setLoading(false)
     }
+  }
+
+  // Get the hero event (event with hero: true), fallback to first featured event
+  const heroFeaturedEvent = [...featuredEvents, ...allEvents].find(event => event.hero) || featuredEvents[0] || allEvents[0]
+
+  useEffect(() => {
+    setMounted(true)
+    
+    const loadData = async () => {
+      try {
+        console.log('Loading events...')
+        const response = await fetch('/api/events?limit=100')
+        
+        if (!response.ok) {
+          throw new Error(`API response not ok: ${response.status}`)
+        }
+        
+        const data = await response.json()
+        const events = data.events || []
+        
+        console.log('Received', events.length, 'events')
+        
+        if (events.length > 0) {
+          console.log('First event:', events[0].title, 'Hero:', events[0].hero)
+          
+          // Sort by date but keep hero events first (they're already ordered by API)
+          events.sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime())
+          
+          // Filter featured events
+          const featured = events.filter((event: any) => event.featured).slice(0, 4)
+          
+          console.log('Setting featured events:', featured.length)
+          console.log('Setting all events:', events.slice(0, 8).length)
+          
+          // Update state
+          setFeaturedEvents(featured)
+          setAllEvents(events.slice(0, 8))
+        } else {
+          console.log('No events received from API')
+        }
+      } catch (error) {
+        console.error('Error loading events:', error)
+      } finally {
+        console.log('Setting loading to false')
+        setLoading(false)
+      }
+    }
+    
+    loadData()
+  }, [])
+
+  // Only show content after component has mounted
+  if (!mounted) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-900 mx-auto mb-4"></div>
+            <p className="text-gray-700">Loading events...</p>
+          </div>
+        </div>
+      </Layout>
+    )
+  }
+
+  // Debug: Add basic info to help troubleshoot
+  const debugInfo = {
+    loading,
+    featuredCount: featuredEvents.length,
+    allEventsCount: allEvents.length,
+    genresCount: genres.length
   }
 
   if (loading) {
@@ -154,6 +230,28 @@ export default function HomePage() {
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-900 mx-auto mb-4"></div>
             <p className="text-gray-700">Loading events...</p>
+            <p className="text-xs text-gray-500 mt-2">Debug: {JSON.stringify(debugInfo)}</p>
+          </div>
+        </div>
+      </Layout>
+    )
+  }
+
+  // Show a debug screen temporarily to diagnose the issue
+  if (featuredEvents.length === 0 && allEvents.length === 0 && !loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gray-100 p-8">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-2xl font-bold mb-4">Debug Information</h1>
+            <div className="bg-white p-4 rounded shadow">
+              <p><strong>Loading:</strong> {loading ? 'true' : 'false'}</p>
+              <p><strong>Mounted:</strong> {mounted ? 'true' : 'false'}</p>
+              <p><strong>Featured Events:</strong> {featuredEvents.length}</p>
+              <p><strong>All Events:</strong> {allEvents.length}</p>
+              <p><strong>Genres:</strong> {genres.length}</p>
+              <p><strong>Hero Event:</strong> {heroFeaturedEvent ? heroFeaturedEvent.title : 'None'}</p>
+            </div>
           </div>
         </div>
       </Layout>
@@ -213,6 +311,23 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
+            {/* DEBUG INFO */}
+            <div className="col-span-full bg-red-100 p-4 rounded mb-4">
+              <h4 className="font-bold text-red-800 mb-2">🔍 DEBUG INFO</h4>
+              <div className="text-sm text-red-700">
+                <div>Featured Events: {featuredEvents.length}</div>
+                <div>All Events: {allEvents.length}</div>
+                <div>Genres to Display: {genres.length}</div>
+                <div>Loading: {loading.toString()}</div>
+                {genres.length > 0 && (
+                  <div>First Genre: {JSON.stringify(genres[0])}</div>
+                )}
+                {allEvents.length > 0 && (
+                  <div>First Event: {allEvents[0]?.title} (Artists: {allEvents[0]?.artists?.length || 0})</div>
+                )}
+              </div>
+            </div>
+            
             {genres.map((genre) => (
               <Link
                 key={genre.id}
